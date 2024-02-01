@@ -11,19 +11,15 @@ try {
 
 if (isset($_POST["ok"])) {
     $pseudo = $_POST['pseudo'];
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
     $email = $_POST['email'];
     $mdp = $_POST['mdp'];
 
     // Préparation de la requête d'insertion
-    $req = $pdo->prepare('INSERT INTO users VALUES (NULL, :pseudo, :nom, :prenom, :mdp, :email)');
+    $req = $pdo->prepare('INSERT INTO users VALUES (NULL, :pseudo, :mdp, :email)');
 
     // Exécution de la requête avec les valeurs associées
     $req->execute(array(
         'pseudo' => $pseudo,
-        'nom' => $nom,
-        'prenom' => $prenom,
         'mdp' => $mdp,
         'email' => $email
     ));

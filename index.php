@@ -1,4 +1,12 @@
 <?php
+// fichier index.php
+
+require 'Classes/autoloader.php'; 
+Autoloader::register(); 
+
+
+
+
  $path = $_SERVER["REQUEST_URI"];
 
  switch ($path) {
