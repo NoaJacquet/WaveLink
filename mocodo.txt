@@ -1,19 +1,23 @@
 :
-Chanson : idChanson, nomChanson
-Fait_Partie, 0N Playlist, 0N Chanson
-Playlist : idPlaylist, nomPlaylist
-
+:
+Créer, 0N Artistes, 1N Album
 Artistes : idArtistes, nomArtistes, imgArtistes
-Contient, 1N Album, 11 Chanson 
-:
-Cree, 11 Playlist, 0N Utilisateur
-
-Ecrit, 0N Artistes, 11 Album
-Album : idAlbum, nomAlbum, anneeSortie, imgAlbum
-Noter, 11 Utilisateur, 11 Album: note
-Utilisateur : idUtilisateur, nomUtilisateur, imgUtilisateur
+Composer, 1N Musique, ON Artistes
 
 :
-Appartient, 0N Genre, 1N Album
+Appartenir, 0N Genre, 1N Album
+Album : idAlbum, titreAlbum, genreAlbum, anneeSortie, imgAlbum, compositeurAlbum
+Interpreter, 1N Musique, 0N  Artistes
+Musique : idMusique, nomMusique, genreMusique, interpreteMusique, CompositeurMusique, anneeSortieMusique
+
+:
 Genre : idGenre, nomGenre
-:
+Noter, 0N Utilisateur, 0N Album: note
+Contenir, 0N Album, 0N Musique
+Renfermer, 0N Playlist, 0N Musique
+
+NOTE : idNote, idUtilisateur, idAlbum, note
+Detenir, 0N Utilisateur, 11 Note
+Utilisateur : idUtilisateur, nomUtilisateur, mdpUtilisateur, imgUtilisateur
+Avoir, 1N Playlist, 0N Utilisateur
+Playlist : idPlaylist, nomPlaylist
