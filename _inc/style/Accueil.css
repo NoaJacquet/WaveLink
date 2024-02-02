@@ -9,34 +9,44 @@ body {
 
 main{
     display: flex;   
-    height: 10vh;
     margin: 0.3vw;
 }
 
 div{
-    background-color: #414141;
-    height: 80vh;
+    background-color: #1a1919;
     margin-right: 1vw;
     border-radius: 0.8vw;
-    width: 50vw;
+}
+
+#main{
+    background-color: #1a1919;
+    height: 74vh;
+    margin-right: .25vw;
+    border-radius: 0.8vw;
+    width: 73vw;
+    margin-bottom: 0.4vw;
 }
 
 #playlist{
     width: 25vw;
+    height: 74vh;
 }
 
 header{
-    background-color: #414141;
+    background-color: #1a1919;
     height: 10vh;
     margin: 0.3vw;
+    margin-bottom: 0.5vw;
     border-radius: 0.8vw;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-h1, h2{
+h1{
     color: white ;
+    font-size: 2vw;
+    margin-left: 1vw;
 }
 
 ul{
@@ -52,7 +62,48 @@ li{
 
 input{
     border-radius: 1vw;
-    color :#414141;
+    color :#1a1919;
     width: 25vw;
     height: 5vh;
 }
+
+#lector{
+    margin-right: 1vw;
+}
+
+#sound-bar{
+    width: 10vw;
+    margin-left: 1vw;
+}
+
+h2{
+    margin-left: 8vw;
+    color: white ;
+    font-size: 1.5vw;
+}
+
+footer{
+    background-color: #1a1919;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.8vw;
+    width: 99vw;
+    margin-left: .5vw;
+    flex-grow: 1;
+}
+
+#lector-div, #play-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 98vw;
+    height: 5vh;
+}
+
+#pause-button{
+    display: none;
+}
+
+
