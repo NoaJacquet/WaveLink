@@ -23,15 +23,25 @@
             if ($pseudo != "" && $email != "" && $mdp != "") {
                 $success = $userManager->insertUser($pseudo, $email, $mdp);
 
-                if ($success) {
+                if ($success === true) {
                     header("Location: /accueil");
                     exit();
                 } else {
                     $error_msg = "Erreur lors de l'inscription. Veuillez réessayer.";
+
+                    if ($success === "duplicate_email") {
+                        $error_msg = "L'adresse email est déjà utilisée. Veuillez en choisi";
+                    } elseif ($success === "duplicate_pseudo") {
+                        $error_msg = "Le pseudo est déjà pris. Veuillez en choisir un autre.";
+                    }
+
+                    $registrationFailed = true;
                 }
             }
         }
         ?>
+
+
 
 
     <main>
@@ -68,6 +78,11 @@
     
 
 
-
 </body>
 </html>
+
+    <?php
+    if ($registrationFailed) {
+        echo "<script>alert(\"$error_msg\");</script>";
+    }
+    ?>

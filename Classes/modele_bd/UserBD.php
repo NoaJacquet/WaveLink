@@ -12,26 +12,47 @@ class UserBD
         $this->pdo = $pdo;
     }
 
-    public function insertUser($pseudo, $email, $mdp)
-    {
+    public function insertUser($pseudo, $email, $mdp) {
         try {
+            // Vérifie si le pseudo est déjà utilisé
+            $pseudoCheck = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE pseudo = :pseudo');
+            $pseudoCheck->execute(array('pseudo' => $pseudo));
+            $pseudoExists = $pseudoCheck->fetchColumn() > 0;
+    
+            // Vérifie si l'email est déjà utilisé
+            $emailCheck = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
+            $emailCheck->execute(array('email' => $email));
+            $emailExists = $emailCheck->fetchColumn() > 0;
+    
+            // Si le pseudo ou l'email est déjà utilisé, retourne le type d'erreur approprié
+            if ($pseudoExists) {
+                return "duplicate_pseudo";
+            } elseif ($emailExists) {
+                return "duplicate_email";
+            }
+    
+            // Si tout est OK, effectue l'insertion
             // Préparation de la requête d'insertion
             $req = $this->pdo->prepare('INSERT INTO users VALUES (NULL, :pseudo, :mdp, :email)');
-
+    
             // Exécution de la requête avec les valeurs associées
-            $req->execute(array(
+            $result = $req->execute(array(
                 'pseudo' => $pseudo,
                 'mdp' => $mdp,
                 'email' => $email
             ));
-
+    
             // Vérification du succès de l'insertion
-            return $req->rowCount() > 0;
+            return $result;
         } catch (\PDOException $e) {
             echo 'Erreur inscription : ' . $e->getMessage();
             return false;
         }
     }
+    
+    
+    
+
 
     public function checkLogin($email, $password)
     {

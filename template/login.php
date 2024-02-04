@@ -30,6 +30,7 @@
                     exit();
                 } else {
                     $error_msg = "Email ou mot de passe incorrect";
+                    echo "<script>alert('$error_msg');</script>";
                 }
             }
         }
@@ -60,13 +61,6 @@
             </form>
         </section>
     </main>
-
-
-    <?php
-        if ($error_msg){
-            echo $error_msg;
-        } 
-    ?>
     
 </body>
 </html>
