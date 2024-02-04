@@ -28,7 +28,7 @@ class UserBD
             // Vérification du succès de l'insertion
             return $req->rowCount() > 0;
         } catch (\PDOException $e) {
-            echo 'Erreur : ' . $e->getMessage();
+            echo 'Erreur inscription : ' . $e->getMessage();
             return false;
         }
     }
@@ -44,7 +44,7 @@ class UserBD
 
             return $req->fetch();
         } catch (\PDOException $e) {
-            echo 'Erreur : ' . $e->getMessage();
+            echo 'Erreur login : ' . $e->getMessage();
             return false;
         }
     }

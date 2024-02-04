@@ -6,6 +6,34 @@
     <title>Inscription</title>
 </head>
 <body>
+        <?php
+        use modele_bd\Connexion;
+        use modele_bd\UserBD;
+
+        $connexion = new Connexion();
+        $connexion->connexionBD();
+
+        $userManager = new UserBD($connexion->getPDO());
+
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $pseudo = $_POST["pseudo"];
+            $email = $_POST["email"];
+            $mdp = $_POST["mdp"];
+
+            if ($pseudo != "" && $email != "" && $mdp != "") {
+                $success = $userManager->insertUser($pseudo, $email, $mdp);
+
+                if ($success) {
+                    header("Location: /accueil");
+                    exit();
+                } else {
+                    $error_msg = "Erreur lors de l'inscription. Veuillez réessayer.";
+                }
+            }
+        }
+        ?>
+
+
     <main>
 
         <section id='logo'>
@@ -14,7 +42,7 @@
         </section>
 
         <section id="log">
-            <form method="POST" action="../traitement.php">
+            <form method="POST" action="">
                 <label for="pseudo">Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Entrez votre pseudo" required><br>
 

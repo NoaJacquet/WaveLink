@@ -1,3 +1,5 @@
+<!-- login.php -->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -24,7 +26,8 @@
                 $user = $userManager->checkLogin($email, $password);
 
                 if ($user) {
-                    echo "Vous êtes connecté";
+                    header("Location: /accueil");
+                    exit();
                 } else {
                     $error_msg = "Email ou mot de passe incorrect";
                 }
