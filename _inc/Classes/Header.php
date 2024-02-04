@@ -9,7 +9,7 @@ Class Header implements RenderInterface{
 
     public function render(){
         $res = '<header>';
-        $res .= '<ul>';
+        $res .= '<ul id="header">';
         $res .= '<li><h1>Wavelink</h1></li>';
         $res .= '<li><input type=text placeholder="Rechercher"></li>';
         $res .= '<li><p>image</p></li>';

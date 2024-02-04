@@ -1,109 +1,191 @@
-*{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: black;
+  background-color: black;
 }
 
-main{
-    display: flex;   
-    margin: 0.3vw;
+main {
+  display: flex;
+  margin: 0.3vw;
 }
 
-div{
-    background-color: #1a1919;
-    margin-right: 1vw;
-    border-radius: 0.8vw;
+a {
+  text-decoration: none;
+  color: white;
 }
 
-#main{
-    background-color: #1a1919;
-    height: 74vh;
-    margin-right: .25vw;
-    border-radius: 0.8vw;
-    width: 73vw;
-    margin-bottom: 0.4vw;
+div {
+  background-color: #1a1919;
+  margin-right: 1vw;
+  border-radius: 0.8vw;
 }
 
-#playlist{
-    width: 25vw;
-    height: 74vh;
+#playlist-choisi {
+  background-color: #1a1919;
+  height: 74vh;
+  margin-right: 0.25vw;
+  border-radius: 0.8vw;
+  width: 73vw;
+  margin-bottom: 0.4vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-header{
-    background-color: #1a1919;
-    height: 10vh;
-    margin: 0.3vw;
-    margin-bottom: 0.5vw;
-    border-radius: 0.8vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#playlist {
+  width: 25vw;
+  height: 74vh;
+  display: flex;
+  flex-direction: column;
 }
 
-h1{
-    color: white ;
-    font-size: 2vw;
-    margin-left: 1vw;
+header {
+  background-color: #1a1919;
+  height: 10vh;
+  margin: 0.3vw;
+  margin-bottom: 0.5vw;
+  border-radius: 0.8vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-ul{
-    display: flex;
-    align-items: center;
-    justify-content:space-between;
-    width: 100em;
+h1 {
+  color: white;
+  font-size: 2vw;
+  margin-left: 1vw;
 }
 
-li{
-    list-style-type: none ;
+ul {
+  width: 100em;
 }
 
-input{
-    border-radius: 1vw;
-    color :#1a1919;
-    width: 25vw;
-    height: 5vh;
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#lector{
-    margin-right: 1vw;
+li {
+  list-style-type: none;
 }
 
-#sound-bar{
-    width: 10vw;
-    margin-left: 1vw;
+input {
+  border-radius: 1vw;
+  color: #1a1919;
+  width: 25vw;
+  height: 5vh;
 }
 
-h2{
-    margin-left: 8vw;
-    color: white ;
-    font-size: 1.5vw;
+#lector {
+  margin-right: 1vw;
 }
 
-footer{
-    background-color: #1a1919;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.8vw;
-    width: 99vw;
-    margin-left: .5vw;
-    flex-grow: 1;
+#sound-bar {
+  width: 10vw;
+  margin-left: 1vw;
 }
 
-#lector-div, #play-div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 98vw;
-    height: 5vh;
+h2 {
+  color: white;
+  margin-left: 9vw;
+  font-size: 1.5vw;
 }
 
-#pause-button{
-    display: none;
+#son {
+  display: flex;
+  align-items: center;
+  color: white;
+  margin-top: 1vh;
+  width: 70vw;
+  transition: 0.3s;
 }
 
+#son:hover {
+  background-color: #292727;
+  width: 70.5vw;
+}
 
+#son div {
+  transition: 0.3s;
+}
+
+#son:hover div {
+  background-color: #292727;
+}
+
+#son img {
+  width: 4vw;
+  height: 4vw;
+  margin-right: 1vw;
+}
+
+#son p {
+  font-size: 1vw;
+}
+
+footer {
+  background-color: #1a1919;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.8vw;
+  width: 99vw;
+  margin-left: 0.5vw;
+  flex-grow: 1;
+  color: white;
+}
+
+#lector-div,
+#play-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 98vw;
+  height: 5vh;
+}
+
+#pause-button {
+  display: none;
+}
+
+#playlist li {
+  margin-top: 3vh;
+  margin-left: 6.5vw;
+  color: white;
+}
+
+#barre {
+  background-color: white;
+  width: 10vw;
+  height: 0.2vh;
+}
+
+#detail-playlist {
+  display: flex;
+  align-items: center;
+  margin-top: 2vh;
+  width: 12vw;
+  height: 8vh;
+  background-color: #292727;
+  transition: 0.3s;
+  margin-left: -0.8vw;
+}
+
+#detail-playlist img {
+  width: 3vw;
+  height: 6vh;
+  margin-right: 2vw;
+  margin-left: 1vw;
+  border-radius: 0.8vw;
+}
+
+#detail-playlist:hover {
+  width: 12.5vw;
+  height: 8.5vh;
+  margin-left: -0.95vw;
+}
