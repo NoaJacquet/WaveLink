@@ -13,7 +13,7 @@ switch ($argv[1]) {
         echo '→ Go create tables' . PHP_EOL;
         $sqlScript = <<<EOF
         CREATE TABLE Album (
-            id_Album          TEXT PRIMARY KEY,
+            id_Album          TEXT PRIMARY KEY, AUTOINCREMENT,
             titre_Album       TEXT,
             genre_Album       TEXT,
             annee_Sortie      TEXT,
@@ -22,8 +22,8 @@ switch ($argv[1]) {
           );
           
           CREATE TABLE Appartenir (
-            id_Genre TEXT NOT NULL,
-            id_Album TEXT NOT NULL,
+            id_Genre TEXT NOT NULL, AUTOINCREMENT,
+            id_Album TEXT NOT NULL, AUTOINCREMENT,
             PRIMARY KEY (id_Genre, id_Album),
             FOREIGN KEY (id_Album) REFERENCES Album (id_Album),
             FOREIGN KEY (id_Genre) REFERENCES Genre (id_Genre)
@@ -36,32 +36,32 @@ switch ($argv[1]) {
           );
           
           CREATE TABLE Avoir (
-            id_Playlist    TEXT NOT NULL,
-            id_Utilisateur TEXT NOT NULL,
+            id_Playlist    TEXT NOT NULL, AUTOINCREMENT,
+            id_Utilisateur TEXT NOT NULL, AUTOINCREMENT,
             PRIMARY KEY (id_Playlist, id_Utilisateur),
             FOREIGN KEY (id_Utilisateur) REFERENCES Utilisateur (id_Utilisateur),
             FOREIGN KEY (id_Playlist) REFERENCES Playlist (id_Playlist)
           );
           
           CREATE TABLE Composer (
-            id_Musique  TEXT NOT NULL,
-            id_Artistes TEXT NOT NULL,
+            id_Musique  TEXT NOT NULL, AUTOINCREMENT,
+            id_Artistes TEXT NOT NULL, AUTOINCREMENT,
             PRIMARY KEY (id_Musique, id_Artistes),
             FOREIGN KEY (id_Artistes) REFERENCES Artistes (id_Artistes),
             FOREIGN KEY (id_Musique) REFERENCES Musique (id_Musique)
           );
           
           CREATE TABLE Contenir (
-            id_Album   TEXT NOT NULL,
-            id_Musique TEXT NOT NULL,
+            id_Album   TEXT NOT NULL, AUTOINCREMENT,
+            id_Musique TEXT NOT NULL, AUTOINCREMENT,
             PRIMARY KEY (id_Album, id_Musique),
             FOREIGN KEY (id_Musique) REFERENCES Musique (id_Musique),
             FOREIGN KEY (id_Album) REFERENCES Album (id_Album)
           );
           
           CREATE TABLE Creer (
-            id_Artistes TEXT NOT NULL,
-            id_Album    TEXT NOT NULL,
+            id_Artistes TEXT NOT NULL, AUTOINCREMENT,
+            id_Album    TEXT NOT NULL, AUTOINCREMENT,
             PRIMARY KEY (id_Artistes, id_Album),
             FOREIGN KEY (id_Album) REFERENCES Album (id_Album),
             FOREIGN KEY (id_Artistes) REFERENCES Artistes (id_Artistes)
@@ -73,15 +73,15 @@ switch ($argv[1]) {
           );
           
           CREATE TABLE Interpreter (
-            id_Musique  TEXT NOT NULL,
-            id_Artistes TEXT NOT NULL,
+            id_Musique  TEXT NOT NULL, AUTOINCREMENT,
+            id_Artistes TEXT NOT NULL, AUTOINCREMENT,
             PRIMARY KEY (id_Musique, id_Artistes),
             FOREIGN KEY (id_Artistes) REFERENCES Artistes (id_Artistes),
             FOREIGN KEY (id_Musique) REFERENCES Musique (id_Musique)
           );
           
           CREATE TABLE Musique (
-            id_Musique           TEXT PRIMARY KEY,
+            id_Musique           TEXT PRIMARY KEY, AUTOINCREMENT,
             nom_Musique          TEXT,
             genre_Musique        TEXT,
             interprete_Musique   TEXT,
@@ -91,17 +91,17 @@ switch ($argv[1]) {
           );
           
           CREATE TABLE NOTE (
-            id_Note          TEXT PRIMARY KEY,
-            id_Utilisateur_1 TEXT,
-            id_Album         TEXT,
+            id_Note          TEXT PRIMARY KEY, AUTOINCREMENT,
+            id_Utilisateur_1 TEXT, AUTOINCREMENT,
+            id_Album         TEXT, AUTOINCREMENT,
             note             TEXT,
             id_Utilisateur_2 TEXT NOT NULL,
             FOREIGN KEY (id_Utilisateur_2) REFERENCES Utilisateur (id_Utilisateur)
           );
           
           CREATE TABLE Noter (
-            id_Utilisateur TEXT NOT NULL,
-            id_Album       TEXT NOT NULL,
+            id_Utilisateur TEXT NOT NULL, AUTOINCREMENT,
+            id_Album       TEXT NOT NULL, AUTOINCREMENT,
             note           TEXT,
             PRIMARY KEY (id_Utilisateur, id_Album),
             FOREIGN KEY (id_Album) REFERENCES Album (id_Album),
