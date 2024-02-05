@@ -20,7 +20,7 @@ Autoloader::register();
         require __DIR__."/template/inscription.php";
         break;
     case "/accueil": 
-        require __DIR__."/template/accueil.php";
+        require __DIR__."/template/Accueil.php";
         break;
     default:
         echo "404";

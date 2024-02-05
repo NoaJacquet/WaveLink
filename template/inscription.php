@@ -47,10 +47,9 @@
     <main>
 
         <section id='logo'>
-            <h1>LOGIN HERE</h1>
+            <h1>REGISTER HERE</h1>
             <img src="images/logo.png" alt="Logo">
         </section>
-
         <section id="log">
             <form method="POST" action="">
                 <label for="pseudo">Pseudo :</label>
