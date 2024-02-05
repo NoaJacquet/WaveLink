@@ -12,34 +12,24 @@ class UserBD
         $this->pdo = $pdo;
     }
 
-    public function insertUser($pseudo, $email, $mdp) {
+    public function insertUser($pseudo, $mdp) {
         try {
             // Vérifie si le pseudo est déjà utilisé
-            $pseudoCheck = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE pseudo = :pseudo');
+            $pseudoCheck = $this->pdo->prepare('SELECT COUNT(*) FROM Utilisateur WHERE nom_Utilisateur = :pseudo');
             $pseudoCheck->execute(array('pseudo' => $pseudo));
             $pseudoExists = $pseudoCheck->fetchColumn() > 0;
-    
-            // Vérifie si l'email est déjà utilisé
-            $emailCheck = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
-            $emailCheck->execute(array('email' => $email));
-            $emailExists = $emailCheck->fetchColumn() > 0;
     
             // Si le pseudo ou l'email est déjà utilisé, retourne le type d'erreur approprié
             if ($pseudoExists) {
                 return "duplicate_pseudo";
-            } elseif ($emailExists) {
-                return "duplicate_email";
             }
     
-            // Si tout est OK, effectue l'insertion
-            // Préparation de la requête d'insertion
-            $req = $this->pdo->prepare('INSERT INTO users VALUES (NULL, :pseudo, :mdp, :email)');
+            $req = $this->pdo->prepare('INSERT INTO Utilisateur VALUES (NULL, :pseudo, :mdp, "default.png")');
     
             // Exécution de la requête avec les valeurs associées
             $result = $req->execute(array(
                 'pseudo' => $pseudo,
-                'mdp' => $mdp,
-                'email' => $email
+                'mdp' => $mdp
             ));
     
             // Vérification du succès de l'insertion
@@ -54,12 +44,12 @@ class UserBD
     
 
 
-    public function checkLogin($email, $password)
+    public function checkLogin($pseudo, $password)
     {
         try {
-            $req = $this->pdo->prepare('SELECT * FROM users WHERE email = :email AND mdp = :password');
+            $req = $this->pdo->prepare('SELECT * FROM Utilisateur WHERE nom_Utilisateur = :pseudo AND mdp_Utilisateur = :password');
             $req->execute(array(
-                'email' => $email,
+                'pseudo' => $pseudo,
                 'password' => $password,
             ));
 
@@ -70,25 +60,6 @@ class UserBD
         }
     }
 }
-
-// // Utilisation de la classe UserBD
-// $databaseManager = new DatabaseManager();
-// $userBD = new UserBD($databaseManager->getPDO());
-
-// if ($_SERVER['REQUEST_METHOD'] == "POST") {
-//     $email = $_POST["email"];
-//     $password = $_POST["password"];
-
-//     if ($email != "" && $password != "") {
-//         $user = $userBD->checkLogin($email, $password);
-
-//         if ($user) {
-//             echo "Vous êtes connecté";
-//         } else {
-//             $error_msg = "Email ou mot de passe incorrect";
-//         }
-//     }
-// }
 
 
 
