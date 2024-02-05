@@ -4,6 +4,7 @@
     <link rel='stylesheet' href='../style/Accueil.css'>
     <meta charset="UTF-8">
     <title>Accueil</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
 <body>
     <?php
@@ -15,13 +16,10 @@
     <div id='playlist'>
         <h2>Playlist</h2>
         <ul>
-            <?php
-
-            ?>
+            <li><a href="" data-target="playlist">Playlist 1</a></li>
         </ul>
     </div>
     <div id='main'>
-        <p></p>
     </div>
     </main>
     <footer>
