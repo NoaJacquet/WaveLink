@@ -1,7 +1,35 @@
 <?php
 
+require_once 'vendor/autoload.php';
+
 define('SQLITE_DB', 'test.db');
 $pdo = new PDO('sqlite:' . SQLITE_DB);
+
+function yaml_parse($yamlFile)
+{
+    $yamlContents = file_get_contents($yamlFile);
+
+    // Simple YAML parsing logic (you might want to use a more robust parser)
+    $data = [];
+    $lines = explode("\n", $yamlContents);
+    $currentKey = null;
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if (empty($line) || $line[0] === '#') {
+            continue; // Ignore empty lines and comments
+        }
+
+        if (strpos($line, ':') !== false) {
+            list($key, $value) = explode(':', $line, 2);
+            $currentKey = trim($key);
+            $data[$currentKey] = trim($value);
+        } elseif ($currentKey !== null) {
+            $data[$currentKey] .= "\n" . $line;
+        }
+    }
+
+    return $data;
+}
 
 switch ($argv[1]) {
     case 'create-database':
@@ -86,8 +114,7 @@ switch ($argv[1]) {
             genre_Musique        TEXT,
             interprete_Musique   TEXT,
             Compositeur_Musique  TEXT,
-            annee_Sortie_Musique TEXT,
-            url_Musique          TEXT
+            annee_Sortie_Musique composer require symfony/yaml     TEXT
           );
           
           CREATE TABLE NOTE (
@@ -97,7 +124,7 @@ switch ($argv[1]) {
             note             TEXT,
             id_Utilisateur_2 TEXT NOT NULL,
             FOREIGN KEY (id_Utilisateur_2) REFERENCES Utilisateur (id_Utilisateur)
-          );
+          );composer require symfony/yaml
           
           CREATE TABLE Noter (
             id_Utilisateur TEXT NOT NULL, AUTOINCREMENT,
@@ -109,10 +136,7 @@ switch ($argv[1]) {
           );
           
           CREATE TABLE Playlist (
-            id_Playlist  TEXT PRIMARY KEY,
-            nom_Playlist TEXT
-          );
-          
+            id_Playlist composer require symfony/yaml
           CREATE TABLE Renfermer (
             id_Playlist TEXT NOT NULL,
             id_Musique  TEXT NOT NULL,
@@ -155,10 +179,31 @@ switch ($argv[1]) {
 EOF;
         break;
 
-    case 'load-data':
-        echo '→ Go load data to tables' . PHP_EOL;
-        // Add your data loading logic here
-        break;
+        case 'load-data':
+            echo '→ Go load data to tables' . PHP_EOL;
+    
+            $yamlFile = 'yaml/extrait.yml';
+    
+            if (file_exists($yamlFile)) {
+                $yamlData = file_get_contents($yamlFile);
+                $data = yaml_parse($yamlData); // Utilisez yaml_parse pour analyser le fichier YAML
+    
+                if (isset($data) && is_array($data)) {
+                    foreach ($data as $entry) {
+                        $stmt = $pdo->prepare("INSERT INTO Album (id_Album, titre_Album, genre_Album, annee_Sortie, img_Album, compositeur_Album) VALUES (?, ?, ?, ?, ?, ?)");
+                        $stmt->execute([$entry['entryId'], $entry['title'], $entry['genre'], $entry['releaseYear'], $entry['img'], null]);
+    
+                        // Ajoutez des déclarations INSERT similaires pour les autres tables au besoin
+                    }
+    
+                    echo 'Data loaded successfully.' . PHP_EOL;
+                } else {
+                    echo 'Error parsing YAML data.' . PHP_EOL;
+                }
+            } else {
+                echo 'YAML file not found.' . PHP_EOL;
+            }
+            break;
 
     default:
         echo 'No action defined 🙀'.PHP_EOL;
