@@ -17,11 +17,10 @@
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $pseudo = $_POST["pseudo"];
-            $email = $_POST["email"];
             $mdp = $_POST["mdp"];
 
-            if ($pseudo != "" && $email != "" && $mdp != "") {
-                $success = $userManager->insertUser($pseudo, $email, $mdp);
+            if ($pseudo != "" && $mdp != "") {
+                $success = $userManager->insertUser($pseudo, $mdp);
 
                 if ($success === true) {
                     header("Location: /accueil");
@@ -29,9 +28,7 @@
                 } else {
                     $error_msg = "Erreur lors de l'inscription. Veuillez réessayer.";
 
-                    if ($success === "duplicate_email") {
-                        $error_msg = "L'adresse email est déjà utilisée. Veuillez en choisi";
-                    } elseif ($success === "duplicate_pseudo") {
+                    if ($success === "duplicate_pseudo") {
                         $error_msg = "Le pseudo est déjà pris. Veuillez en choisir un autre.";
                     }
 
@@ -54,9 +51,6 @@
             <form method="POST" action="">
                 <label for="pseudo">Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Entrez votre pseudo" required><br>
-
-                <label for="email">Email :</label>
-                <input type="email" id="email" name="email" placeholder="Entrez votre adresse email" required><br>
 
                 <label for="mdp">Mot de passe :</label>
                 <input type="password" id="mdp" name="mdp" placeholder="Entrez votre mot de passe" required><br>
