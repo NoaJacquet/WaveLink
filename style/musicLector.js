@@ -46,3 +46,16 @@ soundBar.addEventListener("input", function(){
     soundVolume.textContent = this.value + "%";
 });
 
+$(document).ready(function(){
+    var trigger = $('main div ul li a'),
+    container = $('#main');
+
+    trigger.on('click', function(){
+        var $this = $(this),
+        target = $this.data('target');
+        console.log(target);
+        container.load("../template/Playlist.php");
+        return false; 
+    });
+});
+
