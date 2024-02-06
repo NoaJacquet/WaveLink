@@ -59,8 +59,7 @@ function recupInformations($cheminFichierYAML) {
 
 switch ($argv[1]) {
     case 'create-database':
-        echo '→ Go create database "test.db"' . PHP_EOL;
-        shell_exec('sqlite3 ' . SQLITE_DB);
+        echo '→ Go create database "db.sqlite"' . PHP_EOL;
         break;
 
     case 'create-tables':
