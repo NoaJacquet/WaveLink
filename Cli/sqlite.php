@@ -167,13 +167,8 @@ switch ($argv[1]) {
             id_Utilisateur  INTEGER PRIMARY KEY AUTOINCREMENT,
             nom_Utilisateur TEXT,
             mdp_Utilisateur TEXT,
-            img_Utilisateur TEXT
-        );
-        
-        CREATE TABLE Admin (
-            id_Adm INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_Adm TEXT,
-            mdp_Adm TEXT
+            img_Utilisateur TEXT,
+            role TEXT
         );
       
           
@@ -184,7 +179,7 @@ switch ($argv[1]) {
     case 'delete-tables':
         echo '→ Go delete tables' . PHP_EOL;
         $sqlScript = <<<EOF
-    DROP TABLE IF EXISTS Admin;
+
     DROP TABLE IF EXISTS Utilisateur;
     DROP TABLE IF EXISTS Genre;
     DROP TABLE IF EXISTS Album;

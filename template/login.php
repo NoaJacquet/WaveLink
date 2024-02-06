@@ -21,11 +21,14 @@
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $pseudo = $_POST["pseudo"];
             $password = $_POST["password"];
-
+        
             if ($pseudo != "" && $password != "") {
-                $user = $userManager->checkLogin($pseudo, $password);
-
-                if ($user) {
+                $loginResult = $userManager->checkLogin($pseudo, $password);
+        
+                if ($loginResult === 'admin') {
+                    header("Location: /accueil_admin");
+                    exit();
+                } elseif ($loginResult === 'user') {
                     header("Location: /accueil");
                     exit();
                 } else {

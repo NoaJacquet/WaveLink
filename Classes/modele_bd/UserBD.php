@@ -24,7 +24,7 @@ class UserBD
                 return "duplicate_pseudo";
             }
     
-            $req = $this->pdo->prepare('INSERT INTO Utilisateur VALUES (NULL, :pseudo, :mdp, "default.png")');
+            $req = $this->pdo->prepare('INSERT INTO Utilisateur VALUES (NULL, :pseudo, :mdp, "default.png", "user")');
     
             // Exécution de la requête avec les valeurs associées
             $result = $req->execute(array(
@@ -50,7 +50,18 @@ class UserBD
                 'password' => $password,
             ));
 
-            return $req->fetch();
+            $user = $req->fetch();
+
+            if ($user) {
+                // Vérifier si l'utilisateur appartient à la catégorie "admin"
+                if ($user['role'] == 'admin') {
+                    return 'admin';
+                } else {
+                    return 'user';
+                }
+            } else {
+                return false;
+            }
         } catch (\PDOException $e) {
             echo 'Erreur login : ' . $e->getMessage();
             return false;
