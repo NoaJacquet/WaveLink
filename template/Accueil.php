@@ -14,9 +14,26 @@
     ?>
     <main>
     <div id='playlist'>
-        <h2>Playlist</h2>
+    <h2>Playlist</h2>
         <ul>
-            <li><a href="" data-target="playlist">Playlist 1</a></li>
+            <li>
+                <div id='barre'></div>
+                <a href=''>
+                    <div id='detail-playlist'>
+                        <img src='rap.jpg' alt=''>
+                        <p>Rap</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <div id='barre'></div>
+                <a href=''>
+                    <div id='detail-playlist'>
+                        <img src='rap.jpg' alt=''>
+                        <p>Rap</p>
+                    </div>
+                </a>
+            </li>
         </ul>
     </div>
     <div id='main'>
