@@ -153,7 +153,8 @@ switch ($argv[1]) {
         
         CREATE TABLE Playlist (
             id_Playlist INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_Playlist TEXT
+            nom_Playlist TEXT,
+            img_Playlist TEXT
         );
         
         CREATE TABLE Renfermer (
@@ -249,7 +250,10 @@ EOF;
                 echo 'YAML file not found.' . PHP_EOL;
             }
             break;
-
+        case 'insert';
+            $stmt = $pdo->prepare('INSERT INTO Avoir (id_Playlist, id_Utilisateur) values(:id_Playlist, :id_Utilisateur)');
+            $stmt->execute([':id_Playlist' => '1', ':id_Utilisateur' => '1']);
+            break;
     default:
         echo 'No action defined 🙀'.PHP_EOL;
         break;

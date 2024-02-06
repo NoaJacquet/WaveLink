@@ -2,6 +2,8 @@
 
 declare(strict_types= 1);
 
+
+
 namespace modele_bd;
 class UserBD
 {
@@ -39,10 +41,6 @@ class UserBD
             return false;
         }
     }
-    
-    
-    
-
 
     public function checkLogin($pseudo, $password)
     {
@@ -59,8 +57,21 @@ class UserBD
             return false;
         }
     }
+
+    public function getAllPlaylistByUser($id){
+        $les_playlists = array();
+        try{
+            $req = $this->pdo->prepare('SELECT id_Playlist, nom_Playlist, img_Playlist FROM Avoir union Playlist WHERE id_Utilisateur = :id');
+            $req->execute();
+            $result = $req->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $playlist){
+                array_push($les_playlists, new Playlist($playlist['id_Playlist'], $playlist['nom_Playlist'], $playlist['img_Playlist']));
+            }
+            return $les_playlists;
+        }catch (\PDOException $e) {
+            var_dump($e->getMessage());
+            return false;
+        }
+    }
 }
-
-
-
 ?>
