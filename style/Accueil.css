@@ -105,7 +105,7 @@ footer{
 }
 
 footer p{
-    width: 2vw;
+    font-size: 1vw;
 }
 
 #lector-div, #play-div{
@@ -160,7 +160,7 @@ header img{
   
   #son:hover {
     background-color: #292727;
-    width: 70.5vw;
+    width: 70.2vw;
   }
   
   #son div {
