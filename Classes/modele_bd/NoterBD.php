@@ -1,9 +1,9 @@
 <?php
 
 // NoterBD.php
+namespace modele_bd;
 
-// modele_bd/NoterBD.php
-require_once 'Chemin/vers/la/classe/Noter.php';
+use modele\Noter;
 
 class NoterBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +17,7 @@ class NoterBD {
         $result = $this->connexion->query($query);
 
         $notes = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $note = new Noter(
                 $row['id_Utilisateur'],
                 $row['id_Album'],
@@ -33,8 +33,8 @@ class NoterBD {
         $query = "INSERT INTO Noter (id_Utilisateur, id_Album, note) 
                   VALUES (:idUtilisateur, :idAlbum, :note)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idUtilisateur', $note->getIdUtilisateur(), PDO::PARAM_INT);
-        $stmt->bindParam(':idAlbum', $note->getIdAlbum(), PDO::PARAM_INT);
+        $stmt->bindParam(':idUtilisateur', $note->getIdUtilisateur(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $note->getIdAlbum(), \PDO::PARAM_INT);
         $stmt->bindParam(':note', $note->getNote());
 
         return $stmt->execute();
@@ -43,8 +43,8 @@ class NoterBD {
     public function deleteNote($idUtilisateur, $idAlbum) {
         $query = "DELETE FROM Noter WHERE id_Utilisateur = :idUtilisateur AND id_Album = :idAlbum";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
-        $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+        $stmt->bindParam(':idUtilisateur', $idUtilisateur, \PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

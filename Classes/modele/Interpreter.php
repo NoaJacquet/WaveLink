@@ -2,6 +2,8 @@
 
 // Interpreter.php
 
+namespace modele;
+
 class Interpreter {
     public $id_Musique;
     public $id_Artistes;

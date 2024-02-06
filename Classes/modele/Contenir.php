@@ -2,6 +2,8 @@
 
 // Contenir.php
 
+namespace modele;
+
 class Contenir {
     public $id_Album;
     public $id_Musique;

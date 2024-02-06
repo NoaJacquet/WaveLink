@@ -1,6 +1,7 @@
 <?php
 
 // Noter.php
+namespace modele;
 
 class Noter {
     public $id_Utilisateur;

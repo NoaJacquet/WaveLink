@@ -41,9 +41,6 @@ class UserBD
     }
     
     
-    
-
-
     public function checkLogin($pseudo, $password)
     {
         try {

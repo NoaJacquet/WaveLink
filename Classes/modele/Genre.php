@@ -2,6 +2,8 @@
 
 // Genre.php
 
+namespace modele;
+
 class Genre {
     public $id_Genre;
     public $nom_Genre;

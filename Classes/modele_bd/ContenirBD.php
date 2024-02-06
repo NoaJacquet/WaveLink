@@ -2,8 +2,9 @@
 
 // ContenirBD.php
 
-// modele_bd/ContenirBD.php
-require_once 'Chemin/vers/la/classe/Contenir.php';
+namespace modele_bd;
+
+use modele\Contenir;
 
 class ContenirBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class ContenirBD {
         $result = $this->connexion->query($query);
 
         $contenirs = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $contenir = new Contenir(
                 $row['id_Album'],
                 $row['id_Musique']
@@ -32,8 +33,8 @@ class ContenirBD {
         $query = "INSERT INTO Contenir (id_Album, id_Musique) 
                   VALUES (:idAlbum, :idMusique)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idAlbum', $contenir->getIdAlbum(), PDO::PARAM_INT);
-        $stmt->bindParam(':idMusique', $contenir->getIdMusique(), PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $contenir->getIdAlbum(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $contenir->getIdMusique(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -41,8 +42,8 @@ class ContenirBD {
     public function deleteContenir($idAlbum, $idMusique) {
         $query = "DELETE FROM Contenir WHERE id_Album = :idAlbum AND id_Musique = :idMusique";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
-        $stmt->bindParam(':idMusique', $idMusique, PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

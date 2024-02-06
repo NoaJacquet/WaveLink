@@ -2,8 +2,9 @@
 
 // AppartenirBD.php
 
-// modele_bd/AppartenirBD.php
-require_once 'Chemin/vers/la/classe/Appartenir.php';
+namespace modele_bd;
+
+use modele\Appartenir;
 
 class AppartenirBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class AppartenirBD {
         $result = $this->connexion->query($query);
 
         $appartenirs = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $appartenir = new Appartenir(
                 $row['id_Genre'],
                 $row['id_Album']
@@ -41,8 +42,8 @@ class AppartenirBD {
     public function deleteAppartenir($idGenre, $idAlbum) {
         $query = "DELETE FROM Appartenir WHERE id_Genre = :idGenre AND id_Album = :idAlbum";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idGenre', $idGenre, PDO::PARAM_INT);
-        $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+        $stmt->bindParam(':idGenre', $idGenre, \PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

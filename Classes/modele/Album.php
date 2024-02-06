@@ -1,6 +1,9 @@
 <?php
 
 // Album.php
+
+namespace modele;
+
 class Album {
     public $id_Album;
     public $titre_Album;

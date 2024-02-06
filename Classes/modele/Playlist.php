@@ -2,6 +2,8 @@
 
 // Playlist.php
 
+namespace modele;
+
 class Playlist {
     public $id_Playlist;
     public $nom_Playlist;

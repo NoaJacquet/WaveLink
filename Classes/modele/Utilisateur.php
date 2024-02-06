@@ -2,6 +2,8 @@
 
 // Utilisateur.php
 
+namespace modele;
+
 class Utilisateur {
     public $id_Utilisateur;
     public $nom_Utilisateur;

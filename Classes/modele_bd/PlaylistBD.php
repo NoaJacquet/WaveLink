@@ -2,8 +2,9 @@
 
 // PlaylistBD.php
 
-// modele_bd/PlaylistBD.php
-require_once 'Chemin/vers/la/classe/Playlist.php';
+namespace modele_bd;
+
+use modele\Playlist;
 
 class PlaylistBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class PlaylistBD {
         $result = $this->connexion->query($query);
 
         $playlists = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $playlist = new Playlist(
                 $row['id_Playlist'],
                 $row['nom_Playlist'],
@@ -32,10 +33,10 @@ class PlaylistBD {
     public function getPlaylistById($id) {
         $query = "SELECT * FROM Playlist WHERE id_Playlist = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if ($row) {
             $playlist = new Playlist(
@@ -66,7 +67,7 @@ class PlaylistBD {
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':nom', $playlist->getNomPlaylist());
         $stmt->bindParam(':img', $playlist->getImgPlaylist());
-        $stmt->bindParam(':id', $playlist->getIdPlaylist(), PDO::PARAM_INT);
+        $stmt->bindParam(':id', $playlist->getIdPlaylist(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -74,7 +75,7 @@ class PlaylistBD {
     public function deletePlaylist($id) {
         $query = "DELETE FROM Playlist WHERE id_Playlist = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

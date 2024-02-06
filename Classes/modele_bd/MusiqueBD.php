@@ -3,8 +3,9 @@
 // MusiqueBD.php
 
 
-// modele_bd/MusiqueBD.php
-require_once 'Chemin/vers/la/classe/Musique.php';
+namespace modele_bd;
+
+use modele\Musique;
 
 class MusiqueBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -18,7 +19,7 @@ class MusiqueBD {
         $result = $this->connexion->query($query);
 
         $musiques = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $musique = new Musique(
                 $row['id_Musique'],
                 $row['nom_Musique'],
@@ -49,7 +50,7 @@ class MusiqueBD {
     public function deleteMusique($idMusique) {
         $query = "DELETE FROM Musique WHERE id_Musique = :idMusique";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idMusique', $idMusique, PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
