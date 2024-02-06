@@ -3,6 +3,15 @@
     padding: 0;
 }
 
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+  }
+
 body {
     background-color: black;
 }
@@ -49,7 +58,7 @@ h1{
     margin-left: 1vw;
 }
 
-ul{
+header ul{
     display: flex;
     align-items: center;
     justify-content:space-between;
@@ -92,6 +101,11 @@ footer{
     width: 99vw;
     margin-left: .5vw;
     flex-grow: 1;
+    color: white;
+}
+
+footer p{
+    width: 2vw;
 }
 
 #lector-div, #play-div{
@@ -106,7 +120,94 @@ footer{
     display: none;
 }
 
-img{
-    width: 62px;
+header img{
+    width: 3vw;
 }
 
+#playlist-choisi {
+    background-color: #1a1919;
+    height: 74vh;
+    margin-right: 0.25vw;
+    border-radius: 0.8vw;
+    width: 73vw;
+    margin-bottom: 0.4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #playlist {
+    width: 25vw;
+    height: 74vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #playlist li {
+    margin-top: 3vh;
+    margin-left: 6.5vw;
+    color: white;
+  }
+
+  #son {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-top: 1vh;
+    width: 70vw;
+    transition: 0.3s;
+  }
+  
+  #son:hover {
+    background-color: #292727;
+    width: 70.5vw;
+  }
+  
+  #son div {
+    transition: 0.3s;
+  }
+  
+  #son:hover div {
+    background-color: #292727;
+  }
+  
+  #son img {
+    width: 4vw;
+    height: 4vw;
+    margin-right: 1vw;
+  }
+  
+  #son p {
+    font-size: 1vw;
+  }
+
+  #barre {
+    background-color: white;
+    width: 10vw;
+    height: 0.2vh;
+  }
+  
+  #detail-playlist {
+    display: flex;
+    align-items: center;
+    margin-top: 2vh;
+    width: 12vw;
+    height: 8vh;
+    background-color: #292727;
+    transition: 0.3s;
+    margin-left: -0.8vw;
+  }
+  
+  #detail-playlist img {
+    width: 3vw;
+    height: 6vh;
+    margin-right: 2vw;
+    margin-left: 1vw;
+    border-radius: 0.8vw;
+  }
+  
+  #detail-playlist:hover {
+    width: 12.5vw;
+    height: 8.5vh;
+    margin-left: -0.95vw;
+  }
