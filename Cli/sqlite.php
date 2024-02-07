@@ -152,7 +152,8 @@ switch ($argv[1]) {
         
         CREATE TABLE Playlist (
             id_Playlist INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_Playlist TEXT
+            nom_Playlist TEXT,
+            img_Playlist TEXT
         );
         
         CREATE TABLE Renfermer (
@@ -247,6 +248,12 @@ EOF;
             } else {
                 echo 'YAML file not found.' . PHP_EOL;
             }
+            break;
+        case 'insert';
+            $stmt = $pdo->prepare('INSERT INTO Musique (id_Musique, nom_Musique, genre_Musique, interprete_Musique, Compositeur_Musique, annee_Sortie_Musique) values(:id_Musique, :nom_Musique, :genre_Musique, :interprete_Musique, :Compositeur_Musique, :annee_Sortie_Musique)');
+            $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':genre_Musique' => 'Rap', ':interprete_Musique' => 'PLK', ':Compositeur_Musique' => 'mdr', ':annee_Sortie_Musique' => '2024']);
+            $stmt = $pdo->prepare('INSERT INTO Renfermer (id_Playlist, id_Musique) values(:id_Playlist, :id_Musique)');
+            $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '1']);
             break;
 
     default:

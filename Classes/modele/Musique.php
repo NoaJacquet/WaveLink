@@ -1,6 +1,7 @@
 <?php
 
 // Musique.php
+namespace modele;
 
 class Musique {
     public $id_Musique;
