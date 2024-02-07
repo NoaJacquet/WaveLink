@@ -12,28 +12,31 @@
     $header = new Header();
     echo $header->render();
     ?>
-    <main>
-    <div id='playlist'>
+    <main><div id='playlist'>
     <h2>Playlist</h2>
         <ul>
-            <li>
-                <div id='barre'></div>
-                <a href=''>
-                    <div id='detail-playlist'>
-                        <img src='rap.jpg' alt=''>
-                        <p>Rap</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <div id='barre'></div>
-                <a href=''>
-                    <div id='detail-playlist'>
-                        <img src='rap.jpg' alt=''>
-                        <p>Rap</p>
-                    </div>
-                </a>
-            </li>
+            <?php
+            use modele_bd\Connexion;
+            use modele_bd\UserBD;
+    
+            $connexion = new Connexion();
+            $connexion->connexionBD();
+    
+            $userManager = new UserBD($connexion->getPDO());
+
+            $playlists = $userManager->getAllPlaylistByUser(1);
+            foreach($playlists as $key => $playlist){
+                echo "<li>";
+                echo "<div id='barre'></div>";
+                echo "<a href=''>";
+                echo "<div id='detail-playlist'>";
+                echo "<img src='rap.jpg' alt=''>";
+                echo "<p>".$playlist->getNomPlaylist()."</p>";
+                echo "</div>";
+                echo "</a>";
+                echo "</li>";
+            }
+            ?>
         </ul>
     </div>
     <div id='main'>
