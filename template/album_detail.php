@@ -22,79 +22,22 @@
     </div>
 
     <div id='main'>
-        <div class="top-album">
-                <h2>Album</h2>
-                <p id='tout-voir'>Tout voir</p>
-                <p id='voir-moins' style="display:none">Voir moins</p>
-        </div>  
-        <div class="album" >
-              
-            <?php
-            use modele_bd\Connexion;
-            use modele_bd\AlbumBD;
-            use modele_bd\ArtistesBD;
-    
-            $connexion = new Connexion();
-            $connexion->connexionBD();
-    
-            $albumBD = new AlbumBD($connexion->getPDO());
-            $artisteBD = new ArtistesBD($connexion->getPDO());
+        <?php
+        use modele_bd\Connexion;
+        use modele_bd\AlbumBD;
+        use modele_bd\ArtistesBD;
 
-            $albums = $albumBD->getAllAlbums();
+        $connexion = new Connexion();
+        $connexion->connexionBD();
 
-            $count = 0;
+        $albumBD = new AlbumBD($connexion->getPDO());
+        $artisteBD = new ArtistesBD($connexion->getPDO());
 
-            foreach ($albums as $album) {
-                $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());
-                echo '<div class="card-album">';
-                echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
-                echo '<img src="images/' . rawurlencode($album->getImgAlbum()) . '" alt="' . $album->getTitreAlbum(). '">';
-                echo '<p class="titre">' . $album->getTitreAlbum().'</p>';
-                echo '<p class="">' . $artiste->getNomArtistes().'</p>';
-                echo '</a>';
-                echo '</div>';
-
-                $count++;
-
-            // Arrêter après avoir affiché les 5 premiers albums
-                if ($count >= 6) {
-                    break;
-                }
-
-            }
-
-            ?>
-
-        </div>
-        <div class="album2" style="display: none;">
-              
-            <?php
-            $connexion = new Connexion();
-            $connexion->connexionBD();
-    
-            $albumBD = new AlbumBD($connexion->getPDO());
-            $artisteBD = new ArtistesBD($connexion->getPDO());
-
-            $albums = $albumBD->getAllAlbums();
+        $albums = $albumBD->getAlbumById($albumId);
+        echo $albums->getTitreAlbum();
 
 
-            foreach ($albums as $album) {
-                $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());
-                echo '<div class="card-album">';
-                echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
-                echo '<img src="images/' . rawurlencode($album->getImgAlbum()) . '" alt="' . $album->getTitreAlbum(). '">';
-                echo '<p class="titre">' . $album->getTitreAlbum().'</p>';
-                echo '<p class="">' . $artiste->getNomArtistes().'</p>';
-                echo '</a>';
-                echo '</div>';
-
-
-
-            }
-
-            ?>
-
-        </div>
+        ?>
     </div>
     </main>
     <footer>
