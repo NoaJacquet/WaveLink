@@ -1,10 +1,11 @@
 <?php
 
 // PlaylistBD.php
-
+declare(strict_types= 1);
 namespace modele_bd;
-
 use modele\Playlist;
+use modele\Musique;
+
 
 class PlaylistBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -78,5 +79,21 @@ class PlaylistBD {
         $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
         return $stmt->execute();
+    }
+
+public function getSongByIdPlaylist($id) {
+    $les_sons = array();
+        try{
+            $req = $this->connexion->prepare('SELECT id_Musique, nom_Musique, genre_Musique, interprete_Musique, Compositeur_Musique, annee_Sortie_Musique FROM Musique natural join Renfermer WHERE id_Playlist = :id');
+            $req->execute(array('id'=>$id));
+            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+            foreach ($result as $musique){
+                array_push($les_sons, new Musique($musique['id_Musique'], $musique['nom_Musique'], $musique['genre_Musique'], $musique['interprete_Musique'], $musique['Compositeur_Musique'], $musique['annee_Sortie_Musique'],));
+            }
+            return $les_sons;
+        }catch (\PDOException $e) {
+            var_dump($e->getMessage());
+            return false;
+        }
     }
 }
