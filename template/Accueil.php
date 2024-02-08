@@ -40,6 +40,23 @@
         </ul>
     </div>
     <div id='main'>
+        <ul>
+            <?php   
+            use modele_bd\GenreBD;     
+                $genreManager = new GenreBD($connexion->getPDO());
+
+                $genres = $genreManager->getAllGenres();
+                foreach($genres as $key => $genre){
+                    echo "<li>";
+                    echo '<a href="">';
+                    echo "<div id='genre'>";
+                    echo "<p>".$genre->getNomGenre()."</p>";
+                    echo "</div>";
+                    echo "</a>";
+                    echo "</li>";
+                }
+            ?>
+        </ul>
     </div>
     </main>
     <footer>

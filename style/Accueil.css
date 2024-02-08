@@ -211,3 +211,31 @@ header img{
     height: 8.5vh;
     margin-left: -0.95vw;
   }
+
+  #main ul{
+    display: flex;
+    justify-content: space-around;
+    margin-left: 3vw;
+    margin-top: 3vh;
+  }
+
+  #genre{
+    transition: .2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15vw;
+    height: 14vw;
+    background: rgb(131,58,180);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
+  }
+
+  #genre:hover{
+    width: 15.5vw;
+    height: 14.5vw;
+  }
+
+  #genre p{
+    font-size: 2vw;
+    font-weight: bold;
+  }

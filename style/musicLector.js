@@ -47,15 +47,27 @@ soundBar.addEventListener("input", function(){
 });
 
 $(document).ready(function(){
-    var trigger = $('main div ul li a'),
-    container = $('#main');
-
+    var trigger = $('main #playlist ul li a');
     trigger.on('click', function(){
-        var $this = $(this),
-        target = $this.data('target');
-        console.log(target);
-        container.load("../template/Playlist.php");
-        return false; 
+        $.ajax({
+            url: 'template/Playlist.html',
+            type: 'GET',
+            dataType: 'html', // Spécifie le type de données attendu
+            success: function(response) {
+                // Mettre le contenu récupéré dans l'élément avec l'ID "contenu"
+                $('#main').html(response);
+            },
+            error: function(xhr, status, error) {
+                // En cas d'erreur, afficher un message d'erreur
+                console.error('Erreur lors du chargement du contenu :', status, error);
+            }
+        });
+
+
+        // var $this = $(this),
+        // target = $this.data('target');
+        // console.log(target);
+        // container.load("../template/Playlist.php");
+        // return false; 
     });
 });
-

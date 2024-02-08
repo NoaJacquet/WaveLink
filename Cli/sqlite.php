@@ -250,12 +250,10 @@ EOF;
             }
             break;
         case 'insert';
-            $stmt = $pdo->prepare('INSERT INTO Musique (id_Musique, nom_Musique, genre_Musique, interprete_Musique, Compositeur_Musique, annee_Sortie_Musique) values(:id_Musique, :nom_Musique, :genre_Musique, :interprete_Musique, :Compositeur_Musique, :annee_Sortie_Musique)');
-            $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':genre_Musique' => 'Rap', ':interprete_Musique' => 'PLK', ':Compositeur_Musique' => 'mdr', ':annee_Sortie_Musique' => '2024']);
-            $stmt = $pdo->prepare('INSERT INTO Renfermer (id_Playlist, id_Musique) values(:id_Playlist, :id_Musique)');
-            $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '1']);
+            $stmt = $pdo->prepare('INSERT INTO Genre (id_Genre, nom_Genre) values(:id_Genre, :nom_Genre)');
+            $stmt->execute([':nom_Genre' => 'Jazz']);
             break;
-
+ 
     default:
         echo 'No action defined 🙀'.PHP_EOL;
         break;
