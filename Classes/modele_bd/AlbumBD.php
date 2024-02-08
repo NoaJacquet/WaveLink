@@ -21,7 +21,6 @@ class AlbumBD {
             $album = new Album(
                 $row['id_Album'],
                 $row['titre_Album'],
-                $row['genre_Album'],
                 $row['annee_Sortie'],
                 $row['img_Album']
             );
@@ -43,7 +42,6 @@ class AlbumBD {
             $album = new Album(
                 $row['id_Album'],
                 $row['titre_Album'],
-                $row['genre_Album'],
                 $row['annee_Sortie'],
                 $row['img_Album']
             );
@@ -55,11 +53,10 @@ class AlbumBD {
     }
 
     public function insertAlbum(Album $album) {
-        $query = "INSERT INTO Album (titre_Album, genre_Album, annee_Sortie, img_Album) 
-                  VALUES (:titre, :genre, :annee, :img)";
+        $query = "INSERT INTO Album (titre_Album, annee_Sortie, img_Album) 
+                  VALUES (:titre, :annee, :img)";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':titre', $album->getTitreAlbum());
-        $stmt->bindParam(':genre', $album->getGenreAlbum());
         $stmt->bindParam(':annee', $album->getAnneeSortie());
         $stmt->bindParam(':img', $album->getImgAlbum());
 
@@ -67,11 +64,10 @@ class AlbumBD {
     }
 
     public function updateAlbum(Album $album) {
-        $query = "UPDATE Album SET titre_Album = :titre, genre_Album = :genre, 
+        $query = "UPDATE Album SET titre_Album = :titre, 
                   annee_Sortie = :annee, img_Album = :img WHERE id_Album = :id";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':titre', $album->getTitreAlbum());
-        $stmt->bindParam(':genre', $album->getGenreAlbum());
         $stmt->bindParam(':annee', $album->getAnneeSortie());
         $stmt->bindParam(':img', $album->getImgAlbum());
         $stmt->bindParam(':id', $album->getIdAlbum(), \PDO::PARAM_INT);

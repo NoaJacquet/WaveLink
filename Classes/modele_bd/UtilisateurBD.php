@@ -5,7 +5,7 @@ declare(strict_types= 1);
 namespace modele_bd;
 use modele\Playlist;
 
-class UserBD
+class UtilisateurBD
 {
     private $pdo;
 
@@ -84,5 +84,6 @@ class UserBD
             return false;
         }
     }
+
 }
 ?>

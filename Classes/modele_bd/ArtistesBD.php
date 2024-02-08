@@ -79,4 +79,28 @@ class ArtistesBD {
 
         return $stmt->execute();
     }
+
+    public function getArtistByAlbumId($idAlbum) {
+        $query = "SELECT a.*
+                  FROM Artistes a
+                  NATURAL JOIN Creer c
+                  WHERE c.id_Album = :idAlbum";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($row) {
+            $artist = new Artistes(
+                $row['id_Artistes'],
+                $row['nom_Artistes'],
+                $row['img_Artistes']
+            );
+
+            return $artist;
+        } else {
+            return null;
+        }
+    }
 }

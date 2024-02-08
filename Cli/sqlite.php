@@ -218,7 +218,7 @@ EOF;
                         $stmtAlbum->execute([
                             'titre' => $entry['title'],
                             'annee' => $entry['releaseYear'],
-                            'img' => ($entry['img'] !== 'null') ? $entry['img'] : 'default.png'
+                            'img' => ($entry['img'] !== 'null') ? $entry['img'] : 'default.jpg'
                         ]);
 
                         // Récupération de l'id de l'album inséré
@@ -267,7 +267,7 @@ EOF;
                         if (!$artisteRow) {
                             // L'artiste n'existe pas, l'insérer
                             $stmtInsertArtiste = $pdo->prepare("INSERT INTO Artistes (nom_Artistes, img_Artistes) VALUES (:nom, :img)");
-                            $stmtInsertArtiste->execute([':nom' => $entry['by'], ':img' => 'default.png']);
+                            $stmtInsertArtiste->execute([':nom' => $entry['by'], ':img' => 'default.jpg']);
                             $idArtiste = $pdo->lastInsertId();
                         } else {
                             // L'artiste existe, récupérer son ID
