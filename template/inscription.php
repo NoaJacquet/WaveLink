@@ -6,20 +6,51 @@
     <title>Inscription</title>
 </head>
 <body>
+        <?php
+        use modele_bd\Connexion;
+        use modele_bd\UserBD;
+
+        $connexion = new Connexion();
+        $connexion->connexionBD();
+
+        $userManager = new UserBD($connexion->getPDO());
+
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $pseudo = $_POST["pseudo"];
+            $mdp = $_POST["mdp"];
+
+            if ($pseudo != "" && $mdp != "") {
+                $success = $userManager->insertUser($pseudo, $mdp);
+
+                if ($success === true) {
+                    header("Location: /accueil");
+                    exit();
+                } else {
+                    $error_msg = "Erreur lors de l'inscription. Veuillez réessayer.";
+
+                    if ($success === "duplicate_pseudo") {
+                        $error_msg = "Le pseudo est déjà pris. Veuillez en choisir un autre.";
+                    }
+
+                    $registrationFailed = true;
+                }
+            }
+        }
+        ?>
+
+
+
+
     <main>
 
         <section id='logo'>
-            <h1>LOGIN HERE</h1>
+            <h1>REGISTER HERE</h1>
             <img src="images/logo.png" alt="Logo">
         </section>
-
         <section id="log">
-            <form method="POST" action="../traitement.php">
+            <form method="POST" action="">
                 <label for="pseudo">Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Entrez votre pseudo" required><br>
-
-                <label for="email">Email :</label>
-                <input type="email" id="email" name="email" placeholder="Entrez votre adresse email" required><br>
 
                 <label for="mdp">Mot de passe :</label>
                 <input type="password" id="mdp" name="mdp" placeholder="Entrez votre mot de passe" required><br>
@@ -40,6 +71,11 @@
     
 
 
-
 </body>
 </html>
+
+    <?php
+    if ($registrationFailed) {
+        echo "<script>alert(\"$error_msg\");</script>";
+    }
+    ?>

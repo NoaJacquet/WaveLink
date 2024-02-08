@@ -17,7 +17,7 @@ class Connexion
             // Permet de gérer le niveau des erreurs
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-            echo 'Erreur : ' . $e->getMessage();
+            echo 'Erreur --MMMhh---: ' . $e->getMessage();
         }
     }
 

@@ -59,8 +59,7 @@ function recupInformations($cheminFichierYAML) {
 
 switch ($argv[1]) {
     case 'create-database':
-        echo '→ Go create database "test.db"' . PHP_EOL;
-        shell_exec('sqlite3 ' . SQLITE_DB);
+        echo '→ Go create database "db.sqlite"' . PHP_EOL;
         break;
 
     case 'create-tables':
@@ -153,7 +152,8 @@ switch ($argv[1]) {
         
         CREATE TABLE Playlist (
             id_Playlist INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_Playlist TEXT
+            nom_Playlist TEXT,
+            img_Playlist TEXT
         );
         
         CREATE TABLE Renfermer (
@@ -168,13 +168,8 @@ switch ($argv[1]) {
             id_Utilisateur  INTEGER PRIMARY KEY AUTOINCREMENT,
             nom_Utilisateur TEXT,
             mdp_Utilisateur TEXT,
-            img_Utilisateur TEXT
-        );
-        
-        CREATE TABLE Admin (
-            id_Adm INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_Adm TEXT,
-            mdp_Adm TEXT
+            img_Utilisateur TEXT,
+            role TEXT
         );
       
           
@@ -185,7 +180,7 @@ switch ($argv[1]) {
     case 'delete-tables':
         echo '→ Go delete tables' . PHP_EOL;
         $sqlScript = <<<EOF
-    DROP TABLE IF EXISTS Admin;
+
     DROP TABLE IF EXISTS Utilisateur;
     DROP TABLE IF EXISTS Genre;
     DROP TABLE IF EXISTS Album;
@@ -248,6 +243,12 @@ EOF;
             } else {
                 echo 'YAML file not found.' . PHP_EOL;
             }
+            break;
+        case 'insert';
+            $stmt = $pdo->prepare('INSERT INTO Musique (id_Musique, nom_Musique, genre_Musique, interprete_Musique, Compositeur_Musique, annee_Sortie_Musique) values(:id_Musique, :nom_Musique, :genre_Musique, :interprete_Musique, :Compositeur_Musique, :annee_Sortie_Musique)');
+            $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':genre_Musique' => 'Rap', ':interprete_Musique' => 'PLK', ':Compositeur_Musique' => 'mdr', ':annee_Sortie_Musique' => '2024']);
+            $stmt = $pdo->prepare('INSERT INTO Renfermer (id_Playlist, id_Musique) values(:id_Playlist, :id_Musique)');
+            $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '1']);
             break;
 
     default:

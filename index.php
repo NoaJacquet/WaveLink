@@ -19,6 +19,11 @@ Autoloader::register();
     case "/inscription":
         require __DIR__."/template/inscription.php";
         break;
+    case "/accueil": 
+        require __DIR__."/template/Accueil.php";
+        break;
+    case "/accueil_admin":
+        require __DIR__."/template/accueil_adm.php";
     default:
         echo "404";
         break;
