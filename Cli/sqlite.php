@@ -68,7 +68,6 @@ switch ($argv[1]) {
         CREATE TABLE Album (
           id_Album          INTEGER PRIMARY KEY AUTOINCREMENT,
           titre_Album       TEXT,
-          genre_Album       TEXT,
           annee_Sortie      TEXT,
           img_Album         TEXT
         );
@@ -209,32 +208,79 @@ EOF;
                 $data = recupInformations($yamlFile); // Utilisez yaml_parse pour analyser le fichier YAML
     
                 if (isset($data) && is_array($data)) {
+
+                    // ...
+
                     foreach ($data as $entry) {
-                      $stmt = $pdo->prepare("INSERT INTO Album VALUES (NULL,:titre, :genre, :annee, :img)");
-                      $stmt->execute([
-                          'titre' => $entry['title'],
-                          'genre' => $entry['genre'],
-                          'annee' => $entry['releaseYear'],
-                          'img' => ($entry['img'] !== 'null') ? $entry['img'] : 'default.png'
-                      ]);
 
-                      // Récupération de l'id de l'album inséré
-                      $idAlbum = $pdo->lastInsertId();
+                        // Insérer l'album avec le genre
+                        $stmtAlbum = $pdo->prepare("INSERT INTO Album (titre_Album, annee_Sortie, img_Album) VALUES (:titre, :annee, :img)");
+                        $stmtAlbum->execute([
+                            'titre' => $entry['title'],
+                            'annee' => $entry['releaseYear'],
+                            'img' => ($entry['img'] !== 'null') ? $entry['img'] : 'default.png'
+                        ]);
 
-                      // Insertion dans la table "Artistes"
-                      $stmtArtiste = $pdo->prepare("INSERT INTO Artistes (nom_Artistes, img_Artistes) VALUES (:nom, :img)");
-                      $stmtArtiste->execute([':nom' => $entry['by'], ':img' => 'default.png']);
+                        // Récupération de l'id de l'album inséré
+                        $idAlbum = $pdo->lastInsertId();
+                        
 
-                      // Récupération de l'id de l'artiste inséré
-                      $idArtiste = $pdo->lastInsertId();
+                        $genres = explode(',', trim($entry['genre'], '[]'));
+                        // echo $entry['genre'];
 
-                      // Insertion dans la table de liaison "Creer"
-                      $stmtCreer = $pdo->prepare("INSERT INTO Creer (id_Artistes, id_Album) VALUES (:id_Art, :id_Alb)");
-                      $stmtCreer->execute([':id_Art' => $idArtiste, ':id_Alb' => $idAlbum]);
+                        // Pour chaque genre dans la liste
+                        foreach ($genres as $genre) {
+                            $genre = trim($genre);
+                            if (!empty($genre)){
+                                echo '['.$genre.']';
+                                // Vérification et insertion du genre
+                                $stmtGenreCheck = $pdo->prepare("SELECT id_Genre FROM Genre WHERE nom_Genre = :genre");
+                                $stmtGenreCheck->execute([':genre' => $genre]);
+                                $genreRow = $stmtGenreCheck->fetch(PDO::FETCH_ASSOC);
 
-                      
+                                if (!$genreRow) {
+                                    // Le genre n'existe pas, l'insérer
+                                    $stmtInsertGenre = $pdo->prepare("INSERT INTO Genre (nom_Genre) VALUES (:genre)");
+                                    $stmtInsertGenre->execute([':genre' => $genre]);
+                                    $idGenre = $pdo->lastInsertId();
+                                } else {
+                                    // Le genre existe, récupérer son ID
+                                    $idGenre = $genreRow['id_Genre'];
+                                }
+
+
+                                // Insertion dans la table de liaison "Appartenir"
+                                $stmtAppartenir = $pdo->prepare("INSERT INTO Appartenir (id_Genre, id_Album) VALUES (:id_Genre, :id_Album)");
+                                $stmtAppartenir->execute([':id_Genre' => $idGenre, ':id_Album' => $idAlbum]);
+
+                                // Ajoutez des déclarations INSERT similaires pour les autres tables au besoin
+                            }
+
+                            
+                        }
+
+                        // Vérification et insertion de l'artiste
+                        $stmtArtisteCheck = $pdo->prepare("SELECT id_Artistes FROM Artistes WHERE nom_Artistes = :nom");
+                        $stmtArtisteCheck->execute([':nom' => $entry['by']]);
+                        $artisteRow = $stmtArtisteCheck->fetch(PDO::FETCH_ASSOC);
+
+                        if (!$artisteRow) {
+                            // L'artiste n'existe pas, l'insérer
+                            $stmtInsertArtiste = $pdo->prepare("INSERT INTO Artistes (nom_Artistes, img_Artistes) VALUES (:nom, :img)");
+                            $stmtInsertArtiste->execute([':nom' => $entry['by'], ':img' => 'default.png']);
+                            $idArtiste = $pdo->lastInsertId();
+                        } else {
+                            // L'artiste existe, récupérer son ID
+                            $idArtiste = $artisteRow['id_Artistes'];
+                        }
+
+                        // Insertion dans la table de liaison "Creer"
+                        $stmtCreer = $pdo->prepare("INSERT INTO Creer (id_Artistes, id_Album) VALUES (:id_Art, :id_Alb)");
+                        $stmtCreer->execute([':id_Art' => $idArtiste, ':id_Alb' => $idAlbum]);
+
                         // Ajoutez des déclarations INSERT similaires pour les autres tables au besoin
                     }
+
     
                     echo 'Data loaded successfully.' . PHP_EOL;
                 } else {
@@ -244,6 +290,7 @@ EOF;
                 echo 'YAML file not found.' . PHP_EOL;
             }
             break;
+
         case 'insert';
             $stmt = $pdo->prepare('INSERT INTO Musique (id_Musique, nom_Musique, genre_Musique, interprete_Musique, Compositeur_Musique, annee_Sortie_Musique) values(:id_Musique, :nom_Musique, :genre_Musique, :interprete_Musique, :Compositeur_Musique, :annee_Sortie_Musique)');
             $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':genre_Musique' => 'Rap', ':interprete_Musique' => 'PLK', ':Compositeur_Musique' => 'mdr', ':annee_Sortie_Musique' => '2024']);
