@@ -2,6 +2,8 @@
 
 // Creer.php
 
+namespace modele;
+
 class Creer {
     public $id_Artistes;
     public $id_Album;

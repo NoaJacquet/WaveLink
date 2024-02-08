@@ -2,6 +2,8 @@
 
 // Renfermer.php
 
+namespace modele;
+
 class Renfermer {
     public $id_Playlist;
     public $id_Musique;

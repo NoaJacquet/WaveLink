@@ -2,8 +2,9 @@
 
 // CreerBD.php
 
-// modele_bd/CreerBD.php
-require_once 'Chemin/vers/la/classe/Creer.php';
+namespace modele_bd;
+
+use modele\Creer;
 
 class CreerBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class CreerBD {
         $result = $this->connexion->query($query);
 
         $creers = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $creer = new Creer(
                 $row['id_Artistes'],
                 $row['id_Album']
@@ -32,8 +33,8 @@ class CreerBD {
         $query = "INSERT INTO Creer (id_Artistes, id_Album) 
                   VALUES (:idArtistes, :idAlbum)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idArtistes', $creer->getIdArtistes(), PDO::PARAM_INT);
-        $stmt->bindParam(':idAlbum', $creer->getIdAlbum(), PDO::PARAM_INT);
+        $stmt->bindParam(':idArtistes', $creer->getIdArtistes(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $creer->getIdAlbum(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -41,8 +42,8 @@ class CreerBD {
     public function deleteCreer($idArtistes, $idAlbum) {
         $query = "DELETE FROM Creer WHERE id_Artistes = :idArtistes AND id_Album = :idAlbum";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idArtistes', $idArtistes, PDO::PARAM_INT);
-        $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+        $stmt->bindParam(':idArtistes', $idArtistes, \PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

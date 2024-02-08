@@ -2,8 +2,9 @@
 
 // ComposerBD.php
 
-// modele_bd/ComposerBD.php
-require_once 'Chemin/vers/la/classe/Composer.php';
+namespace modele_bd;
+
+use modele\Composer;
 
 class ComposerBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class ComposerBD {
         $result = $this->connexion->query($query);
 
         $composers = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $composer = new Composer(
                 $row['id_Musique'],
                 $row['id_Artistes']
@@ -32,8 +33,8 @@ class ComposerBD {
         $query = "INSERT INTO Composer (id_Musique, id_Artistes) 
                   VALUES (:idMusique, :idArtistes)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idMusique', $composer->getIdMusique(), PDO::PARAM_INT);
-        $stmt->bindParam(':idArtistes', $composer->getIdArtistes(), PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $composer->getIdMusique(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idArtistes', $composer->getIdArtistes(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -41,8 +42,8 @@ class ComposerBD {
     public function deleteComposer($idMusique, $idArtistes) {
         $query = "DELETE FROM Composer WHERE id_Musique = :idMusique AND id_Artistes = :idArtistes";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idMusique', $idMusique, PDO::PARAM_INT);
-        $stmt->bindParam(':idArtistes', $idArtistes, PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+        $stmt->bindParam(':idArtistes', $idArtistes, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

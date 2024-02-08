@@ -1,6 +1,8 @@
 <?php 
 // Avoir.php
 
+namespace modele;
+
 class Avoir {
     public $id_Playlist;
     public $id_Utilisateur;

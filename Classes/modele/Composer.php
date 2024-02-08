@@ -1,6 +1,8 @@
 <?php 
 // Composer.php
 
+namespace modele;
+
 class Composer {
     public $id_Musique;
     public $id_Artistes;

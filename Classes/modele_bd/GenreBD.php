@@ -2,8 +2,9 @@
 
 // GenreBD.php
 
-// modele_bd/GenreBD.php
-require_once 'Chemin/vers/la/classe/Genre.php';
+namespace modele_bd;
+
+use modele\Genre;
 
 class GenreBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class GenreBD {
         $result = $this->connexion->query($query);
 
         $genres = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $genre = new Genre(
                 $row['id_Genre'],
                 $row['nom_Genre']
@@ -40,7 +41,7 @@ class GenreBD {
     public function deleteGenre($idGenre) {
         $query = "DELETE FROM Genre WHERE id_Genre = :idGenre";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idGenre', $idGenre, PDO::PARAM_INT);
+        $stmt->bindParam(':idGenre', $idGenre, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

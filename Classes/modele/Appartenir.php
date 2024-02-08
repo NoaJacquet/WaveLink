@@ -2,6 +2,8 @@
 
 // Appartenir.php
 
+namespace modele;
+
 class Appartenir {
     public $id_Genre;
     public $id_Album;

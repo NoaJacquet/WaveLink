@@ -2,8 +2,9 @@
 
 // InterpreterBD.php
 
-// modele_bd/InterpreterBD.php
-require_once 'Chemin/vers/la/classe/Interpreter.php';
+namespace modele_bd;
+
+use modele\Interpreter;
 
 class InterpreterBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class InterpreterBD {
         $result = $this->connexion->query($query);
 
         $interpreters = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $interpreter = new Interpreter(
                 $row['id_Musique'],
                 $row['id_Artistes']
@@ -32,8 +33,8 @@ class InterpreterBD {
         $query = "INSERT INTO Interpreter (id_Musique, id_Artistes) 
                   VALUES (:idMusique, :idArtistes)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idMusique', $interpreter->getIdMusique(), PDO::PARAM_INT);
-        $stmt->bindParam(':idArtistes', $interpreter->getIdArtistes(), PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $interpreter->getIdMusique(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idArtistes', $interpreter->getIdArtistes(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -41,8 +42,8 @@ class InterpreterBD {
     public function deleteInterpreter($idMusique, $idArtistes) {
         $query = "DELETE FROM Interpreter WHERE id_Musique = :idMusique AND id_Artistes = :idArtistes";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idMusique', $idMusique, PDO::PARAM_INT);
-        $stmt->bindParam(':idArtistes', $idArtistes, PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+        $stmt->bindParam(':idArtistes', $idArtistes, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

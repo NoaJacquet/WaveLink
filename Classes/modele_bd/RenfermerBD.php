@@ -2,8 +2,9 @@
 
 // RenfermerBD.php
 
-// modele_bd/RenfermerBD.php
-require_once 'Chemin/vers/la/classe/Renfermer.php';
+namespace modele_bd;
+
+use modele\Renfermer;
 
 class RenfermerBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class RenfermerBD {
         $result = $this->connexion->query($query);
 
         $renfermements = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $renfermer = new Renfermer(
                 $row['id_Playlist'],
                 $row['id_Musique']
@@ -32,8 +33,8 @@ class RenfermerBD {
         $query = "INSERT INTO Renfermer (id_Playlist, id_Musique) 
                   VALUES (:idPlaylist, :idMusique)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idPlaylist', $renfermer->getIdPlaylist(), PDO::PARAM_INT);
-        $stmt->bindParam(':idMusique', $renfermer->getIdMusique(), PDO::PARAM_INT);
+        $stmt->bindParam(':idPlaylist', $renfermer->getIdPlaylist(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $renfermer->getIdMusique(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -41,8 +42,8 @@ class RenfermerBD {
     public function deleteRenfermer($idPlaylist, $idMusique) {
         $query = "DELETE FROM Renfermer WHERE id_Playlist = :idPlaylist AND id_Musique = :idMusique";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idPlaylist', $idPlaylist, PDO::PARAM_INT);
-        $stmt->bindParam(':idMusique', $idMusique, PDO::PARAM_INT);
+        $stmt->bindParam(':idPlaylist', $idPlaylist, \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

@@ -2,17 +2,22 @@
 
 // Utilisateur.php
 
+namespace modele;
+
 class Utilisateur {
     public $id_Utilisateur;
     public $nom_Utilisateur;
     public $mdp_Utilisateur;
     public $img_Utilisateur;
 
-    public function __construct($id_Utilisateur, $nom_Utilisateur, $mdp_Utilisateur, $img_Utilisateur) {
+    public $role;
+
+    public function __construct($id_Utilisateur, $nom_Utilisateur, $mdp_Utilisateur, $img_Utilisateur, $role) {
         $this->id_Utilisateur = $id_Utilisateur;
         $this->nom_Utilisateur = $nom_Utilisateur;
         $this->mdp_Utilisateur = $mdp_Utilisateur;
         $this->img_Utilisateur = $img_Utilisateur;
+        $this->role = $role;
     }
 
     // Getters
@@ -31,4 +36,10 @@ class Utilisateur {
     public function getImgUtilisateur() {
         return $this->img_Utilisateur;
     }
+
+    public function getRole() {
+        return $this->role;
+    }
+
+
 }

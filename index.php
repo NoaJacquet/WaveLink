@@ -22,6 +22,8 @@ Autoloader::register();
     case "/accueil": 
         require __DIR__."/template/Accueil.php";
         break;
+    case "/accueil_admin":
+        require __DIR__."/template/accueil_adm.php";
     default:
         echo "404";
         break;

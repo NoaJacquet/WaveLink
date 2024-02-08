@@ -2,6 +2,8 @@
 
 // Artistes.php
 
+namespace modele;
+
 class Artistes {
     public $id_Artistes;
     public $nom_Artistes;

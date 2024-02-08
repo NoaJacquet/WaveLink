@@ -1,6 +1,7 @@
 <?php
 
 // Admin.php
+namespace modele;
 
 class Admin {
     public $id_Adm;

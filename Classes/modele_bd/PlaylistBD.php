@@ -34,10 +34,10 @@ class PlaylistBD {
     public function getPlaylistById($id) {
         $query = "SELECT * FROM Playlist WHERE id_Playlist = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if ($row) {
             $playlist = new Playlist(
@@ -68,7 +68,7 @@ class PlaylistBD {
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':nom', $playlist->getNomPlaylist());
         $stmt->bindParam(':img', $playlist->getImgPlaylist());
-        $stmt->bindParam(':id', $playlist->getIdPlaylist(), PDO::PARAM_INT);
+        $stmt->bindParam(':id', $playlist->getIdPlaylist(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -76,7 +76,7 @@ class PlaylistBD {
     public function deletePlaylist($id) {
         $query = "DELETE FROM Playlist WHERE id_Playlist = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

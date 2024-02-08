@@ -1,9 +1,9 @@
 <?php
 
 // AlbumBD.php
+namespace modele_bd;
 
-// modele_bd/AlbumBD.php
-require_once 'Chemin/vers/la/classe/Album.php';
+use modele\Album;
 
 class AlbumBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +17,7 @@ class AlbumBD {
         $result = $this->connexion->query($query);
 
         $albums = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $album = new Album(
                 $row['id_Album'],
                 $row['titre_Album'],
@@ -34,10 +34,10 @@ class AlbumBD {
     public function getAlbumById($id) {
         $query = "SELECT * FROM Album WHERE id_Album = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if ($row) {
             $album = new Album(
@@ -74,7 +74,7 @@ class AlbumBD {
         $stmt->bindParam(':genre', $album->getGenreAlbum());
         $stmt->bindParam(':annee', $album->getAnneeSortie());
         $stmt->bindParam(':img', $album->getImgAlbum());
-        $stmt->bindParam(':id', $album->getIdAlbum(), PDO::PARAM_INT);
+        $stmt->bindParam(':id', $album->getIdAlbum(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -82,7 +82,7 @@ class AlbumBD {
     public function deleteAlbum($id) {
         $query = "DELETE FROM Album WHERE id_Album = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }

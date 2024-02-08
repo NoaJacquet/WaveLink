@@ -2,8 +2,9 @@
 
 // ArtistesBD.php
 
-// modele_bd/ArtistesBD.php
-require_once 'Chemin/vers/la/classe/Artistes.php';
+namespace modele_bd;
+
+use modele\Artistes;
 
 class ArtistesBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -17,7 +18,7 @@ class ArtistesBD {
         $result = $this->connexion->query($query);
 
         $artists = [];
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $artist = new Artistes(
                 $row['id_Artistes'],
                 $row['nom_Artistes'],
@@ -32,10 +33,10 @@ class ArtistesBD {
     public function getArtistById($id) {
         $query = "SELECT * FROM Artistes WHERE id_Artistes = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if ($row) {
             $artist = new Artistes(
@@ -66,7 +67,7 @@ class ArtistesBD {
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':nom', $artist->getNomArtistes());
         $stmt->bindParam(':img', $artist->getImgArtistes());
-        $stmt->bindParam(':id', $artist->getIdArtistes(), PDO::PARAM_INT);
+        $stmt->bindParam(':id', $artist->getIdArtistes(), \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -74,7 +75,7 @@ class ArtistesBD {
     public function deleteArtist($id) {
         $query = "DELETE FROM Artistes WHERE id_Artistes = :id";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
