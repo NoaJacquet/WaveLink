@@ -21,7 +21,8 @@ class GenreBD {
         while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $genre = new Genre(
                 $row['id_Genre'],
-                $row['nom_Genre']
+                $row['nom_Genre'],
+                $row['img_Genre'],
             );
             $genres[] = $genre;
         }

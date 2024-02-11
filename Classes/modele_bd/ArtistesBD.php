@@ -14,7 +14,7 @@ class ArtistesBD {
     }
 
     public function getAllArtists() {
-        $query = "SELECT * FROM Artistes";
+        $query = "SELECT * FROM Artistes ORDER BY id_Artistes DESC";
         $result = $this->connexion->query($query);
 
         $artists = [];

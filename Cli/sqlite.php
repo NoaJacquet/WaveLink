@@ -120,7 +120,8 @@ switch ($argv[1]) {
         
         CREATE TABLE Genre (
             id_Genre  INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_Genre TEXT
+            nom_Genre TEXT,
+            img_Genre TEXT
         );
         
         CREATE TABLE Interpreter (
@@ -240,8 +241,8 @@ EOF;
 
                                 if (!$genreRow) {
                                     // Le genre n'existe pas, l'insérer
-                                    $stmtInsertGenre = $pdo->prepare("INSERT INTO Genre (nom_Genre) VALUES (:genre)");
-                                    $stmtInsertGenre->execute([':genre' => $genre]);
+                                    $stmtInsertGenre = $pdo->prepare("INSERT INTO Genre (nom_Genre, img_Genre) VALUES (:genre, :img)");
+                                    $stmtInsertGenre->execute([':genre' => $genre, ':img'=> 'default.jpg']);
                                     $idGenre = $pdo->lastInsertId();
                                 } else {
                                     // Le genre existe, récupérer son ID
@@ -296,6 +297,14 @@ EOF;
             $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':genre_Musique' => 'Rap', ':interprete_Musique' => 'PLK', ':Compositeur_Musique' => 'mdr', ':annee_Sortie_Musique' => '2024']);
             $stmt = $pdo->prepare('INSERT INTO Renfermer (id_Playlist, id_Musique) values(:id_Playlist, :id_Musique)');
             $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '1']);
+            $stmt = $pdo->prepare('INSERT INTO Utilisateur (nom_Utilisateur, mdp_Utilisateur, img_Utilisateur, role) VALUES (:nom_Utilisateur, :mdp_Utilisateur, :img_Utilisateur, :role)');
+            $stmt->execute([
+                ':nom_Utilisateur' => 'adm',
+                ':mdp_Utilisateur' => 'adm', // Vous devriez toujours hacher les mots de passe
+                ':img_Utilisateur' => 'default.jpg',
+                ':role' => 'admin'
+            ]);
+
             break;
 
     default:

@@ -13,89 +13,86 @@
     echo $header->render();
     ?>
     <main>
-    <div id='playlist'>
-        <ul>
-            <li><a href="/accueil_admin">Album</a></li>
-            <li><a href="">Artistes</a></li>
-            <li><a href="">Utilisateur</a></li>
-        </ul>
-    </div>
+        <div id='main'>
+            <div class="top">
+                    <h2>Album</h2>
+                    <p id='tout-voir'>Tout voir</p>
+                    <p id='voir-moins' style="display:none">Voir moins</p>
+            </div>  
+            <div class="album" style="display: none;" >
+                
+                <?php
+                use modele_bd\Connexion;
+                use modele_bd\AlbumBD;
+                use modele_bd\ArtistesBD;
+                use View\AlbumView;
+        
+                $connexion = new Connexion();
+                $connexion->connexionBD();
+        
+                $albumBD = new AlbumBD($connexion->getPDO());
+                $artisteBD = new ArtistesBD($connexion->getPDO());
 
-    <div id='main'>
-        <div class="top-album">
-                <h2>Album</h2>
-                <p id='tout-voir'>Tout voir</p>
-                <p id='voir-moins' style="display:none">Voir moins</p>
-        </div>  
-        <div class="album" >
-              
-            <?php
-            use modele_bd\Connexion;
-            use modele_bd\AlbumBD;
-            use modele_bd\ArtistesBD;
-    
-            $connexion = new Connexion();
-            $connexion->connexionBD();
-    
-            $albumBD = new AlbumBD($connexion->getPDO());
-            $artisteBD = new ArtistesBD($connexion->getPDO());
+                $albums = $albumBD->getAllAlbums();
 
-            $albums = $albumBD->getAllAlbums();
+                AlbumView::renderAlbums($albums, $artisteBD, $albumBD);
 
-            $count = 0;
+                ?>
 
-            foreach ($albums as $album) {
-                $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());
-                echo '<div class="card-album">';
-                echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
-                echo '<img src="images/' . rawurlencode($album->getImgAlbum()) . '" alt="' . $album->getTitreAlbum(). '">';
-                echo '<p class="titre">' . $album->getTitreAlbum().'</p>';
-                echo '<p class="">' . $artiste->getNomArtistes().'</p>';
-                echo '</a>';
-                echo '</div>';
+            </div>
+            <div class="album2" >
+                
+                <?php
+                
+                AlbumView::renderAllAlbums($albums, $artisteBD, $albumBD);
 
-                $count++;
+                ?>
 
-            // Arrêter après avoir affiché les 5 premiers albums
-                if ($count >= 6) {
-                    break;
-                }
+            </div>
+            <div class="top">
+                <h2>Artistes</h2>
+                <p id='tout-voir-artiste'>Tout voir</p>
+                <p id='voir-moins-artiste' style="display:none">Voir moins</p>
+            </div>  
 
-            }
+            <div class="artiste">
+                <?php
+                use View\ArtisteView;
 
-            ?>
+                $artistes = $artisteBD->getAllArtists();
+                
 
+                ArtisteView::renderArtistes($artistes);
+                ?>
+            </div>
+            <div class="artiste2" style="display: none;">
+                <?php
+                ArtisteView::renderAllArtistes($artistes);
+                ?>
+            </div>
+
+            <div class="top">
+                <h2>Genres</h2>
+                <p id='tout-voir-genre'>Tout voir</p>
+                <p id='voir-moins-genre' style="display:none">Voir moins</p>
+            </div>  
+            <div class="genre">
+                <?php
+                use modele_bd\GenreBD;
+                use View\GenreView;
+
+                $genreBD = new GenreBD($connexion->getPDO());
+                $genres = $genreBD->getAllGenres();
+
+                GenreView::renderGenres($genres, $genreBD);
+                ?>
+            </div>
+            <div class="genre2" style="display: none;">
+                <?php
+                GenreView::renderAllGenres($genres, $genreBD);
+                ?>
+            </div>
         </div>
-        <div class="album2" style="display: none;">
-              
-            <?php
-            $connexion = new Connexion();
-            $connexion->connexionBD();
-    
-            $albumBD = new AlbumBD($connexion->getPDO());
-            $artisteBD = new ArtistesBD($connexion->getPDO());
-
-            $albums = $albumBD->getAllAlbums();
-
-
-            foreach ($albums as $album) {
-                $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());
-                echo '<div class="card-album">';
-                echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
-                echo '<img src="images/' . rawurlencode($album->getImgAlbum()) . '" alt="' . $album->getTitreAlbum(). '">';
-                echo '<p class="titre">' . $album->getTitreAlbum().'</p>';
-                echo '<p class="">' . $artiste->getNomArtistes().'</p>';
-                echo '</a>';
-                echo '</div>';
-
-
-
-            }
-
-            ?>
-
-        </div>
-    </div>
     </main>
     <footer>
             <div><p id='music-name'>a</p></div>
@@ -124,33 +121,44 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Sélectionner les éléments DOM
-        var toutVoirButton = document.getElementById('tout-voir');
-        var voirMoinsButton = document.getElementById('voir-moins');
+        var toutVoirButtonAlbum = document.getElementById('tout-voir');
+        var voirMoinsButtonAlbum = document.getElementById('voir-moins');
         var albumContainer = document.querySelector('.album');
         var album2Container = document.querySelector('.album2');
 
-        // Ajouter un gestionnaire d'événements au bouton "Tout voir"
-        toutVoirButton.addEventListener('click', function () {
-            // Cacher le premier conteneur d'albums et le bouton "Tout voir"
-            albumContainer.style.display = 'none';
-            toutVoirButton.style.display = 'none';
+        var toutVoirButtonArtiste = document.getElementById('tout-voir-artiste');
+        var voirMoinsButtonArtiste = document.getElementById('voir-moins-artiste');
+        var artisteContainer = document.querySelector('.artiste');
+        var artiste2Container = document.querySelector('.artiste2');
 
-            // Afficher le deuxième conteneur d'albums et le bouton "Voir moins"
-            album2Container.style.display = 'flex';
-            voirMoinsButton.style.display = 'block'; // Utiliser 'inline' si c'est un élément en ligne
-        });
+        var toutVoirButtonGenre = document.getElementById('tout-voir-genre');
+        var voirMoinsButtonGenre = document.getElementById('voir-moins-genre');
+        var genreContainer = document.querySelector('.genre');
+        var genre2Container = document.querySelector('.genre2');
 
-        // Ajouter un gestionnaire d'événements au bouton "Voir moins"
-        voirMoinsButton.addEventListener('click', function () {
-            // Cacher le deuxième conteneur d'albums et le bouton "Voir moins"
-            voirMoinsButton.style.display = 'none';
-            album2Container.style.display = 'none';
+        // Fonction pour gérer le basculement
+        function toggleContainers(toutVoirButton, voirMoinsButton, container1, container2) {
+            toutVoirButton.addEventListener('click', function () {
+                container2.style.display = 'flex';
+                voirMoinsButton.style.display = 'block';
+                container1.style.display = 'none';
+                toutVoirButton.style.display = 'none';
+            });
 
-            // Afficher le premier conteneur d'albums et le bouton "Tout voir"
-            albumContainer.style.display = 'flex';
-            toutVoirButton.style.display = 'block'; // Utiliser 'inline' si c'est un élément en ligne
-        });
+            voirMoinsButton.addEventListener('click', function () {
+                voirMoinsButton.style.display = 'none';
+                container2.style.display = 'none';
+                container1.style.display = 'flex';
+                toutVoirButton.style.display = 'block';
+            });
+        }
+
+        // Appliquer la logique pour chaque section
+        toggleContainers(toutVoirButtonAlbum, voirMoinsButtonAlbum, albumContainer, album2Container);
+        toggleContainers(toutVoirButtonArtiste, voirMoinsButtonArtiste, artisteContainer, artiste2Container);
+        toggleContainers(toutVoirButtonGenre, voirMoinsButtonGenre, genreContainer, genre2Container);
     });
 </script>
+
 
 </html>

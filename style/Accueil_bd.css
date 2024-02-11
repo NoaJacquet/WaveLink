@@ -38,6 +38,7 @@ div{
     display: flex;
     flex-grow: 1;
     flex-direction: column;
+    overflow: scroll;
 }
 
 header{
@@ -211,16 +212,15 @@ header img{
     margin-left: -0.95vw;
   }
 
-  .album{
+  .album, .artiste, .genre{
     width: 100%;
     display: flex;
-    overflow: scroll;
+    margin-bottom: 15px;
   }
-  .album2{
+  .album2, .artiste2, .genre2{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-  overflow: scroll;
   }
 
   #main img{
@@ -228,12 +228,12 @@ header img{
     height: 12vw;
    
   }
-  #main .card-album{
+  #main .card{
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: left;
-    width: 18%;
+    width: 15%;
     margin-inline: auto;
     font-size: 10px;
 
@@ -241,7 +241,7 @@ header img{
    
   }
 
-  .top-album{
+  .top{
     width: auto;
     margin-top: 20px;
     margin-inline: 20px;
@@ -251,7 +251,7 @@ header img{
     border-radius: 0px;
   }
 
-  .top-album>p{
+  .top>p{
     margin-left: 10px;
     font-size: 15px;
     display: flex;
@@ -259,11 +259,11 @@ header img{
     color: #00a2f3;
     cursor: pointer;
   }
-  .top-album>p:hover{
+  .top>p:hover{
     font-size: 15.5px;
   }
 
-  #main .card-album:hover{
+  #main .card:hover{
     border-bottom: #00a2f3 2px solid;
     border-radius: 0px;
     box-sizing: border-box;

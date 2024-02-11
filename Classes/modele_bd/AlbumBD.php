@@ -13,7 +13,7 @@ class AlbumBD {
     }
 
     public function getAllAlbums() {
-        $query = "SELECT * FROM Album";
+        $query = "SELECT * FROM Album ";
         $result = $this->connexion->query($query);
 
         $albums = [];
