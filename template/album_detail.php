@@ -3,6 +3,8 @@
 <head>
     <link rel='stylesheet' href='../style/Accueil_bd.css'>
     <link rel='stylesheet' href='../style/add_images.css'>
+    <link rel='stylesheet' href='../style/detail.css'>
+
 
     <meta charset="UTF-8">
     <title>Accueil</title>
@@ -21,12 +23,15 @@
             <div class='top'>
                 <a href="/accueil_admin" ><</a>
                 <p> Modifier </p>
+                <p style='display: none'>Annuler la modification</p>
             </div>
 
             <?php
             use modele_bd\Connexion;
             use modele_bd\AlbumBD;
             use modele_bd\ArtistesBD;
+            use modele_bd\AppartenirBD;
+            use modele_bd\GenreBD;
 
             $connexion = new Connexion();
             $connexion->connexionBD();
@@ -35,14 +40,44 @@
             $artisteBD = new ArtistesBD($connexion->getPDO());
 
             $albums = $albumBD->getAlbumById($albumId);
+            $artiste = $artisteBD->getArtistByAlbumId($albums->getIdAlbum());
+
+            $artistes = $artisteBD->getAllArtists();
+
+            $appartenirBD = new AppartenirBD($connexion->getPDO());
+            $genreBD = new GenreBD($connexion->getPDO());
+
+            $genre = $appartenirBD->getGenresByAlbumId($albums->getIdAlbum());
+            $allGenres = $genreBD->getAllGenres();
+
 
             echo '<div class="detail">';
-            echo '<div class="imge-album>"';
-            echo '<img src="'.$albums->getImgAlbum().'" alt="'.$albums->getTitreAlbum().'"';
+            echo '<div class="img-album">';
+            echo '<img src="../images/'.$albums->getImgAlbum().'" alt="'.$albums->getTitreAlbum().'">';
+            echo '</div>';
+            echo '<div class="album-info">';
+            echo '<h2>'.$albums->getTitreAlbum().'</h2>';
+            echo '<p>Année de sortie: '.$albums->getAnneeSortie().'</p>';
+
+            // Afficher les genres
+            if (!empty($genre)) {
+                echo '<p>Genres: ';
+                foreach ($genre as $g) {
+                    echo $g['nom_Genre'].' ';
+                }
+                echo '</p>';
+            }
+
+            // Afficher l'artiste
+            echo '<p>Artiste: '.$artiste->getNomArtistes().'</p>';
+
+            // Ajoutez d'autres détails de l'album selon vos besoins
             echo '</div>';
             echo '</div>';
+
             ?>
-            <div class="modif-detail">
+
+            <div class="modif-detail" style ='display:none'>
                 <form action="" >
 
                     <div class="form-label-admin">
@@ -55,7 +90,6 @@
                             </div>
                             <input type="file" name="image" id="inputFile" accept="image/*" required>
 
-                            </div>
                         </label>
 
                         <div class="image-preview" id="imagePreview" style="display: none;">
@@ -63,11 +97,63 @@
                             <img src="" alt="Image preview" class="image-preview__image">
                             <div class="change-image-text" id="changeImageText">Changer l'image</div>
                         </div>
+
+
+
+                        <input type="submit" value="Modifier">
                     </div>
+
+                    <div class="detail-album">
+                        <label for="titreAlbum">Titre de l'album:</label>
+                        <input type="text" id="titreAlbum" name="titreAlbum" value="<?php echo $albums->getTitreAlbum(); ?>" required>
+
+                        <label for="anneeSortie">Année de sortie:</label>
+                        <input type="number" id="anneeSortie" name="anneeSortie" value="<?php echo $albums->getAnneeSortie(); ?>" required>
+
+                        <label for="artiste">Artiste:</label>
+                        <select id="artiste" name="artiste" required>
+                            <?php foreach ($artistes as $art) : ?>
+                                <option value="<?php echo $art->getIdArtistes(); ?>" <?php echo ($art->getIdArtistes() == $artiste->getIdArtistes()) ? 'selected' : ''; ?>>
+                                    <?php echo $art->getNomArtistes(); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <label for="genres">Genres:</label>
+                        <div class="genres-checkboxes">
+                            <?php foreach ($allGenres as $genre) : ?>
+                                <label class="genre-checkbox">
+                                    <?php echo $genre->getNomGenre(); ?>
+                                    
+                                </label>
+                                <input type="checkbox" name="genres[]" value="<?php echo $genre->getIdGenre(); ?>">
+                            <?php endforeach; ?>
+                        </div>
+
+
+
+
+
+                    </div>
+
+
+
 
 
                 </form>
 
+            </div>
+            <div class="top">
+                <h2>Musique</h2>
+            </div>
+            <div class="musique">
+                <?php
+                use View\MusiqueView;
+                use modele_bd\MusiqueBD;
+                $musiqeBD = new MusiqueBD($connexion->getPDO());
+                $musiques=$musiqeBD->getMusiquesByAlbumId($albumId);
+                MusiqueView::renderAllMusiques($musiques);
+                ?>
             </div>
 
 
@@ -99,77 +185,32 @@
 </body>
 <script src="../style/musicLector.js"></script>
 
+<script src="../style/image.js"></script>
+
 <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const dropZone = document.getElementById("dropZone");
-            const inputFile = document.getElementById("inputFile");
-            const imagePreview = document.getElementById("imagePreview");
-    
-            dropZone.addEventListener("click", () => {
-                inputFile.click();
-            });
-    
-            inputFile.addEventListener("change", handleFileSelect);
-    
-            // Ajoutez cet événement de clic pour changer l'image
-            imagePreview.querySelector(".image-preview__image").addEventListener("click", () => {
-                inputFile.click();
-            });
-    
-            function handleFileSelect() {
-                const files = inputFile.files;
-    
-                if (files.length > 0) {
-                    const reader = new FileReader();
-    
-                    reader.onload = function (e) {
-                        imagePreview.querySelector(".image-preview__image").src = e.target.result;
-                        imagePreview.querySelector(".image-preview__prompt").style.display = "none";
-                        dropZone.style.display = "none";
-                        imagePreview.style.display = "block";
-                        document.querySelector(".change-image-section").style.display = "block";
-                    };
-    
-                    reader.readAsDataURL(files[0]);
-                }
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+        const detailSection = document.querySelector('.detail');
+        const modifDetailSection = document.querySelector('.modif-detail');
+        const modifierButton = document.querySelector('.top p');
+        const annulerModificationButton = document.querySelector('.top p[style="display: none"]');
+
+        // Afficher le formulaire de modification
+        modifierButton.addEventListener('click', function () {
+            detailSection.style.display = 'none';
+            modifDetailSection.style.display = 'flex';
+            modifierButton.style.display = 'none';
+            annulerModificationButton.style.display = 'block';
         });
 
-    </script>
-
-<style>
-    .change-image-text {
-        position: absolute;
-        top: 50%; /* Ajustez la position verticale selon vos besoins */
-        left: 50%; /* Ajustez la position horizontale selon vos besoins */
-        transform: translate(-50%, -50%);
-        display: none;
-        color: white; /* Ajoutez d'autres styles selon vos besoins */
-        background-color: rgba(0, 0, 0, 0.7); /* Ajoutez d'autres styles selon vos besoins */
-        padding: 10px; /* Ajoutez d'autres styles selon vos besoins */
-        border-radius: 5px; /* Ajoutez d'autres styles selon vos besoins */
-        cursor: pointer;
-    }
-
-    .image-preview:hover .change-image-text {
-        display: block;
-    }
-</style>
-
-<script>
-    // Récupérer les éléments nécessaires
-    const imagePreview = document.getElementById('imagePreview');
-    const changeImageText = document.getElementById('changeImageText');
-
-    // Ajouter un gestionnaire d'événement au survol de l'image
-    imagePreview.addEventListener('mouseover', function () {
-        changeImageText.style.display = 'block';
-    });
-
-    // Ajouter un gestionnaire d'événement lorsque la souris quitte l'image
-    imagePreview.addEventListener('mouseout', function () {
-        changeImageText.style.display = 'none';
+        // Annuler la modification et afficher les détails
+        annulerModificationButton.addEventListener('click', function () {
+            detailSection.style.display = 'flex';
+            modifDetailSection.style.display = 'none';
+            modifierButton.style.display = 'block';
+            annulerModificationButton.style.display = 'none';
+        });
     });
 </script>
+
 
 </html>

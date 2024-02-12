@@ -135,10 +135,7 @@ switch ($argv[1]) {
         CREATE TABLE Musique (
             id_Musique           INTEGER PRIMARY KEY AUTOINCREMENT,
             nom_Musique          TEXT,
-            genre_Musique        TEXT,
-            interprete_Musique   TEXT,
-            Compositeur_Musique  TEXT,
-            annee_Sortie_Musique TEXT
+            url_Musique          TEXT
         );
         
         CREATE TABLE Noter (

@@ -140,7 +140,8 @@
         function toggleContainers(toutVoirButton, voirMoinsButton, container1, container2) {
             toutVoirButton.addEventListener('click', function () {
                 container2.style.display = 'flex';
-                voirMoinsButton.style.display = 'block';
+                voirMoinsButton.style.display = 'flex';
+                voirMoinsButton.style.alignItems = 'center'; // Utilisation de alignItems
                 container1.style.display = 'none';
                 toutVoirButton.style.display = 'none';
             });
@@ -149,9 +150,12 @@
                 voirMoinsButton.style.display = 'none';
                 container2.style.display = 'none';
                 container1.style.display = 'flex';
-                toutVoirButton.style.display = 'block';
+                toutVoirButton.style.display = 'flex';
+                toutVoirButton.style.alignItems = 'center'; // Utilisation de alignItems
             });
         }
+
+
 
         // Appliquer la logique pour chaque section
         toggleContainers(toutVoirButtonAlbum, voirMoinsButtonAlbum, albumContainer, album2Container);

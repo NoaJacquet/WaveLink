@@ -1,0 +1,78 @@
+.modif-detail{
+    display: flex;
+    justify-content: center;
+}
+
+.modif-detail>form, .detail, .modif-detail{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-basis: 100%;
+}
+.detail>*{
+    margin-inline: auto;
+}
+
+.form-label-admin, .img-album{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 40%;
+    flex-direction: column;
+}
+
+.detail-album, .album-info{
+    display: flex;
+    flex-basis: 55%;
+    flex-direction: column;
+    color: antiquewhite;
+    justify-content: center;
+}
+.album-info>h2{
+    padding: 0;
+    margin: 0;
+}
+.detail-album>label{
+    margin-top: 15px;
+}
+
+.detail-album>select, .detail-album> input{
+    width: 18%;
+    text-align: center;
+}
+
+/* Styles for the genres checkboxes */
+.genres-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+.genre-checkbox {
+    width: 20%; /* Ajustez la largeur selon vos besoins */
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    border: 2px solid wheat;
+}
+
+/* Style for the checkbox */
+.genres-checkboxes input{
+    margin-left: 5px; /* Mettez à gauche pour inverser l'ordre */
+    width: 4%;
+    height: 10%;
+}
+
+/* Optional: Style for the label text */
+.genre-checkbox span {
+    font-weight: bold;
+}
+
+
+.form-label-admin>input{
+    
+    width: 20%;
+    margin-top: 5%;
+}

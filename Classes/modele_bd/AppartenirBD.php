@@ -48,5 +48,26 @@ class AppartenirBD {
         return $stmt->execute();
     }
 
+    public function getGenresByAlbumId($idAlbum) {
+        $query = "SELECT G.id_Genre, G.nom_Genre
+                  FROM Appartenir A
+                  INNER JOIN Genre G ON A.id_Genre = G.id_Genre
+                  WHERE A.id_Album = :idAlbum";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $genres = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $genre = [
+                'id_Genre' => $row['id_Genre'],
+                'nom_Genre' => $row['nom_Genre'],
+            ];
+            $genres[] = $genre;
+        }
+
+        return $genres;
+    }
+
     // Ajoutez d'autres méthodes selon vos besoins
 }

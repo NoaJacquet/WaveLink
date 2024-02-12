@@ -22,11 +22,7 @@ class MusiqueBD {
         while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $musique = new Musique(
                 $row['id_Musique'],
-                $row['nom_Musique'],
-                $row['genre_Musique'],
-                $row['interprete_Musique'],
-                $row['Compositeur_Musique'],
-                $row['annee_Sortie_Musique']
+                $row['nom_Musique']
             );
             $musiques[] = $musique;
         }
@@ -35,14 +31,11 @@ class MusiqueBD {
     }
 
     public function insertMusique(Musique $musique) {
-        $query = "INSERT INTO Musique (nom_Musique, genre_Musique, interprete_Musique, Compositeur_Musique, annee_Sortie_Musique) 
-                  VALUES (:nom, :genre, :interprete, :compositeur, :anneeSortie)";
+        $query = "INSERT INTO Musique (nom_Musique) 
+                  VALUES (:nom)";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':nom', $musique->getNomMusique());
-        $stmt->bindParam(':genre', $musique->getGenreMusique());
-        $stmt->bindParam(':interprete', $musique->getInterpreteMusique());
-        $stmt->bindParam(':compositeur', $musique->getCompositeurMusique());
-        $stmt->bindParam(':anneeSortie', $musique->getAnneeSortieMusique());
+
 
         return $stmt->execute();
     }
@@ -55,5 +48,27 @@ class MusiqueBD {
         return $stmt->execute();
     }
 
+
+    public function getMusiquesByAlbumId($idAlbum) {
+        $query = "SELECT m.* FROM Musique m
+                  INNER JOIN Contenir c ON m.id_Musique = c.id_Musique
+                  WHERE c.id_Album = :idAlbum";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $musiques = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $musique = new Musique(
+                $row['id_Musique'],
+                $row['nom_Musique']
+            );
+            $musiques[] = $musique;
+        }
+
+        return $musiques;
+    }
+
+    
     // Ajoutez d'autres méthodes selon vos besoins
 }
