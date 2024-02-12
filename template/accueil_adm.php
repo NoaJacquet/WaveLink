@@ -19,7 +19,7 @@
                     <p id='tout-voir'>Tout voir</p>
                     <p id='voir-moins' style="display:none">Voir moins</p>
             </div>  
-            <div class="album" style="display: none;" >
+            <div class="album"  >
                 
                 <?php
                 use modele_bd\Connexion;
@@ -40,7 +40,7 @@
                 ?>
 
             </div>
-            <div class="album2" >
+            <div class="album2" style="display: none;">
                 
                 <?php
                 
