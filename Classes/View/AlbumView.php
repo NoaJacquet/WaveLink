@@ -27,7 +27,7 @@ class AlbumView
         }
     }
 
-    public static function renderAllAlbums($albums, ArtistesBD $artisteBD, AlbumBD $albumBD)
+    public static function renderAllAlbums($albums, ArtistesBD $artisteBD)
     {
         foreach ($albums as $album) {
             $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());

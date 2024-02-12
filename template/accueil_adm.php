@@ -44,7 +44,7 @@
                 
                 <?php
                 
-                AlbumView::renderAllAlbums($albums, $artisteBD, $albumBD);
+                AlbumView::renderAllAlbums($albums, $artisteBD);
 
                 ?>
 

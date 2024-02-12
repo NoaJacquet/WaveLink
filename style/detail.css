@@ -14,7 +14,7 @@
     margin-inline: auto;
 }
 
-.form-label-admin, .img-album{
+.form-label-admin, .img-album, .img-artiste, .img-genre{
     
     display: flex;
     justify-content: center;
@@ -23,7 +23,7 @@
     flex-direction: column;
 }
 
-.detail-album, .album-info{
+.detail-album, .album-info, .artiste-info, .detail-artiste, .genre-info, .detail-genre{
     display: flex;
     flex-basis: 55%;
     flex-direction: column;
@@ -55,19 +55,23 @@
     margin-bottom: 10px;
     display: flex;
     align-items: center;
+    justify-content: center;
     border: 2px solid wheat;
+    margin-inline: auto;
+    text-align: center;
+}
+
+.genre-checkbox>* {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-inline:auto ;
 }
 
 /* Style for the checkbox */
 .genres-checkboxes input{
-    margin-left: 5px; /* Mettez à gauche pour inverser l'ordre */
-    width: 4%;
-    height: 10%;
-}
-
-/* Optional: Style for the label text */
-.genre-checkbox span {
-    font-weight: bold;
+    margin: 0px;
+    width: 25px;
+    height: 25px;
 }
 
 
@@ -75,4 +79,16 @@
     
     width: 20%;
     margin-top: 5%;
+}
+
+.musique, .album{
+    width: 100%;
+    display: flex;
+    margin-bottom: 15px;
+    justify-content: center;
+    color: white;
+}
+
+.top>a:hover{
+    color: blue;
 }

@@ -124,9 +124,9 @@
                             <?php foreach ($allGenres as $genre) : ?>
                                 <label class="genre-checkbox">
                                     <?php echo $genre->getNomGenre(); ?>
-                                    
+                                    <input type="checkbox" name="genres[]" value="<?php echo $genre->getIdGenre(); ?>">
                                 </label>
-                                <input type="checkbox" name="genres[]" value="<?php echo $genre->getIdGenre(); ?>">
+                                
                             <?php endforeach; ?>
                         </div>
 

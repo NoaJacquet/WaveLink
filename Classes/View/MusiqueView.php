@@ -20,14 +20,17 @@ class MusiqueView
         }
     }
 
-    public static function renderAllMusiques($musiques)
-    {
-        var_dump($musiques);
-        foreach ($musiques as $musique) {
-            echo '<div class="card">';
-            echo '<p class="titre">' . $musique->getNomMusique().'</p>';
-            echo '</div>';
+    public static function renderAllMusiques($musiques){
+        if (empty($musiques)) {
+            echo '<p>Aucune musique</p>';
+        } else {
+            foreach ($musiques as $musique) {
+                echo '<div class="card">';
+                echo '<p class="titre">' . $musique->getNomMusique().'</p>';
+                echo '</div>';
+            }
         }
     }
+
 }
 ?>

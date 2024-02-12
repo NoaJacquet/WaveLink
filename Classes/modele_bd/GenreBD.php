@@ -48,4 +48,25 @@ class GenreBD {
     }
 
     // Ajoutez d'autres méthodes selon vos besoins
+    public function getGenreById($idGenre) {
+        $query = "SELECT * FROM Genre WHERE id_Genre = :idGenre";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':idGenre', $idGenre, \PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+        if ($row) {
+            $genre = new Genre(
+                $row['id_Genre'],
+                $row['nom_Genre'],
+                $row['img_Genre']
+            );
+    
+            return $genre;
+        } else {
+            return null;
+        }
+    }
+    
 }

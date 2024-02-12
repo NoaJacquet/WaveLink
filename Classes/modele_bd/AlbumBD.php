@@ -82,4 +82,29 @@ class AlbumBD {
 
         return $stmt->execute();
     }
+
+    public function getAlbumsByArtistId($artistId) {
+        $query = "SELECT Album.id_Album, Album.titre_Album, Album.annee_Sortie, Album.img_Album
+                  FROM Album
+                  JOIN Creer ON Album.id_Album = Creer.id_Album
+                  WHERE Creer.id_Artistes = :artistId";
+    
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':artistId', $artistId, \PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $albums = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $album = new Album(
+                $row['id_Album'],
+                $row['titre_Album'],
+                $row['annee_Sortie'],
+                $row['img_Album']
+            );
+            $albums[] = $album;
+        }
+    
+        return $albums;
+    }
+    
 }
