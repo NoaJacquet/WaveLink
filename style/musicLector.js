@@ -47,27 +47,46 @@ soundBar.addEventListener("input", function(){
 });
 
 $(document).ready(function(){
-    var trigger = $('main #playlist ul li a');
+    var trigger = $('main #playlist ul li '),
+    container = $('#main');
     trigger.on('click', function(){
-        $.ajax({
-            url: 'template/Accueil.php',
-            type: 'POST',
-            data: 'template/Playlist.php',
-            dataType: 'php', // Spécifie le type de données attendu
-            success: function(response) {
-                $('#main').html(response);
-            },
-            error: function(xhr, status, error) {
-                // En cas d'erreur, afficher un message d'erreur
-                console.error('Erreur lors du chargement du contenu :', status, error);
-            }
-        });
+        // $.ajax({
+        //     url: 'template/Accueil.php',
+        //     type: 'POST',
+        //     data: 'template/Playlist.php',
+        //     dataType: 'php', // Spécifie le type de données attendu
+        //     success: function(response) {
+        //         $('#main').html(response);
+        //     },
+        //     error: function(xhr, status, error) {
+        //         // En cas d'erreur, afficher un message d'erreur
+        //         console.error('Erreur lors du chargement du contenu :', status, error);
+        //     }
+        // });
+        container.load("template/Playlist.php");
+    });
+});
 
+$(document).ready(function(){
+    var trigger = $('header img'),
+    container = $('#main');
+    trigger.on('click', function(){
+        container.load("template/Playlist.php");
+    });
+});
 
-//         var $this = $(this),
-//         target = $this.data('target');
-//         console.log(target);
-//         container.load("../template/Playlist.php");
-//         return false; 
+$(document).ready(function(){
+    var trigger = $('#main #genre'),
+    container = $('#main');
+    trigger.on('click', function(){
+        container.load("template/Genre.php");
+    });
+});
+
+$(document).ready(function(){
+    var trigger = $('#main #album'),
+    container = $('#main');
+    trigger.on('click', function(){
+        container.load("template/Album.php");
     });
 });

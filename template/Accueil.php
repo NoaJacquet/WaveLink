@@ -30,12 +30,10 @@
             foreach($playlists as $key => $playlist){
                 echo "<li>";
                 echo "<div id='barre'></div>";
-                echo "<a href=''>";
                 echo "<div id='detail-playlist'>";
                 echo "<img src='rap.jpg' alt=''>";
                 echo "<p>".$playlist->getNomPlaylist()."</p>";
                 echo "</div>";
-                echo "</a>";
                 echo "</li>";
             }
             ?>
@@ -50,11 +48,9 @@
                 $genres = $genreManager->getAllGenres();
                 foreach($genres as $key => $genre){
                     echo "<li>";
-                    echo '<a href="">';
                     echo "<div id='genre'>";
                     echo "<p>".$genre->getNomGenre()."</p>";
                     echo "</div>";
-                    echo "</a>";
                     echo "</li>";
                 }
             ?>

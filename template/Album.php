@@ -26,8 +26,8 @@
             //     echo "</li>";
             // }
             ?>  -->
-               <p>Mignon tout plein</p>
-               <p>PLK</p>
+               <p>La vie qu'on mène</p>
+               <p>Ninho</p>
            </div>
        </div>
    </a>

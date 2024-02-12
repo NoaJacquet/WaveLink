@@ -1,15 +1,16 @@
-<div id="playlist-choisi">
-   <h1>Rap</h1>
-   <a href="">
-       <div id="son">
-           <img src="chambre140.jpg" alt="">
-           <div>
-            <!-- <?php
+<h2>Album de genre :</h2>
+<ul>
+<div id='album'>
+    <p>Album 1</p>
+</div>
+</ul>    
+
+<!-- <?php
             // use modele_bd\Connexion;
-            // use modele_bd\UserBD;
+            // use modele_bd\GenreBD;
     
             // $connexion = new Connexion();
-            // $connexion->connexionBD();
+            // $connexion->genreBD();
     
             // $userManager = new UserBD($connexion->getPDO());
 
@@ -25,10 +26,6 @@
             //     echo "</a>";
             //     echo "</li>";
             // }
-            ?>  -->
-               <p>Mignon tout plein</p>
-               <p>PLK</p>
-           </div>
-       </div>
-   </a>
-</div>
+            ?> -->
+
+<script src="../style/musicLector.js"></script>

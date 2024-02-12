@@ -220,6 +220,7 @@ header img{
   }
 
   #genre{
+    color: white;
     transition: .2s;
     display: flex;
     justify-content: center;
@@ -238,4 +239,10 @@ header img{
   #genre p{
     font-size: 2vw;
     font-weight: bold;
+  }
+
+  #album{
+    width: 12vw;
+    height: 11vw;
+    background-color: green;
   }
