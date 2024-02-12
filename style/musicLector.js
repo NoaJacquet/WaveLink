@@ -50,11 +50,11 @@ $(document).ready(function(){
     var trigger = $('main #playlist ul li a');
     trigger.on('click', function(){
         $.ajax({
-            url: 'template/Playlist.html',
-            type: 'GET',
-            dataType: 'html', // Spécifie le type de données attendu
+            url: 'template/Accueil.php',
+            type: 'POST',
+            data: 'template/Playlist.php',
+            dataType: 'php', // Spécifie le type de données attendu
             success: function(response) {
-                // Mettre le contenu récupéré dans l'élément avec l'ID "contenu"
                 $('#main').html(response);
             },
             error: function(xhr, status, error) {
@@ -64,10 +64,10 @@ $(document).ready(function(){
         });
 
 
-        // var $this = $(this),
-        // target = $this.data('target');
-        // console.log(target);
-        // container.load("../template/Playlist.php");
-        // return false; 
+//         var $this = $(this),
+//         target = $this.data('target');
+//         console.log(target);
+//         container.load("../template/Playlist.php");
+//         return false; 
     });
 });
