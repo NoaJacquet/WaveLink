@@ -53,6 +53,7 @@
                 <h2>Artistes</h2>
                 <p id='tout-voir-artiste'>Tout voir</p>
                 <p id='voir-moins-artiste' style="display:none">Voir moins</p>
+                <a href='/add-artiste'>Ajouter un Artistes</a>
             </div>  
 
             <div class="artiste">
@@ -75,6 +76,7 @@
                 <h2>Genres</h2>
                 <p id='tout-voir-genre'>Tout voir</p>
                 <p id='voir-moins-genre' style="display:none">Voir moins</p>
+                <a href='/add-genre'>Ajouter un genre</a>
             </div>  
             <div class="genre">
                 <?php

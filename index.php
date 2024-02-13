@@ -22,6 +22,12 @@ switch ($path) {
     case "/accueil_admin":
         require __DIR__."/template/accueil_adm.php";
         break;
+    case "/add-artiste":
+        require __DIR__."/template/add_artistes.php";
+        break;
+    case "/add-genre":
+        require __DIR__."/template/add_genre.php";
+        break;
     case strpos($path, "/album_detail") !== false:
         // Récupérer l'ID de l'album à partir de la requête
         $albumId = isset($_GET['id']) ? intval($_GET['id']) : 0;
