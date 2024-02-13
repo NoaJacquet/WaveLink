@@ -5,7 +5,7 @@ namespace modele_bd;
 
 use modele\Album;
 
-class AlbumBD {
+class  AlbumBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
 
     public function __construct($connexion) {
@@ -75,13 +75,55 @@ class AlbumBD {
         return $stmt->execute();
     }
 
-    public function deleteAlbum($id) {
-        $query = "DELETE FROM Album WHERE id_Album = :id";
-        $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
-
-        return $stmt->execute();
+    public function deleteAlbum($id, $imgAlbum) {
+        $successMessage = "L'album a été supprimé avec succès.";
+        $failureMessage = "Échec de la suppression de l'album.";
+    
+        if ($imgAlbum !== 'default.jpg') {
+            // Supprimer l'image associée à l'album
+            $imagePath = __DIR__ . "/../images/" . $imgAlbum; // Assurez-vous d'ajuster le chemin en fonction de votre structure
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+    
+        // Supprimer les dépendances dans la table Creer
+        $queryCreer = "DELETE FROM Creer WHERE id_Album = :idAlbum";
+        $stmtCreer = $this->connexion->prepare($queryCreer);
+        $stmtCreer->bindParam(':idAlbum', $id, \PDO::PARAM_INT);
+        $stmtCreer->execute();
+    
+        // Supprimer les dépendances dans la table Noter
+        $queryNoter = "DELETE FROM Noter WHERE id_Album = :idAlbum";
+        $stmtNoter = $this->connexion->prepare($queryNoter);
+        $stmtNoter->bindParam(':idAlbum', $id, \PDO::PARAM_INT);
+        $stmtNoter->execute();
+    
+        // Supprimer les dépendances dans la table Appartenir
+        $queryAppartenir = "DELETE FROM Appartenir WHERE id_Album = :idAlbum";
+        $stmtAppartenir = $this->connexion->prepare($queryAppartenir);
+        $stmtAppartenir->bindParam(':idAlbum', $id, \PDO::PARAM_INT);
+        $stmtAppartenir->execute();
+    
+        // Supprimer les dépendances dans la table Contenir
+        $queryContenir = "DELETE FROM Contenir WHERE id_Album = :idAlbum";
+        $stmtContenir = $this->connexion->prepare($queryContenir);
+        $stmtContenir->bindParam(':idAlbum', $id, \PDO::PARAM_INT);
+        $stmtContenir->execute();
+    
+        // Supprimer l'album de la table Album
+        $queryAlbum = "DELETE FROM Album WHERE id_Album = :idAlbum";
+        $stmtAlbum = $this->connexion->prepare($queryAlbum);
+        $stmtAlbum->bindParam(':idAlbum', $id, \PDO::PARAM_INT);
+    
+        // Vérifier le résultat des opérations
+        if ($stmtAlbum->execute()) {
+            return $successMessage;
+        } else {
+            return $failureMessage;
+        }
     }
+    
 
     public function getAlbumsByArtistId($artistId) {
         $query = "SELECT Album.id_Album, Album.titre_Album, Album.annee_Sortie, Album.img_Album

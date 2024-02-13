@@ -94,13 +94,7 @@ switch ($argv[1]) {
             FOREIGN KEY (id_Playlist) REFERENCES Playlist (id_Playlist)
         );
         
-        CREATE TABLE Composer (
-            id_Musique  INTEGER NOT NULL,
-            id_Artistes INTEGER NOT NULL,
-            PRIMARY KEY (id_Musique, id_Artistes),
-            FOREIGN KEY (id_Artistes) REFERENCES Artistes (id_Artistes),
-            FOREIGN KEY (id_Musique) REFERENCES Musique (id_Musique)
-        );
+
         
         CREATE TABLE Contenir (
             id_Album   INTEGER NOT NULL,
@@ -186,7 +180,6 @@ switch ($argv[1]) {
     DROP TABLE IF EXISTS Playlist;
     DROP TABLE IF EXISTS Avoir;
     DROP TABLE IF EXISTS Appartenir;
-    DROP TABLE IF EXISTS Composer;
     DROP TABLE IF EXISTS Contenir;
     DROP TABLE IF EXISTS Creer;
     DROP TABLE IF EXISTS Interpreter;
@@ -290,8 +283,9 @@ EOF;
             break;
 
         case 'insert';
-            $stmt = $pdo->prepare('INSERT INTO Musique (id_Musique, nom_Musique, genre_Musique, interprete_Musique, Compositeur_Musique, annee_Sortie_Musique) values(:id_Musique, :nom_Musique, :genre_Musique, :interprete_Musique, :Compositeur_Musique, :annee_Sortie_Musique)');
-            $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':genre_Musique' => 'Rap', ':interprete_Musique' => 'PLK', ':Compositeur_Musique' => 'mdr', ':annee_Sortie_Musique' => '2024']);
+            $stmt = $pdo->prepare('INSERT INTO Musique (nom_Musique, url_Musique) VALUES (:nom_Musique, :url_Musique)');
+            $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':url_Musique' => 'chemin/vers/votre/musique.mp3']);
+        
             $stmt = $pdo->prepare('INSERT INTO Renfermer (id_Playlist, id_Musique) values(:id_Playlist, :id_Musique)');
             $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '1']);
             $stmt = $pdo->prepare('INSERT INTO Utilisateur (nom_Utilisateur, mdp_Utilisateur, img_Utilisateur, role) VALUES (:nom_Utilisateur, :mdp_Utilisateur, :img_Utilisateur, :role)');

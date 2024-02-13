@@ -17,6 +17,44 @@
     echo $header->render();
     ?>
     <main>
+    <?php
+    use modele_bd\Connexion;
+    use modele_bd\AlbumBD;
+    use modele_bd\ArtistesBD;
+    use modele_bd\AppartenirBD;
+    use modele_bd\GenreBD;
+
+    $connexion = new Connexion();
+    $connexion->connexionBD();
+
+    $albumBD = new AlbumBD($connexion->getPDO());
+    $artisteBD = new ArtistesBD($connexion->getPDO());
+
+    $albums = $albumBD->getAlbumById($albumId);
+    $artiste = $artisteBD->getArtistByAlbumId($albums->getIdAlbum());
+
+    $artistes = $artisteBD->getAllArtists();
+
+    $appartenirBD = new AppartenirBD($connexion->getPDO());
+    $genreBD = new GenreBD($connexion->getPDO());
+
+    $genre = $appartenirBD->getGenresByAlbumId($albums->getIdAlbum());
+    $allGenres = $genreBD->getAllGenres();
+    // Inclure vos classes et fonctions nécessaires ici
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
+        // Récupérer les données du formulaire si nécessaire
+
+        $resultMessage = $albumBD->deleteAlbum($albums->getIdAlbum(), $albums->getImgAlbum());
+        echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+        
+        header('Location: /accueil_admin'); 
+        exit();
+    }
+    ?>
+
         
 
         <div id='main'>
@@ -24,31 +62,15 @@
                 <a href="/accueil_admin" ><</a>
                 <p> Modifier </p>
                 <p style='display: none'>Annuler la modification</p>
+                <form id="deleteForm" method="post" action="">
+                    <button type="submit" name="deleteGenreButton">Supprimer</button>
+                </form>
             </div>
 
             <?php
-            use modele_bd\Connexion;
-            use modele_bd\AlbumBD;
-            use modele_bd\ArtistesBD;
-            use modele_bd\AppartenirBD;
-            use modele_bd\GenreBD;
 
-            $connexion = new Connexion();
-            $connexion->connexionBD();
 
-            $albumBD = new AlbumBD($connexion->getPDO());
-            $artisteBD = new ArtistesBD($connexion->getPDO());
-
-            $albums = $albumBD->getAlbumById($albumId);
-            $artiste = $artisteBD->getArtistByAlbumId($albums->getIdAlbum());
-
-            $artistes = $artisteBD->getAllArtists();
-
-            $appartenirBD = new AppartenirBD($connexion->getPDO());
-            $genreBD = new GenreBD($connexion->getPDO());
-
-            $genre = $appartenirBD->getGenresByAlbumId($albums->getIdAlbum());
-            $allGenres = $genreBD->getAllGenres();
+            
 
 
             echo '<div class="detail">';

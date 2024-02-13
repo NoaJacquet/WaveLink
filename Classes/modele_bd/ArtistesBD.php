@@ -5,6 +5,7 @@
 namespace modele_bd;
 
 use modele\Artistes;
+use modele_bd\AlbumBD;
 
 class ArtistesBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -72,13 +73,49 @@ class ArtistesBD {
         return $stmt->execute();
     }
 
-    public function deleteArtist($id) {
-        $query = "DELETE FROM Artistes WHERE id_Artistes = :id";
-        $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+    public function deleteArtist($id, $imgArtiste)
+    {
+        $successMessage = "L'artiste a été supprimé avec succès.";
+        $failureMessage = "Échec de la suppression de l'artiste.";
 
-        return $stmt->execute();
+        if ($imgArtiste !== 'default.jpg') {
+            // Supprimer l'image associée à l'artiste
+            $imagePath = __DIR__ . "/../images/" . $imgArtiste; // Assurez-vous d'ajuster le chemin en fonction de votre structure
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        try {
+            // Supprimer les dépendances dans la table Interpreter
+            $queryInterpreter = "DELETE FROM Interpreter WHERE id_Artistes = :idArtistes";
+            $stmtInterpreter = $this->connexion->prepare($queryInterpreter);
+            $stmtInterpreter->bindParam(':idArtistes', $id, \PDO::PARAM_INT);
+            $stmtInterpreter->execute();
+
+            // Supprimer les dépendances dans la table Interpreter avec id_Musique spécifié
+            $queryInterpreterMusique = "DELETE FROM Interpreter WHERE id_Artistes = :idArtistes";
+            $stmtInterpreterMusique = $this->connexion->prepare($queryInterpreterMusique);
+            $stmtInterpreterMusique->bindParam(':idArtistes', $id, \PDO::PARAM_INT);
+            $stmtInterpreterMusique->execute();
+
+
+            // Supprimer l'artiste de la table Artistes
+            $queryArtist = "DELETE FROM Artistes WHERE id_Artistes = :idArtistes";
+            $stmtArtist = $this->connexion->prepare($queryArtist);
+            $stmtArtist->bindParam(':idArtistes', $id, \PDO::PARAM_INT);
+            $stmtArtist->execute();
+
+            return $successMessage;
+        } catch (\Exception $e) {
+            // En cas d'erreur, vous pouvez logguer l'exception ou gérer l'erreur de la manière appropriée
+            return $e;
+        }
     }
+
+
+
+    
 
     public function getArtistByAlbumId($idAlbum) {
         $query = "SELECT a.*

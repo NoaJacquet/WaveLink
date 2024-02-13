@@ -14,24 +14,47 @@
     $header = new Header();
     echo $header->render();
     ?>
+
+
     <main>
+
+    <?php
+    use modele_bd\Connexion;
+    use modele_bd\GenreBD;
+
+    $connexion = new Connexion();
+    $connexion->connexionBD();
+
+    $genreBD = new GenreBD($connexion->getPDO());
+
+    $genre = $genreBD->getGenreById($genreId); 
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
+        // Récupérer les données du formulaire si nécessaire
+
+        $resultMessage = $genreBD->deleteGenre($genre->getIdGenre(), $genre->getImgGenre());
+        echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+        
+        header('Location: /accueil_admin'); 
+        exit();
+    }
+    ?>
         <div id='main'>
             <div class='top'>
                 <a href="/accueil_admin" ><</a>
                 <p> Modifier </p>
                 <p style='display: none'>Annuler la modification</p>
+                <form id="deleteForm" method="post" action="">
+                    <button type="submit" name="deleteGenreButton">Supprimer</button>
+                </form>
             </div>
 
             <?php
-            use modele_bd\Connexion;
-            use modele_bd\GenreBD;
 
-            $connexion = new Connexion();
-            $connexion->connexionBD();
 
-            $genreBD = new GenreBD($connexion->getPDO());
-
-            $genre = $genreBD->getGenreById($genreId); 
+            
 
             echo '<div class="detail">';
             echo '<div class="img-genre">';

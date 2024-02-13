@@ -15,24 +15,50 @@
     echo $header->render();
     ?>
     <main>
+        <?php
+        use modele_bd\Connexion;
+        use modele_bd\ArtistesBD;
+        use modele_bd\AlbumBD;
+
+        $connexion = new Connexion();
+        $connexion->connexionBD();
+
+        $artisteBD = new ArtistesBD($connexion->getPDO());
+
+        $artiste = $artisteBD->getArtistById($artisteId);
+        $albumBD = new AlbumBD($connexion->getPDO());
+        $albums = $albumBD->getAlbumsByArtistId($artisteId);
+        
+
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
+            // Récupérer les données du formulaire si nécessaire
+            foreach ($albums as $album) {
+                $albumBD->deleteAlbum($album->getIdAlbum(),$album->getImgAlbum());
+            }
+
+            
+            $resultMessage = $artisteBD->deleteArtist($artiste->getIdArtistes(), $artiste->getImgArtistes());
+            echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+            
+            header('Location: /accueil_admin'); 
+            exit();
+        }
+        ?>
         <div id='main'>
             <div class='top'>
                 <a href="/accueil_admin" ><</a>
                 <p> Modifier </p>
                 <p style='display: none'>Annuler la modification</p>
+                <form id="deleteForm" method="post" action="">
+                    <button type="submit" name="deleteGenreButton">Supprimer</button>
+                </form>
             </div>
 
             <?php
-            use modele_bd\Connexion;
-            use modele_bd\ArtistesBD;
-
-            $connexion = new Connexion();
-            $connexion->connexionBD();
-
-            $artisteBD = new ArtistesBD($connexion->getPDO());
-
-            $artiste = $artisteBD->getArtistById($artisteId); // Replace $artisteId with the actual artist ID variable
-
+         
             echo '<div class="detail">';
             echo '<div class="img-artiste">';
             echo '<img src="../images/'.$artiste->getImgArtistes().'" alt="'.$artiste->getNomArtistes().'">';
@@ -81,10 +107,9 @@
             <div class="albums">
                 <?php
                 use View\AlbumView;
-                use modele_bd\AlbumBD;
 
-                $albumBD = new AlbumBD($connexion->getPDO());
-                $albums = $albumBD->getAlbumsByArtistId($artisteId);
+                
+                
 
 
                 AlbumView::renderAllAlbums($albums, $artisteBD);
