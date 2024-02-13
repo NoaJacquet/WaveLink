@@ -22,6 +22,9 @@ Autoloader::register();
     case "/accueil": 
         require __DIR__."/template/Accueil.php";
         break;
+    case "/genre": 
+        require __DIR__."/template/Genre.php";
+        break;
     default:
         echo "404";
         break;

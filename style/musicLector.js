@@ -63,7 +63,7 @@ $(document).ready(function(){
         //         console.error('Erreur lors du chargement du contenu :', status, error);
         //     }
         // });
-        container.load("template/Playlist.php");
+        container.load("template/PlaylistDetail.php");
     });
 });
 
@@ -75,13 +75,13 @@ $(document).ready(function(){
     });
 });
 
-$(document).ready(function(){
-    var trigger = $('#main #genre'),
-    container = $('#main');
-    trigger.on('click', function(){
-        container.load("template/Genre.php");
-    });
-});
+// $(document).ready(function(){
+//     var trigger = $('#main #genre'),
+//     container = $('#main');
+//     trigger.on('click', function(){
+//         container.load("template/Genre.php");
+//     });
+// });
 
 $(document).ready(function(){
     var trigger = $('#main #album'),
