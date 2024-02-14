@@ -174,5 +174,33 @@ class  AlbumBD {
     
         return $albums;
     }
+
+    public function getAlbumByMusicId($musicId) {
+        $query = "SELECT a.*
+                  FROM Album a
+                  NATURAL JOIN Contenir
+                  WHERE Contenir.id_Musique = :musicId";
+    
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':musicId', $musicId, \PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+        if ($row) {
+            $album = new Album(
+                $row['id_Album'],
+                $row['titre_Album'],
+                $row['annee_Sortie'],
+                $row['img_Album']
+            );
+    
+            return $album;
+        } else {
+            return null;
+        }
+    }
+
+    
     
 }

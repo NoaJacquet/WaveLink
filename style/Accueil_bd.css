@@ -265,3 +265,7 @@ header img{
     border-radius: 0px;
     box-sizing: border-box;
   }
+
+  .musique>*{
+    margin-inline: auto;
+  }
