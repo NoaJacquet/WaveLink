@@ -22,14 +22,13 @@
     ?>
     <div id='main'>
         <ul>
+            
             <?php   
-
                 use modele_bd\Connexion;
                 use modele_bd\GenreBD;   
                 $connexion = new Connexion();
                 $connexion->connexionBD();  
                 $genreManager = new GenreBD($connexion->getPDO());
-
                 $genres = $genreManager->getAllGenres();
                 foreach($genres as $key => $genre){
                     echo "<li>";

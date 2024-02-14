@@ -7,6 +7,7 @@ const progressTime = document.getElementById("progress-time");
 const playButton = document.getElementById("play-button");
 const pauseButton = document.getElementById("pause-button");
 const musicName = document.getElementById("music-name");
+const musique = document.getElementById("son");
 
 totalTime.textContent = buildDuration(audio.duration);
 lector.setAttribute("max", audio.duration)
@@ -19,6 +20,12 @@ function buildDuration(duration) {
 }
 
 playButton.addEventListener("click", function(){
+    audio.play();
+    playButton.style.display = "none";
+    pauseButton.style.display = "initial";
+});
+
+musique.addEventListener("click", function(){
     audio.play();
     playButton.style.display = "none";
     pauseButton.style.display = "initial";
@@ -63,7 +70,7 @@ $(document).ready(function(){
         //         console.error('Erreur lors du chargement du contenu :', status, error);
         //     }
         // });
-        container.load("template/PlaylistDetail.php");
+        //container.load("template/PlaylistDetail.php");
     });
 });
 
