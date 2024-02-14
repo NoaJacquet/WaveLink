@@ -15,42 +15,52 @@
     echo $header->render();
     ?>
     <main>
-        <?php
-        use modele_bd\Connexion;
-        use modele_bd\ArtistesBD;
-        use modele_bd\AlbumBD;
+    <?php
+    use modele_bd\Connexion;
+    use modele_bd\ArtistesBD;
 
-        $connexion = new Connexion();
-        $connexion->connexionBD();
+    $connexion = new Connexion();
+    $connexion->connexionBD();
 
-        $artisteBD = new ArtistesBD($connexion->getPDO());
+    $artisteBD = new ArtistesBD($connexion->getPDO());
 
-        $artiste = $artisteBD->getArtistById($artisteId);
-        $albumBD = new AlbumBD($connexion->getPDO());
-        $albums = $albumBD->getAlbumsByArtistId($artisteId);
-        
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
+        $nomArtiste = $_POST['nomArtiste'];
+        $image_file = $_FILES['image'];
 
+        // Vérifiez si un fichier a été téléchargé
+        if ($image_file['error'] == UPLOAD_ERR_OK) {
+            // Sécurisez le nom du fichier
+            $filename = basename($image_file['name']);
+            $filename = $filename . '_' . uniqid(); // Ajoutez un identifiant unique pour éviter les doublons
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
-            // Récupérer les données du formulaire si nécessaire
-            foreach ($albums as $album) {
-                $albumBD->deleteAlbum($album->getIdAlbum(),$album->getImgAlbum());
-            }
-
-            
-            $resultMessage = $artisteBD->deleteArtist($artiste->getIdArtistes(), $artiste->getImgArtistes());
-            echo '<script>alert("' . $resultMessage . '");</script>';
-
-
-            
-            header('Location: /accueil_admin'); 
-            exit();
+            // Enregistrez le fichier dans le répertoire "images"
+            $imagePath = "images/" . $filename;
+            move_uploaded_file($image_file['tmp_name'], $imagePath);
+        } else {
+            // Aucune image fournie, utilisez l'image par défaut
+            $filename = 'default.jpg';
+            $imagePath = "images/" . $filename;
         }
-        ?>
+
+        // Insérer l'artiste dans la base de données
+        $result = $artisteBD->insertArtist($nomArtiste, $filename);
+
+        if ($result) {
+            echo '<script>alert("L\'artiste a été ajouté avec succès.");</script>';
+        } else {
+            echo '<script>alert("Erreur lors de l\'ajout de l\'artiste.");</script>';
+        }
+
+        header('Location: /accueil_admin');
+        exit();
+    }
+    ?>
+
         <div id='main'>
 
             <div class="modif-detail" >
-                <form action="" method="post" >
+                <form action="" method="post" enctype="multipart/form-data">
 
                     <div class="form-label-admin">
                         <label class="custum-file-upload" id="dropZone" for="file" required>
@@ -60,7 +70,7 @@
                             <div class="text" >
                                 <span>Click to upload image</span>
                             </div>
-                            <input type="file" name="image" id="inputFile" accept="image/*" required>
+                            <input type="file" name="image" id="inputFile" accept="image/*" >
                         </label>
 
                         <div class="image-preview" id="imagePreview" style="display: none;">
@@ -69,7 +79,7 @@
                             <div class="change-image-text" id="changeImageText">Changer l'image</div>
                         </div>
 
-                        <input type="submit" value="Ajouter">
+                        <input type="submit" value="Ajouter" name="Ajouter">
                     </div>
 
                     <div class="detail-artiste">

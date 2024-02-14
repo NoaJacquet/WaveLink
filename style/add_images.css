@@ -42,11 +42,12 @@
   }
 
   .change-image-text {
+
     transform: translate(0%, -350%);
     display: none;
     color: white; /* Ajoutez d'autres styles selon vos besoins */
     background-color: rgba(0, 0, 0, 0.7); /* Ajoutez d'autres styles selon vos besoins */
-    padding: 10px; /* Ajoutez d'autres styles selon vos besoins */
+    padding: 3px; /* Ajoutez d'autres styles selon vos besoins */
     border-radius: 5px; /* Ajoutez d'autres styles selon vos besoins */
     cursor: pointer;
 }

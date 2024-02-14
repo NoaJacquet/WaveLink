@@ -28,6 +28,19 @@ switch ($path) {
     case "/add-genre":
         require __DIR__."/template/add_genre.php";
         break;
+    case strpos($path, "/add-album") !== false:
+        // Récupérer l'ID de l'album à partir de la requête
+        $artisteId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    
+        // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
+        if ($artisteId > 0) {
+            // Inclure le fichier du contrôleur pour la page album-detail
+            require __DIR__."/template/add_album.php";
+        } else {
+            // Gérer le cas où l'ID n'est pas valide
+            echo "ID d'artiste non valide";
+        }
+        break;
     case strpos($path, "/album_detail") !== false:
         // Récupérer l'ID de l'album à partir de la requête
         $albumId = isset($_GET['id']) ? intval($_GET['id']) : 0;

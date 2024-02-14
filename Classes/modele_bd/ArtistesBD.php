@@ -52,12 +52,13 @@ class ArtistesBD {
         }
     }
 
-    public function insertArtist(Artistes $artist) {
+    public function insertArtist($nom_artiste, $img_artiste) {
+
         $query = "INSERT INTO Artistes (nom_Artistes, img_Artistes) 
                   VALUES (:nom, :img)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':nom', $artist->getNomArtistes());
-        $stmt->bindParam(':img', $artist->getImgArtistes());
+        $stmt->bindParam(':nom', $nom_artiste);
+        $stmt->bindParam(':img', $img_artiste);
 
         return $stmt->execute();
     }
@@ -80,7 +81,7 @@ class ArtistesBD {
 
         if ($imgArtiste !== 'default.jpg') {
             // Supprimer l'image associée à l'artiste
-            $imagePath = __DIR__ . "/../images/" . $imgArtiste; // Assurez-vous d'ajuster le chemin en fonction de votre structure
+            $imagePath = "images/" . $imgArtiste; // Assurez-vous d'ajuster le chemin en fonction de votre structure
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }

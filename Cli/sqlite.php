@@ -217,13 +217,12 @@ EOF;
                         
 
                         $genres = explode(',', trim($entry['genre'], '[]'));
-                        // echo $entry['genre'];
 
                         // Pour chaque genre dans la liste
                         foreach ($genres as $genre) {
                             $genre = trim($genre);
                             if (!empty($genre)){
-                                echo '['.$genre.']';
+                                
                                 // Vérification et insertion du genre
                                 $stmtGenreCheck = $pdo->prepare("SELECT id_Genre FROM Genre WHERE nom_Genre = :genre");
                                 $stmtGenreCheck->execute([':genre' => $genre]);

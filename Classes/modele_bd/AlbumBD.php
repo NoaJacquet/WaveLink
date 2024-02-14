@@ -52,16 +52,42 @@ class  AlbumBD {
         }
     }
 
-    public function insertAlbum(Album $album) {
-        $query = "INSERT INTO Album (titre_Album, annee_Sortie, img_Album) 
-                  VALUES (:titre, :annee, :img)";
-        $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':titre', $album->getTitreAlbum());
-        $stmt->bindParam(':annee', $album->getAnneeSortie());
-        $stmt->bindParam(':img', $album->getImgAlbum());
-
-        return $stmt->execute();
+    public function insertAlbum($nomAlbum, $genresSelectionnes, $filename, $idArtiste, $annee) {
+        $queryAlbum = "INSERT INTO Album (titre_Album, annee_Sortie, img_Album) 
+                      VALUES (:titre, :annee, :img)";
+        $stmtAlbum = $this->connexion->prepare($queryAlbum);
+        $stmtAlbum->bindParam(':titre', $nomAlbum);
+        // Vous pouvez ajouter l'année de sortie si vous en avez besoin
+        // $stmtAlbum->bindParam(':annee', $annee);
+        $stmtAlbum->bindParam(':img', $filename);
+    
+        $successAlbum = $stmtAlbum->execute();
+    
+        if ($successAlbum) {
+            $idAlbum = $this->connexion->lastInsertId();
+    
+            $queryGenre = "INSERT INTO Appartenir (id_Album, id_Genre) VALUES (:idAlbum, :idGenre)";
+            $stmtGenre = $this->connexion->prepare($queryGenre);
+    
+            foreach ($genresSelectionnes as $idGenre) {
+                $stmtGenre->bindParam(':idAlbum', $idAlbum);
+                $stmtGenre->bindParam(':idGenre', $idGenre);
+                $stmtGenre->execute();
+            }
+    
+            $queryCreer = "INSERT INTO Creer (id_Artistes, id_Album) VALUES (:idArtiste, :idAlbum)";
+            $stmtCreer = $this->connexion->prepare($queryCreer);
+            $stmtCreer->bindParam(':idAlbum', $idAlbum);
+            $stmtCreer->bindParam(':idArtiste', $idArtiste);
+            $stmtCreer->execute();
+            
+    
+            return true;
+        } else {
+            return false;
+        }
     }
+    
 
     public function updateAlbum(Album $album) {
         $query = "UPDATE Album SET titre_Album = :titre, 
@@ -81,7 +107,7 @@ class  AlbumBD {
     
         if ($imgAlbum !== 'default.jpg') {
             // Supprimer l'image associée à l'album
-            $imagePath = __DIR__ . "/../images/" . $imgAlbum; // Assurez-vous d'ajuster le chemin en fonction de votre structure
+            $imagePath = "images/" . $imgAlbum; // Assurez-vous d'ajuster le chemin en fonction de votre structure
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }

@@ -103,6 +103,8 @@
             </div>
             <div class="top">
                 <h2>Albums</h2>
+                <a href="/add-album?id=<?php echo $artisteId; ?>">Ajouter un album</a>
+
             </div>
             <div class="albums">
                 <?php

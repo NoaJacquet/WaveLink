@@ -30,11 +30,12 @@ class GenreBD {
         return $genres;
     }
 
-    public function insertGenre(Genre $genre) {
-        $query = "INSERT INTO Genre (nom_Genre) 
-                  VALUES (:nom)";
+    public function insertGenre($nomGenre, $imgGenre) {
+        $query = "INSERT INTO Genre (nom_Genre, img_Genre) 
+              VALUES (:nom, :img)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':nom', $genre->getNomGenre());
+        $stmt->bindParam(':nom', $nomGenre);
+        $stmt->bindParam(':img', $imgGenre);
 
         return $stmt->execute();
     }
@@ -45,7 +46,7 @@ class GenreBD {
     
         if ($img_Genre !== 'default.jpg') {
             // Supprimer l'image associée au genre
-            $imagePath = __DIR__ . "/../images/" . $img_Genre; // Assurez-vous d'ajuster le chemin en fonction de votre structure
+            $imagePath = "images/" . $img_Genre; // Assurez-vous d'ajuster le chemin en fonction de votre structure
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
