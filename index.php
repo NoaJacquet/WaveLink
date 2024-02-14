@@ -24,12 +24,6 @@ Autoloader::register();
         break;
     case "/accueil_admin":
         require __DIR__."/template/accueil_adm.php";
-    case "/genre": 
-        require __DIR__."/template/Genre.php";
-        break;
-    case "/detail-playlist": 
-        require __DIR__."/template/PlaylistDetail.php";
-        break;
     default:
         echo "404";
         break;
