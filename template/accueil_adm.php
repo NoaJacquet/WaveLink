@@ -1,3 +1,30 @@
+<?php
+    use modele_bd\Connexion;
+    use modele_bd\AlbumBD;
+    use modele_bd\ArtistesBD;
+    use View\AlbumView;
+    use View\Header;
+    use View\ArtisteView;
+    use modele_bd\GenreBD;
+    use View\GenreView;
+
+                
+
+                
+    $header = new Header();
+
+    $connexion = new Connexion();
+    $connexion->connexionBD();
+    $albumBD = new AlbumBD($connexion->getPDO());
+    $artisteBD = new ArtistesBD($connexion->getPDO());
+    $albums = $albumBD->getAllAlbums();
+    $artistes = $artisteBD->getAllArtists();
+
+    $genreBD = new GenreBD($connexion->getPDO());
+    $genres = $genreBD->getAllGenres();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,8 +35,6 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
     echo $header->render();
     ?>
     <main>
@@ -22,18 +47,6 @@
             <div class="album"  >
                 
                 <?php
-                use modele_bd\Connexion;
-                use modele_bd\AlbumBD;
-                use modele_bd\ArtistesBD;
-                use View\AlbumView;
-        
-                $connexion = new Connexion();
-                $connexion->connexionBD();
-        
-                $albumBD = new AlbumBD($connexion->getPDO());
-                $artisteBD = new ArtistesBD($connexion->getPDO());
-
-                $albums = $albumBD->getAllAlbums();
 
                 AlbumView::renderAlbums($albums, $artisteBD, $albumBD);
 
@@ -58,11 +71,6 @@
 
             <div class="artiste">
                 <?php
-                use View\ArtisteView;
-
-                $artistes = $artisteBD->getAllArtists();
-                
-
                 ArtisteView::renderArtistes($artistes);
                 ?>
             </div>
@@ -80,12 +88,6 @@
             </div>  
             <div class="genre">
                 <?php
-                use modele_bd\GenreBD;
-                use View\GenreView;
-
-                $genreBD = new GenreBD($connexion->getPDO());
-                $genres = $genreBD->getAllGenres();
-
                 GenreView::renderGenres($genres, $genreBD);
                 ?>
             </div>

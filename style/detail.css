@@ -81,7 +81,7 @@
     margin-top: 4%;
 }
 
-.musique, .album{
+.album{
     width: 100%;
     display: flex;
     margin-bottom: 15px;
@@ -91,4 +91,32 @@
 
 .top>a:hover{
     color: blue;
+}
+
+
+.musique{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.musique>*{
+    width: 90%;
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    color: antiquewhite;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10;
+    background-color: #2b2929;
+}
+.musique>*>*{
+    width: 30%;
+    margin-inline: center;
+    display: flex;
+    justify-content: center;
+
 }

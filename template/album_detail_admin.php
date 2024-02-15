@@ -1,9 +1,104 @@
+<?php
+
+use modele\Album;
+use View\Header;
+use modele_bd\Connexion;
+use modele_bd\AlbumBD;
+use modele_bd\ArtistesBD;
+use modele_bd\AppartenirBD;
+use modele_bd\GenreBD;  
+use modele_bd\ContenirBD;
+use modele_bd\MusiqueBD;
+use View\MusiqueView;
+                
+                
+
+    
+$header = new Header();
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+
+$albumBD = new AlbumBD($connexion->getPDO());
+$artisteBD = new ArtistesBD($connexion->getPDO());
+
+$albums = $albumBD->getAlbumById($albumId);
+$artiste = $artisteBD->getArtistByAlbumId($albums->getIdAlbum());
+
+$artistes = $artisteBD->getAllArtists();
+
+$appartenirBD = new AppartenirBD($connexion->getPDO());
+$genreBD = new GenreBD($connexion->getPDO());
+
+$genre = $appartenirBD->getGenresByAlbumId($albums->getIdAlbum());
+$allGenres = $genreBD->getAllGenres();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
+
+    $resultMessage = $albumBD->deleteAlbum($albums->getIdAlbum(), $albums->getImgAlbum());
+    echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+    
+    header('Location: /accueil_admin'); 
+    exit();
+}
+
+$contenirBD = new ContenirBD($connexion->getPDO());
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter'])) {
+    // Récupérer les données du formulaire
+    $selectedMusiqueId = $_POST['musique_selectionnee'];
+
+    // Supprimer l'album en fonction de la musique sélectionnée
+    $resultMessage = $contenirBD->insertContenir($albums->getIdAlbum(),$selectedMusiqueId);
+    if ($resultMessage === "musique_existante") {
+        echo '<script>alert("La musique existe déjà dans l\'Album.");</script>';
+    } else {
+        echo '<script>alert("' . $resultMessage . '");</script>';
+        // Rediriger vers la page d'accueil admin
+        header('Location: /album_detail_admin?id='.$albums->getIdAlbum());
+        exit();
+    }
+}
+
+
+$musiqueBD = new MusiqueBD($connexion->getPDO());
+        
+$allMusiqueArtiste = $musiqueBD->getMusiquesByArtistId($artiste->getIdArtistes());
+
+
+
+$musiques=$musiqueBD->getMusiquesByAlbumId($albumId);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_musique'])) {
+
+    // Récupérer les données du formulaire
+    $idMusiqueASupprimer = $_POST['id_musique_a_supprimer'];
+
+    // Supprimer la musique en fonction de l'ID sélectionné
+    $resultMessage = $contenirBD->deleteContenir($albums->getIdAlbum(), $idMusiqueASupprimer);
+
+    // Afficher une alerte en fonction du résultat
+    header('Location: /album_detail_admin?id='.$albums->getIdAlbum());
+    exit();
+}
+
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <link rel='stylesheet' href='../style/Accueil_bd.css'>
     <link rel='stylesheet' href='../style/add_images.css'>
     <link rel='stylesheet' href='../style/detail.css'>
+    <link rel='stylesheet' href='../style/bouton_supprimer.css'>
 
 
     <meta charset="UTF-8">
@@ -12,68 +107,9 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
     echo $header->render();
     ?>
-    <main>
-    <?php
-    use modele_bd\Connexion;
-    use modele_bd\AlbumBD;
-    use modele_bd\ArtistesBD;
-    use modele_bd\AppartenirBD;
-    use modele_bd\GenreBD;    
-
-    $connexion = new Connexion();
-    $connexion->connexionBD();
-
-
-    $albumBD = new AlbumBD($connexion->getPDO());
-    $artisteBD = new ArtistesBD($connexion->getPDO());
-
-    $albums = $albumBD->getAlbumById($albumId);
-    $artiste = $artisteBD->getArtistByAlbumId($albums->getIdAlbum());
-
-    $artistes = $artisteBD->getAllArtists();
-
-    $appartenirBD = new AppartenirBD($connexion->getPDO());
-    $genreBD = new GenreBD($connexion->getPDO());
-
-    $genre = $appartenirBD->getGenresByAlbumId($albums->getIdAlbum());
-    $allGenres = $genreBD->getAllGenres();
-    // Inclure vos classes et fonctions nécessaires ici
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
-        // Récupérer les données du formulaire si nécessaire
-
-        $resultMessage = $albumBD->deleteAlbum($albums->getIdAlbum(), $albums->getImgAlbum());
-        echo '<script>alert("' . $resultMessage . '");</script>';
-
-
-        
-        header('Location: /accueil_admin'); 
-        exit();
-    }
-
-    use modele_bd\ContenirBD;
-
-    $contenirBD = new ContenirBD($connexion->getPDO());
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter'])) {
-        // Récupérer les données du formulaire
-        $selectedMusiqueId = $_POST['musique_selectionnee'];
-    
-        // Supprimer l'album en fonction de la musique sélectionnée
-        $resultMessage = $contenirBD->insertContenir($albums->getIdAlbum(),$selectedMusiqueId);
-        echo '<script>alert("' . $resultMessage . '");</script>';
-    
-        // Rediriger vers la page d'accueil admin
-        header('Location: /album_detail_admin?id='.$albums->getIdAlbum());
-        exit();
-    }
-    ?>
-
-        
+    <main>      
 
         <div id='main'>
             <div class='top'>
@@ -86,11 +122,6 @@
             </div>
 
             <?php
-
-
-            
-
-
             echo '<div class="detail">';
             echo '<div class="img-album">';
             echo '<img src="../images/'.$albums->getImgAlbum().'" alt="'.$albums->getTitreAlbum().'">';
@@ -98,8 +129,6 @@
             echo '<div class="album-info">';
             echo '<h2>'.$albums->getTitreAlbum().'</h2>';
             echo '<p>Année de sortie: '.$albums->getAnneeSortie().'</p>';
-
-            // Afficher les genres
             if (!empty($genre)) {
                 echo '<p>Genres: ';
                 foreach ($genre as $g) {
@@ -107,14 +136,9 @@
                 }
                 echo '</p>';
             }
-
-            // Afficher l'artiste
             echo '<p>Artiste: '.$artiste->getNomArtistes().'</p>';
-
-            // Ajoutez d'autres détails de l'album selon vos besoins
             echo '</div>';
             echo '</div>';
-
             ?>
 
             <div class="modif-detail" style ='display:none'>
@@ -170,30 +194,12 @@
                             <?php endforeach; ?>
                         </div>
 
-
-
-
-
                     </div>
-
-
-
-
-
                 </form>
 
             </div>
             <div class="top">
                 <h2>Musique</h2>
-                
-                    
-                    <?php 
-                    use modele_bd\MusiqueBD;
-
-                    $musiqueBD = new MusiqueBD($connexion->getPDO());
-        
-                    $allMusiqueArtiste = $musiqueBD->getMusiquesByArtistId($artiste->getIdArtistes());
-                    ?>
 
                     <form id="" method="post" action="">
                         <select name="musique_selectionnee">
@@ -208,10 +214,7 @@
             </div>
             <div class="musique">
                 <?php
-                use View\MusiqueView;
-                
-                $musiques=$musiqeBD->getMusiquesByAlbumId($albumId);
-                MusiqueView::renderAllMusiques($musiques);
+                MusiqueView::renderAllMusiques($musiques, $albumBD, $albumId);
                 ?>
             </div>
 

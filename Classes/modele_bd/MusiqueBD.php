@@ -74,8 +74,9 @@ class MusiqueBD {
 
 
     public function getMusiquesByAlbumId($idAlbum) {
+        echo $idAlbum;
         $query = "SELECT m.* FROM Musique m
-                  INNER JOIN Contenir c ON m.id_Musique = c.id_Musique
+                  NATURAL JOIN Contenir c
                   WHERE c.id_Album = :idAlbum";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
