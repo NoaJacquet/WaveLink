@@ -33,7 +33,6 @@ $footer = new Footer();
     <title>Accueil</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://unpkg.com/htmx.org@latest/dist/htmx.js"></script>
-
 </head>
 <body>
     <?php
@@ -43,6 +42,7 @@ $footer = new Footer();
     <?php
     echo $playlist->render();
     ?>
+    <div class="slider-container">
     <div id='main'>
             <?php
             echo "<h1>".$albumManager->getAlbumById($musiqueId)->getTitreAlbum()."</h1>";
@@ -50,7 +50,7 @@ $footer = new Footer();
             foreach($musiques as $key => $musique){
                 echo "<li>";
                 echo "<div id='son'>";
-                echo "<img src='rap.jpg' alt=''>";
+                echo "<img src='/images/".$albumManager->getAlbumById($musiqueId)->getImgAlbum()."' alt=''>";
                 echo "<div>";
                 echo "<p>".$musique->getNomMusique()."</p>";
                 echo "</div>";
@@ -58,6 +58,8 @@ $footer = new Footer();
                 echo "</li>";
             }
             ?> 
+    </div>
+    </div>
        </main>
     <?php
     echo $footer->render();

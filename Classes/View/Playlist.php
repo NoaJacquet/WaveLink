@@ -21,7 +21,7 @@ Class Playlist implements RenderInterface{
         $res .="<h2>Playlist</h2>";
         $res .="<ul>";
         $res .= "<li>";
-        $res .= "<p>+</p>";
+        $res .= "<div id='creer-playlist'>+</div>";
         $res .= "</li>";
         foreach($playlists as $key => $playlist){
             $res .= "<li>";

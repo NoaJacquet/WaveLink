@@ -43,14 +43,6 @@ $footer = new Footer();
     echo $playlist->render();
     ?>
     <div id='main'>
-   <h1>Rap</h1>
-       <div id="son">
-           <img src="chambre140.jpg" alt="">
-           <div>
-               <p>Mignon tout plein</p>
-               <p>PLK</p>
-           </div>
-       </div>
             <?php
 
             foreach($musiques as $key => $musique){
@@ -59,7 +51,7 @@ $footer = new Footer();
                 echo "<img src='rap.jpg' alt=''>";
                 echo "<div>";
                 echo "<p>".$musique->getNomMusique()."</p>";
-                echo "<p>".$musique->getInterpreteMusique()."</p>";
+                //echo "<p>".$musique->getInterpreteMusique()."</p>";
                 echo "</div>";
                 echo "</div>";
                 echo "</li>";
