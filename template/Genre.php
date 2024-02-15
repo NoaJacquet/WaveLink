@@ -1,3 +1,26 @@
+<?php
+
+use View\Header;
+$header = new Header();
+
+use View\Playlist;
+$playlist = new Playlist();
+
+use modele_bd\Connexion;
+use modele_bd\GenreBD;   
+$connexion = new Connexion();
+$connexion->connexionBD();  
+$genreManager = new GenreBD($connexion->getPDO());
+$albums = $genreManager->getAlbumByIdGenre($genreId);
+
+use View\Footer;
+$footer = new Footer();
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,42 +33,30 @@
 </head>
     <body>
     <?php
-        use View\Header;
-        $header = new Header();
         echo $header->render();
     ?>
     <main>
     <?php
-        use View\Playlist;
-        $playlist = new Playlist();
         echo $playlist->render();
-        ?>
-    <div id='main'>
-
-    <h2>Album de genre :</h2>
-    <?php       
-                use modele_bd\Connexion;
-                use modele_bd\GenreBD;   
-                $connexion = new Connexion();
-                $connexion->connexionBD();  
-                $genreManager = new GenreBD($connexion->getPDO());
-                $albums = $genreManager->getAlbumByIdGenre($genreId);
-                foreach($albums as $key => $album){
-                    echo "<li>";
-                    echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
-                    echo "<div id='detail-playlist'>";
-                    echo "<img src='../images/".$album->getImgAlbum()."' alt=''>";
-                    echo "<p>".$album->getTitreAlbum()."</p>";
-                    echo "</div>";
-                    echo "</a>";
-                    echo "</li>";
-                }
     ?>
-    </div>
+        <div id='main'>
+
+        <h2>Album de genre :</h2>
+            <?php       
+                    foreach($albums as $key => $album){
+                        echo "<li>";
+                        echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
+                        echo "<div id='detail-playlist'>";
+                        echo "<img src='../images/".$album->getImgAlbum()."' alt=''>";
+                        echo "<p>".$album->getTitreAlbum()."</p>";
+                        echo "</div>";
+                        echo "</a>";
+                        echo "</li>";
+                    }
+            ?>
+        </div>
     </main>
     <?php
-        use View\Footer;
-        $footer = new Footer();
         echo $footer->render();
         ?>
 </body>

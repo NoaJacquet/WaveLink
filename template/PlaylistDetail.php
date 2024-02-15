@@ -1,3 +1,27 @@
+<?php
+
+use View\Header;
+$header = new Header();
+
+use View\Playlist;
+$playlist = new Playlist();
+
+use modele_bd\Connexion;
+use modele_bd\PlaylistBD;
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+$playlistManager = new PlaylistBD($connexion->getPDO());
+
+$musiques = $playlistManager->getSongByIdPlaylist(1);
+
+use View\Footer;
+$footer = new Footer();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,14 +34,12 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
+
     echo $header->render();
     ?>
     <main>
     <?php
-    use View\Playlist;
-    $playlist = new Playlist();
+
     echo $playlist->render();
     ?>
     <div id='main'>
@@ -30,15 +52,7 @@
            </div>
        </div>
             <?php
-            use modele_bd\Connexion;
-            use modele_bd\PlaylistBD;
-    
-            $connexion = new Connexion();
-            $connexion->connexionBD();
-    
-            $playlistManager = new PlaylistBD($connexion->getPDO());
 
-            $musiques = $playlistManager->getSongByIdPlaylist(1);
             foreach($musiques as $key => $musique){
                 echo "<li>";
                 echo "<div id='son'>";
@@ -53,8 +67,7 @@
             ?> 
        </main>
     <?php
-    use View\Footer;
-    $footer = new Footer();
+
     echo $footer->render();
     ?>
 </div>

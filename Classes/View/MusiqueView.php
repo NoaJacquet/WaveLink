@@ -28,7 +28,7 @@ class MusiqueView
         }
     }
 
-    public static function renderAllMusiques($musiques, AlbumBD $albumBD, $idAlbum){
+    public static function renderAllMusiques($musiques, AlbumBD $albumBD){
         if (empty($musiques)) {
             echo '<p>Aucune Musique</p>';
         } else {

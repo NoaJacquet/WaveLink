@@ -1,3 +1,48 @@
+<?php
+
+use modele_bd\UtilisateurBD;
+use modele_bd\Connexion;
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+$userManager = new UtilisateurBD($connexion->getPDO());
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $pseudo = $_POST["pseudo"];
+    $mdp = $_POST["mdp"];
+
+    if ($pseudo != "" && $mdp != "") {
+        $success = $userManager->insertUser($pseudo, $mdp);
+
+        if ($success === true) {
+            header("Location: /accueil");
+            exit();
+        } else {
+            $error_msg = "Erreur lors de l'inscription. Veuillez réessayer.";
+
+            if ($success === "duplicate_pseudo") {
+                $error_msg = "Le pseudo est déjà pris. Veuillez en choisir un autre.";
+            }
+
+            $registrationFailed = true;
+        }
+    }
+}
+
+
+if ($registrationFailed) {
+    echo "<script>alert(\"$error_msg\");</script>";
+}
+
+
+
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,41 +51,6 @@
     <title>Inscription</title>
 </head>
 <body>
-        <?php
-
-        use modele_bd\UtilisateurBD;
-        use modele_bd\Connexion;
-
-        $connexion = new Connexion();
-        $connexion->connexionBD();
-
-        $userManager = new UtilisateurBD($connexion->getPDO());
-
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $pseudo = $_POST["pseudo"];
-            $mdp = $_POST["mdp"];
-
-            if ($pseudo != "" && $mdp != "") {
-                $success = $userManager->insertUser($pseudo, $mdp);
-
-                if ($success === true) {
-                    header("Location: /accueil");
-                    exit();
-                } else {
-                    $error_msg = "Erreur lors de l'inscription. Veuillez réessayer.";
-
-                    if ($success === "duplicate_pseudo") {
-                        $error_msg = "Le pseudo est déjà pris. Veuillez en choisir un autre.";
-                    }
-
-                    $registrationFailed = true;
-                }
-            }
-        }
-        ?>
-
-
-
 
     <main>
 
@@ -74,9 +84,3 @@
 
 </body>
 </html>
-
-    <?php
-    if ($registrationFailed) {
-        echo "<script>alert(\"$error_msg\");</script>";
-    }
-    ?>

@@ -35,7 +35,7 @@
 </head>
 <body>
     <?php
-    echo $header->render();
+    echo $header->renderBis();
     ?>
     <main>
         <div id='main'>

@@ -1,3 +1,34 @@
+<?php
+use View\Header;
+$header = new Header();
+
+use View\Footer;
+$footer = new Footer();
+
+use modele_bd\Connexion;
+use modele_bd\GenreBD;
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+$genreBD = new GenreBD($connexion->getPDO());
+
+$genre = $genreBD->getGenreById($genreId); 
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
+    // Récupérer les données du formulaire si nécessaire
+
+    $resultMessage = $genreBD->deleteGenre($genre->getIdGenre(), $genre->getImgGenre());
+    echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+    
+    header('Location: /accueil_admin'); 
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,37 +41,12 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
-    echo $header->render();
+    echo $header->renderBis();
     ?>
 
 
     <main>
 
-    <?php
-    use modele_bd\Connexion;
-    use modele_bd\GenreBD;
-
-    $connexion = new Connexion();
-    $connexion->connexionBD();
-
-    $genreBD = new GenreBD($connexion->getPDO());
-
-    $genre = $genreBD->getGenreById($genreId); 
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
-        // Récupérer les données du formulaire si nécessaire
-
-        $resultMessage = $genreBD->deleteGenre($genre->getIdGenre(), $genre->getImgGenre());
-        echo '<script>alert("' . $resultMessage . '");</script>';
-
-
-        
-        header('Location: /accueil_admin'); 
-        exit();
-    }
-    ?>
         <div id='main'>
             <div class='top'>
                 <a href="/accueil_admin" ><</a>
@@ -52,10 +58,6 @@
             </div>
 
             <?php
-
-
-            
-
             echo '<div class="detail">';
             echo '<div class="img-genre">';
             echo '<img src="../images/'.$genre->getImgGenre().'" alt="'.$genre->getNomGenre().'">';
@@ -101,8 +103,6 @@
     </main>
 
     <?php
-    use View\Footer;
-    $footer = new Footer();
     echo $footer->render();
     ?>
 </body>

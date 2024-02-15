@@ -9,7 +9,11 @@ li {
 
 a {
     text-decoration: none;
-    color: white;
+    color: rgb(180, 146, 120);
+  }
+
+  a:hover {
+    color: rgb(65, 68, 178);
   }
 
 body {
@@ -266,4 +270,6 @@ header img{
     box-sizing: border-box;
   }
 
-  
+  label{
+    color: antiquewhite;
+  }

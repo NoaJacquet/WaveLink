@@ -1,3 +1,57 @@
+<?php
+use View\Header;
+$header = new Header();
+
+use View\Footer;
+$footer = new Footer();
+
+use modele_bd\Connexion;
+use modele_bd\GenreBD;
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+$genreBD = new GenreBD($connexion->getPDO());
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
+    $nomGenre = $_POST['nomGenre'];
+    $image_file = $_FILES['image'];
+
+    // Vérifiez si un fichier a été téléchargé
+    if ($image_file['error'] == UPLOAD_ERR_OK) {
+        // Sécurisez le nom du fichier
+        $filename = basename($image_file['name']);
+        $filename = $filename . '_' . uniqid(); // Ajoutez un identifiant unique pour éviter les doublons
+
+        // Enregistrez le fichier dans le répertoire "images"
+        $imagePath = "images/" . $filename;
+        move_uploaded_file($image_file['tmp_name'], $imagePath);
+    } else {
+        // Aucune image fournie, utilisez l'image par défaut
+        $filename = 'default.jpg';
+        $imagePath = "images/" . $filename;
+    }
+
+    // Insérer l'artiste dans la base de données
+    $result = $genreBD->insertGenre($nomGenre, $filename);
+
+    if ($result) {
+        echo '<script>alert("L\'artiste a été ajouté avec succès.");</script>';
+    } else {
+        echo '<script>alert("Erreur lors de l\'ajout de l\'artiste.");</script>';
+    }
+
+    header('Location: /accueil_admin');
+    exit();
+}
+
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,53 +64,9 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
-    echo $header->render();
+    echo $header->renderBis();
     ?>
     <main>
-    <?php
-    use modele_bd\Connexion;
-    use modele_bd\GenreBD;
-
-    $connexion = new Connexion();
-    $connexion->connexionBD();
-
-    $genreBD = new GenreBD($connexion->getPDO());
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
-        $nomGenre = $_POST['nomGenre'];
-        $image_file = $_FILES['image'];
-
-        // Vérifiez si un fichier a été téléchargé
-        if ($image_file['error'] == UPLOAD_ERR_OK) {
-            // Sécurisez le nom du fichier
-            $filename = basename($image_file['name']);
-            $filename = $filename . '_' . uniqid(); // Ajoutez un identifiant unique pour éviter les doublons
-
-            // Enregistrez le fichier dans le répertoire "images"
-            $imagePath = "images/" . $filename;
-            move_uploaded_file($image_file['tmp_name'], $imagePath);
-        } else {
-            // Aucune image fournie, utilisez l'image par défaut
-            $filename = 'default.jpg';
-            $imagePath = "images/" . $filename;
-        }
-
-        // Insérer l'artiste dans la base de données
-        $result = $genreBD->insertGenre($nomGenre, $filename);
-
-        if ($result) {
-            echo '<script>alert("L\'artiste a été ajouté avec succès.");</script>';
-        } else {
-            echo '<script>alert("Erreur lors de l\'ajout de l\'artiste.");</script>';
-        }
-
-        header('Location: /accueil_admin');
-        exit();
-    }
-    ?>
-
         <div id='main'>
 
             <div class="modif-detail" >
@@ -94,8 +104,6 @@
     </main>
 
     <?php
-    use View\Footer;
-    $footer = new Footer();
     echo $footer->render();
     ?>
 </body>

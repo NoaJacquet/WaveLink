@@ -1,3 +1,63 @@
+<?php
+use View\Header;
+use modele_bd\Connexion;
+use modele_bd\GenreBD;
+use modele_bd\AlbumBD;
+use View\Footer;
+$footer = new Footer();
+
+$header = new Header();
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+$albumBD = new AlbumBD($connexion->getPDO());
+
+$genreBD = new GenreBD($connexion->getPDO());
+$allGenres = $genreBD->getAllGenres();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
+    $nomAlbum = $_POST['nomAlbum'];
+    $image_file = $_FILES['image'];
+    $genresSelectionnes = isset($_POST['genres']) ? $_POST['genres'] : array();
+    $annee = $_POST['anneeSortie'];
+
+    // Vérifiez si un fichier a été téléchargé
+    if ($image_file['error'] == UPLOAD_ERR_OK) {
+        $filename = basename($image_file['name']);
+        $filename = $filename . '_' . uniqid();
+        $imagePath = "images/" . $filename;
+        move_uploaded_file($image_file['tmp_name'], $imagePath);
+    } else {
+        $filename = 'default.jpg';
+        $imagePath = "images/" . $filename;
+    }
+
+    // Insérer l'album dans la base de données
+    $result = $albumBD->insertAlbum($nomAlbum, $genresSelectionnes, $filename, $artisteId, $annee);
+
+    if ($result) {
+        echo '<script>alert("L\'album a été ajouté avec succès.");</script>';
+    } else {
+        echo '<script>alert("Erreur lors de l\'ajout de l\'album.");</script>';
+    }
+
+    header('Location: /artiste_detail?id='.$artisteId);
+    
+    exit();
+}
+
+
+
+
+
+
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,56 +70,9 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
-    echo $header->render();
+    echo $header->renderBis();
     ?>
     <main>
-    <?php
-    use modele_bd\Connexion;
-    use modele_bd\GenreBD;
-    use modele_bd\AlbumBD;
-
-    $connexion = new Connexion();
-    $connexion->connexionBD();
-
-    $albumBD = new AlbumBD($connexion->getPDO());
-
-    $genreBD = new GenreBD($connexion->getPDO());
-    $allGenres = $genreBD->getAllGenres();
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
-        $nomAlbum = $_POST['nomAlbum'];
-        $image_file = $_FILES['image'];
-        $genresSelectionnes = isset($_POST['genres']) ? $_POST['genres'] : array();
-        $annee = $_POST['anneeSortie'];
-    
-        // Vérifiez si un fichier a été téléchargé
-        if ($image_file['error'] == UPLOAD_ERR_OK) {
-            $filename = basename($image_file['name']);
-            $filename = $filename . '_' . uniqid();
-            $imagePath = "images/" . $filename;
-            move_uploaded_file($image_file['tmp_name'], $imagePath);
-        } else {
-            $filename = 'default.jpg';
-            $imagePath = "images/" . $filename;
-        }
-    
-        // Insérer l'album dans la base de données
-        $result = $albumBD->insertAlbum($nomAlbum, $genresSelectionnes, $filename, $artisteId, $annee);
-    
-        if ($result) {
-            echo '<script>alert("L\'album a été ajouté avec succès.");</script>';
-        } else {
-            echo '<script>alert("Erreur lors de l\'ajout de l\'album.");</script>';
-        }
-    
-        header('Location: /artiste_detail?id='.$artisteId);
-       
-        exit();
-    }
-    ?>
-
         <div id='main'>
 
             <div class="modif-detail" >
@@ -115,8 +128,6 @@
     </main>
 
     <?php
-    use View\Footer;
-    $footer = new Footer();
     echo $footer->render();
     ?>
 </body>
