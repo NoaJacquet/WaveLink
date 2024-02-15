@@ -99,6 +99,6 @@ $(document).ready(function(){
 // });
 
 creerPlaylist.addEventListener("click", function(){
-    const playlistName = prompt('Enter playlist name:');
+    const playlistName = prompt('Entrez le nom de la playlist :');
     console.log(playlistName);
 });
