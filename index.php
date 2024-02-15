@@ -28,6 +28,19 @@ switch ($path) {
     case "/add-genre":
         require __DIR__."/template/add_genre.php";
         break;
+    case strpos($path, "/genre_detail") !== false:
+        // Récupérer l'ID de l'genre à partir de la requête
+        $genreId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    
+        // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
+        if ($genreId > 0) {
+            // Inclure le fichier du contrôleur pour la page genre-detail
+            require __DIR__."/template/genre_detail.php";
+        } else {
+            // Gérer le cas où l'ID n'est pas valide
+            echo "ID d'genre non valide";
+        }
+        break;
     case strpos($path, "/genre") !== false:
         // Récupérer l'ID du genre à partir de la requête
         $genreId = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -117,19 +130,6 @@ switch ($path) {
         } else {
             // Gérer le cas où l'ID n'est pas valide
             echo "ID d'artiste non valide";
-        }
-        break;
-    case strpos($path, "/genre_detail") !== false:
-        // Récupérer l'ID de l'genre à partir de la requête
-        $genreId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    
-        // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
-        if ($genreId > 0) {
-            // Inclure le fichier du contrôleur pour la page genre-detail
-            require __DIR__."/template/genre_detail.php";
-        } else {
-            // Gérer le cas où l'ID n'est pas valide
-            echo "ID d'genre non valide";
         }
         break;
     default:
