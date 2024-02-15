@@ -95,6 +95,7 @@ class MusiqueBD {
     }
 
     public function getMusiquesByArtistId($idArtiste) {
+
         $query = "SELECT m.* FROM Musique m
                   NATURAL JOIN Interpreter i
                   WHERE i.id_Artistes = :idArtiste";

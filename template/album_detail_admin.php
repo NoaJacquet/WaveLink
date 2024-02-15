@@ -22,10 +22,11 @@
     use modele_bd\AlbumBD;
     use modele_bd\ArtistesBD;
     use modele_bd\AppartenirBD;
-    use modele_bd\GenreBD;
+    use modele_bd\GenreBD;    
 
     $connexion = new Connexion();
     $connexion->connexionBD();
+
 
     $albumBD = new AlbumBD($connexion->getPDO());
     $artisteBD = new ArtistesBD($connexion->getPDO());
@@ -51,6 +52,23 @@
 
         
         header('Location: /accueil_admin'); 
+        exit();
+    }
+
+    use modele_bd\ContenirBD;
+
+    $contenirBD = new ContenirBD($connexion->getPDO());
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter'])) {
+        // Récupérer les données du formulaire
+        $selectedMusiqueId = $_POST['musique_selectionnee'];
+    
+        // Supprimer l'album en fonction de la musique sélectionnée
+        $resultMessage = $contenirBD->insertContenir($albums->getIdAlbum(),$selectedMusiqueId);
+        echo '<script>alert("' . $resultMessage . '");</script>';
+    
+        // Rediriger vers la page d'accueil admin
+        header('Location: /album_detail_admin?id='.$albums->getIdAlbum());
         exit();
     }
     ?>
@@ -167,12 +185,31 @@
             </div>
             <div class="top">
                 <h2>Musique</h2>
+                
+                    
+                    <?php 
+                    use modele_bd\MusiqueBD;
+
+                    $musiqueBD = new MusiqueBD($connexion->getPDO());
+        
+                    $allMusiqueArtiste = $musiqueBD->getMusiquesByArtistId($artiste->getIdArtistes());
+                    ?>
+
+                    <form id="" method="post" action="">
+                        <select name="musique_selectionnee">
+                            <?php foreach ($allMusiqueArtiste as $musique) : ?>
+                                <option value="<?= $musique->getIdMusique(); ?>"><?= $musique->getNomMusique(); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="submit" name="ajouter">Ajouter musique</button>
+                    </form>
+
+
             </div>
             <div class="musique">
                 <?php
                 use View\MusiqueView;
-                use modele_bd\MusiqueBD;
-                $musiqeBD = new MusiqueBD($connexion->getPDO());
+                
                 $musiques=$musiqeBD->getMusiquesByAlbumId($albumId);
                 MusiqueView::renderAllMusiques($musiques);
                 ?>

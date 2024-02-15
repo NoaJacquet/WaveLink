@@ -29,12 +29,12 @@ class ContenirBD {
         return $contenirs;
     }
 
-    public function insertContenir(Contenir $contenir) {
+    public function insertContenir($idAlbum, $idMusique) {
         $query = "INSERT INTO Contenir (id_Album, id_Musique) 
                   VALUES (:idAlbum, :idMusique)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idAlbum', $contenir->getIdAlbum(), \PDO::PARAM_INT);
-        $stmt->bindParam(':idMusique', $contenir->getIdMusique(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
