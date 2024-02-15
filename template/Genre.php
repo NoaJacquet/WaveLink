@@ -33,7 +33,7 @@
                 foreach($albums as $key => $album){
                     echo "<li>";
                     echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
-                    echo "<div id='detail-playlist'>";
+                    echo "<div id='detail-album'>";
                     echo "<img src='../images/".$album->getImgAlbum()."' alt=''>";
                     echo "<p>".$album->getTitreAlbum()."</p>";
                     echo "</div>";

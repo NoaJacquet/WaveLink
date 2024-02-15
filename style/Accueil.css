@@ -104,7 +104,7 @@ footer{
     color: white;
 }
 
-footer p{
+p{ 
     font-size: 1vw;
 }
 
@@ -154,6 +154,7 @@ header img{
     align-items: center;
     color: white;
     margin-top: 1vh;
+    margin-left: 1vw;
     width: 70vw;
     transition: 0.3s;
   }
@@ -197,7 +198,7 @@ header img{
     transition: 0.3s;
     margin-left: -0.8vw;
   }
-  
+
   #detail-playlist img {
     width: 3vw;
     height: 6vh;
@@ -211,15 +212,40 @@ header img{
     height: 8.5vh;
     margin-left: -0.95vw;
   }
+  
+  #detail-album {
+    display: flex;
+    align-items: center;
+    margin-top: 2vh;
+    width: 70vw;
+    height: 8vh;
+    background-color: #292727;
+    transition: 0.3s;
+    margin-left: 1vw;
+  }
+
+  #detail-album:hover {
+    width: 70.5vw;
+    height: 8.5vh;
+  }
+
+  #detail-album img {
+    width: 3.5vw;
+    height: 7vh;
+    margin-right: 2vw;
+    margin-left: 1vw;
+    border-radius: 0.8vw;
+  }
 
   .slider-container {
-    overflow-y: scroll; /
+    overflow-y: scroll;
+    height: 74vh;
   }
 
   #main ul{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1vw;
+    grid-gap: 1.5vw;
     transition: transform 0.5s ease;
     justify-content: space-around;
     margin-left: 3vw;
@@ -232,20 +258,21 @@ header img{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 15vw;
-    height: 14vw;
+    width: 13vw;
+    height: 12vw;
     background: rgb(131,58,180);
     background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
   }
 
   #genre:hover{
-    width: 15.5vw;
-    height: 14.5vw;
+    width: 13.5vw;
+    height: 12.5vw;
   }
 
   #genre p{
-    font-size: 2vw;
+    font-size: 1.7vw;
     font-weight: bold;
+
   }
 
   #album{

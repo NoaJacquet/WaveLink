@@ -7,6 +7,7 @@ const progressTime = document.getElementById("progress-time");
 const playButton = document.getElementById("play-button");
 const pauseButton = document.getElementById("pause-button");
 const musicName = document.getElementById("music-name");
+const creerPlaylist = document.getElementById("creer-playlist");
 const musique = document.getElementById("son");
 
 totalTime.textContent = buildDuration(audio.duration);
@@ -35,7 +36,6 @@ pauseButton.addEventListener("click", function(){
     audio.pause();
     playButton.style.display = "initial";
     pauseButton.style.display = "none";
-    console.log(audio.currentTime);
 });
 
 audio.addEventListener("timeupdate", function(){
@@ -97,3 +97,8 @@ $(document).ready(function(){
 //         container.load("template/Album.php");
 //     });
 // });
+
+creerPlaylist.addEventListener("click", function(){
+    const playlistName = prompt('Enter playlist name:');
+    console.log(playlistName);
+});

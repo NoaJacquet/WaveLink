@@ -13,7 +13,6 @@ Class Header implements RenderInterface{
         $res .= '<a href="/accueil"><li><img src="../../images/logo.png" alt="logo"></li></a>';
         $res .= '<li><h1>Wavelink</h1></li>';
         $res .= '<li><input type=text placeholder="Rechercher"></li>';
-        $res .= '<li><p>image</p></li>';
         $res .= '</ul>';
         $res .= '</header>';
         return $res;

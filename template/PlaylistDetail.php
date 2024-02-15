@@ -21,14 +21,6 @@
     echo $playlist->render();
     ?>
     <div id='main'>
-   <h1>Rap</h1>
-       <div id="son">
-           <img src="chambre140.jpg" alt="">
-           <div>
-               <p>Mignon tout plein</p>
-               <p>PLK</p>
-           </div>
-       </div>
             <?php
             use modele_bd\Connexion;
             use modele_bd\PlaylistBD;
@@ -38,6 +30,7 @@
     
             $playlistManager = new PlaylistBD($connexion->getPDO());
 
+            echo '<h1>'.$playlistManager->getPlaylistById(1)->getNomPlaylist().'</h1>';
             $musiques = $playlistManager->getSongByIdPlaylist(1);
             foreach($musiques as $key => $musique){
                 echo "<li>";
@@ -45,7 +38,7 @@
                 echo "<img src='rap.jpg' alt=''>";
                 echo "<div>";
                 echo "<p>".$musique->getNomMusique()."</p>";
-                echo "<p>".$musique->getInterpreteMusique()."</p>";
+                //echo "<p>".$musique->getInterpreteMusique()."</p>";
                 echo "</div>";
                 echo "</div>";
                 echo "</li>";

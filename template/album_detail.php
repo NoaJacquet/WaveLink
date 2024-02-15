@@ -6,7 +6,6 @@
     <title>Accueil</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://unpkg.com/htmx.org@latest/dist/htmx.js"></script>
-
 </head>
 <body>
     <?php
@@ -20,6 +19,7 @@
     $playlist = new Playlist();
     echo $playlist->render();
     ?>
+    <div class="slider-container">
     <div id='main'>
             <?php
             use modele_bd\Connexion;
@@ -37,7 +37,7 @@
             foreach($musiques as $key => $musique){
                 echo "<li>";
                 echo "<div id='son'>";
-                echo "<img src='rap.jpg' alt=''>";
+                echo "<img src='/images/".$albumManager->getAlbumById($musiqueId)->getImgAlbum()."' alt=''>";
                 echo "<div>";
                 echo "<p>".$musique->getNomMusique()."</p>";
                 echo "</div>";
@@ -45,6 +45,8 @@
                 echo "</li>";
             }
             ?> 
+    </div>
+    </div>
        </main>
     <?php
     use View\Footer;
