@@ -94,13 +94,7 @@ switch ($argv[1]) {
             FOREIGN KEY (id_Playlist) REFERENCES Playlist (id_Playlist)
         );
         
-        CREATE TABLE Composer (
-            id_Musique  INTEGER NOT NULL,
-            id_Artistes INTEGER NOT NULL,
-            PRIMARY KEY (id_Musique, id_Artistes),
-            FOREIGN KEY (id_Artistes) REFERENCES Artistes (id_Artistes),
-            FOREIGN KEY (id_Musique) REFERENCES Musique (id_Musique)
-        );
+
         
         CREATE TABLE Contenir (
             id_Album   INTEGER NOT NULL,
@@ -120,7 +114,8 @@ switch ($argv[1]) {
         
         CREATE TABLE Genre (
             id_Genre  INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_Genre TEXT
+            nom_Genre TEXT,
+            img_Genre TEXT
         );
         
         CREATE TABLE Interpreter (
@@ -134,10 +129,7 @@ switch ($argv[1]) {
         CREATE TABLE Musique (
             id_Musique           INTEGER PRIMARY KEY AUTOINCREMENT,
             nom_Musique          TEXT,
-            genre_Musique        TEXT,
-            interprete_Musique   TEXT,
-            Compositeur_Musique  TEXT,
-            annee_Sortie_Musique TEXT
+            url_Musique          TEXT
         );
         
         CREATE TABLE Noter (
@@ -188,7 +180,6 @@ switch ($argv[1]) {
     DROP TABLE IF EXISTS Playlist;
     DROP TABLE IF EXISTS Avoir;
     DROP TABLE IF EXISTS Appartenir;
-    DROP TABLE IF EXISTS Composer;
     DROP TABLE IF EXISTS Contenir;
     DROP TABLE IF EXISTS Creer;
     DROP TABLE IF EXISTS Interpreter;
@@ -218,7 +209,7 @@ EOF;
                         $stmtAlbum->execute([
                             'titre' => $entry['title'],
                             'annee' => $entry['releaseYear'],
-                            'img' => ($entry['img'] !== 'null') ? $entry['img'] : 'default.png'
+                            'img' => ($entry['img'] !== 'null') ? $entry['img'] : 'default.jpg'
                         ]);
 
                         // Récupération de l'id de l'album inséré
@@ -226,13 +217,12 @@ EOF;
                         
 
                         $genres = explode(',', trim($entry['genre'], '[]'));
-                        // echo $entry['genre'];
 
                         // Pour chaque genre dans la liste
                         foreach ($genres as $genre) {
                             $genre = trim($genre);
                             if (!empty($genre)){
-                                echo '['.$genre.']';
+                                
                                 // Vérification et insertion du genre
                                 $stmtGenreCheck = $pdo->prepare("SELECT id_Genre FROM Genre WHERE nom_Genre = :genre");
                                 $stmtGenreCheck->execute([':genre' => $genre]);
@@ -240,8 +230,8 @@ EOF;
 
                                 if (!$genreRow) {
                                     // Le genre n'existe pas, l'insérer
-                                    $stmtInsertGenre = $pdo->prepare("INSERT INTO Genre (nom_Genre) VALUES (:genre)");
-                                    $stmtInsertGenre->execute([':genre' => $genre]);
+                                    $stmtInsertGenre = $pdo->prepare("INSERT INTO Genre (nom_Genre, img_Genre) VALUES (:genre, :img)");
+                                    $stmtInsertGenre->execute([':genre' => $genre, ':img'=> 'default.jpg']);
                                     $idGenre = $pdo->lastInsertId();
                                 } else {
                                     // Le genre existe, récupérer son ID
@@ -267,7 +257,7 @@ EOF;
                         if (!$artisteRow) {
                             // L'artiste n'existe pas, l'insérer
                             $stmtInsertArtiste = $pdo->prepare("INSERT INTO Artistes (nom_Artistes, img_Artistes) VALUES (:nom, :img)");
-                            $stmtInsertArtiste->execute([':nom' => $entry['by'], ':img' => 'default.png']);
+                            $stmtInsertArtiste->execute([':nom' => $entry['by'], ':img' => 'default.jpg']);
                             $idArtiste = $pdo->lastInsertId();
                         } else {
                             // L'artiste existe, récupérer son ID
@@ -292,8 +282,18 @@ EOF;
             break;
 
         case 'insert';
+            $stmt = $pdo->prepare('INSERT INTO Utilisateur (nom_Utilisateur, mdp_Utilisateur, img_Utilisateur, role) VALUES (:nom_Utilisateur, :mdp_Utilisateur, :img_Utilisateur, :role)');
+            $stmt->execute([
+                ':nom_Utilisateur' => 'adm',
+                ':mdp_Utilisateur' => 'adm', // Vous devriez toujours hacher les mots de passe
+                ':img_Utilisateur' => 'default.jpg',
+                ':role' => 'admin'
+            ]);
+
+
             $stmt = $pdo->prepare('INSERT INTO Genre (id_Genre, nom_Genre) values(:id_Genre, :nom_Genre)');
             $stmt->execute([':nom_Genre' => 'Jazz']);
+
             break;
  
     default:

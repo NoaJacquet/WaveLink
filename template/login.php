@@ -11,12 +11,12 @@
 
     <?php
         use modele_bd\Connexion;
-        use modele_bd\UserBD;
+        use modele_bd\UtilisateurBD;
 
         $connexion = new Connexion();
         $connexion->connexionBD();
 
-        $userManager = new UserBD($connexion->getPDO());
+        $userManager = new UtilisateurBD($connexion->getPDO());
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $pseudo = $_POST["pseudo"];
