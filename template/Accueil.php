@@ -20,27 +20,29 @@
     $playlist = new Playlist();
     echo $playlist->render();
     ?>
-    <div id='main'>
-        <ul>
-            
-            <?php   
-                use modele_bd\Connexion;
-                use modele_bd\GenreBD;   
-                $connexion = new Connexion();
-                $connexion->connexionBD();  
-                $genreManager = new GenreBD($connexion->getPDO());
-                $genres = $genreManager->getAllGenres();
-                foreach($genres as $key => $genre){
-                    echo "<li>";
-                    echo "<a href='/genre'>";
-                    echo "<div id='genre'>";
-                    echo "<p>".$genre->getNomGenre()."</p>";
-                    echo "</div>";
-                    echo "</a>";
-                    echo "</li>";
-                }
-            ?>
-        </ul>
+    <div class="slider-container">
+        <div id='main'>
+            <ul id='lesgenres'>
+                
+                <?php   
+                    use modele_bd\Connexion;
+                    use modele_bd\GenreBD;   
+                    $connexion = new Connexion();
+                    $connexion->connexionBD();  
+                    $genreManager = new GenreBD($connexion->getPDO());
+                    $genres = $genreManager->getAllGenres();
+                    foreach($genres as $key => $genre){
+                        echo "<li>";
+                        echo '<a href="/genre?id=' . $genre->getIdGenre() . '">';
+                        echo "<div id='genre'>";
+                        echo "<p>".$genre->getNomGenre()."</p>";
+                        echo "</div>";
+                        echo "</a>";
+                        echo "</li>";
+                    }
+                ?>
+            </ul>
+        </div>
     </div>
     </main>
     <?php

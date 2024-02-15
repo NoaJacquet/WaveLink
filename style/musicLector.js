@@ -74,13 +74,13 @@ $(document).ready(function(){
     });
 });
 
-$(document).ready(function(){
-    var trigger = $('header img'),
-    container = $('#main');
-    trigger.on('click', function(){
-        container.load("template/Playlist.php");
-    });
-});
+// $(document).ready(function(){
+//     var trigger = $('header img'),
+//     container = $('#main');
+//     trigger.on('click', function(){
+//         container.load("template/Playlist.php");
+//     });
+// });
 
 // $(document).ready(function(){
 //     var trigger = $('#main #genre'),
@@ -90,10 +90,10 @@ $(document).ready(function(){
 //     });
 // });
 
-$(document).ready(function(){
-    var trigger = $('#main #album'),
-    container = $('#main');
-    trigger.on('click', function(){
-        container.load("template/Album.php");
-    });
-});
+// $(document).ready(function(){
+//     var trigger = $('#main #album'),
+//     container = $('#main');
+//     trigger.on('click', function(){
+//         container.load("template/Album.php");
+//     });
+// });

@@ -58,7 +58,7 @@
                
                 <button>
                     <span class="box">
-                        Hover!
+                        Inscription
                     </span>
                 </button>
                 

@@ -29,28 +29,28 @@
                <p>PLK</p>
            </div>
        </div>
-            <!-- <?php
-            // use modele_bd\Connexion;
-            // use modele_bd\PlaylistBD;
+            <?php
+            use modele_bd\Connexion;
+            use modele_bd\PlaylistBD;
     
-            // $connexion = new Connexion();
-            // $connexion->connexionBD();
+            $connexion = new Connexion();
+            $connexion->connexionBD();
     
-            // $playlistManager = new PlaylistBD($connexion->getPDO());
+            $playlistManager = new PlaylistBD($connexion->getPDO());
 
-            // $musiques = $userManager->getSongByIdPlaylist(1);
-            // foreach($musiques as $key => $musique){
-            //     echo "<li>";
-            //     echo "<div id='son'>";
-            //     echo "<img src='rap.jpg' alt=''>";
-            //     echo "<div>";
-            //     echo "<p>".$musique->getNomMusique()."</p>";
-            //     echo "<p>".$musique->getInterpreteMusique()."</p>";
-            //     echo "</div>";
-            //     echo "</div>";
-            //     echo "</li>";
-            // }
-            ?>  -->
+            $musiques = $playlistManager->getSongByIdPlaylist(1);
+            foreach($musiques as $key => $musique){
+                echo "<li>";
+                echo "<div id='son'>";
+                echo "<img src='rap.jpg' alt=''>";
+                echo "<div>";
+                echo "<p>".$musique->getNomMusique()."</p>";
+                echo "<p>".$musique->getInterpreteMusique()."</p>";
+                echo "</div>";
+                echo "</div>";
+                echo "</li>";
+            }
+            ?> 
        </main>
     <?php
     use View\Footer;

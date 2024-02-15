@@ -5,6 +5,7 @@
 namespace modele_bd;
 
 use modele\Genre;
+use modele\Album;
 
 class GenreBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici
@@ -76,11 +77,11 @@ class GenreBD {
     public function getAlbumByIdGenre($id) {
         $les_albums = array();
             try{
-                $req = $this->connexion->prepare('SELECT id_Album, titre_Album, genre_Album, annee_Sortie, img_Album FROM Album natural join Appartenir WHERE id_Genre = :id');
+                $req = $this->connexion->prepare('SELECT id_Album, titre_Album, annee_Sortie, img_Album FROM Album natural join Appartenir WHERE id_Genre = :id');
                 $req->execute(array('id'=>$id));
                 $result = $req->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($result as $album){
-                    array_push($les_albums, new Album($album['id_Album'], $album['titre_Album'], $album['genre_Album'], $album['annee_Sortie'], $album['img_Album']));
+                    array_push($les_albums, new Album($album['id_Album'], $album['titre_Album'],  $album['annee_Sortie'], $album['img_Album']));
                 }
                 return $les_albums;
             }catch (\PDOException $e) {

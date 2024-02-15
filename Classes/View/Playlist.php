@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace View;
 use View\RenderInterface;
 use modele_bd\Connexion;
-use modele_bd\UserBD;
+use modele_bd\UtilisateurBD;
 
 Class Playlist implements RenderInterface{
 
@@ -14,7 +14,7 @@ Class Playlist implements RenderInterface{
         $connexion = new Connexion();
         $connexion->connexionBD();
 
-        $userManager = new UserBD($connexion->getPDO());
+        $userManager = new UtilisateurBD($connexion->getPDO());
 
         $playlists = $userManager->getAllPlaylistByUser(1);
         $res = "<div id='playlist'>";
@@ -26,11 +26,10 @@ Class Playlist implements RenderInterface{
         foreach($playlists as $key => $playlist){
             $res .= "<li>";
             $res .= "<div id='barre'></div>";
-            $res .= "<a href='/detail-playlist'>";
+            $res .= '<a href="/detail-playlist?id=' . $playlist->getIdPlaylist() . '">';
             $res .= "<div id='detail-playlist'>";
             $res .= "<img src='rap.jpg' alt=''>";
             $res .= "<p>".$playlist->getNomPlaylist()."</p>";
-            $res .= "<p>test</p>";
             $res .= "</div>";
             $res .= "</a>";
             $res .= "</li>";

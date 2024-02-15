@@ -29,7 +29,7 @@
                     header("Location: /accueil_admin");
                     exit();
                 } elseif ($loginResult === 'user') {
-                    header("Location: /accueil");
+                    header("Location: /accueil?id=");
                     exit();
                 } else {
                     $error_msg = "pseudo ou mot de passe incorrect";
@@ -54,7 +54,7 @@
                 <input type="password" placeholder="Entrer votre Mot de passe" id="password" name="password" required>
                 <button>
                     <span class="box">
-                        Hover!
+                        Connexion
                     </span>
                 </button>
                 

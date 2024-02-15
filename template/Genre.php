@@ -25,21 +25,17 @@
     <h2>Album de genre :</h2>
     <?php       
                 use modele_bd\Connexion;
-                use modele_bd\GenreBD;
-        
+                use modele_bd\GenreBD;   
                 $connexion = new Connexion();
-                $connexion->connexionBD();
-        
+                $connexion->connexionBD();  
                 $genreManager = new GenreBD($connexion->getPDO());
-
-                $albums = $genreManager->getAlbumByIdGenre(1);
+                $albums = $genreManager->getAlbumByIdGenre($genreId);
                 foreach($albums as $key => $album){
                     echo "<li>";
-                    echo "<div id='barre'></div>";
-                    echo "<a href=''>";
+                    echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
                     echo "<div id='detail-playlist'>";
-                    echo "<img src='rap.jpg' alt=''>";
-                    echo "<p>".$album->get()."</p>";
+                    echo "<img src='../images/".$album->getImgAlbum()."' alt=''>";
+                    echo "<p>".$album->getTitreAlbum()."</p>";
                     echo "</div>";
                     echo "</a>";
                     echo "</li>";

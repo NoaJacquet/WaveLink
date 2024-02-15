@@ -291,9 +291,15 @@ EOF;
             ]);
 
 
+            $stmt = $pdo->prepare('INSERT INTO Playlist (id_Playlist, nom_Playlist, img_Playlist) values(:id_Playlist, :nom_Playlist, :img_Playlist)');
+            $stmt->execute([':nom_Playlist' => 'Favoris', ':img_Playlist' => 'test' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Avoir (id_Playlist, id_Utilisateur) values(:id_Playlist, :id_Utilisateur)');
+            $stmt->execute([':id_Playlist' => '1', ':id_Utilisateur' => '1' ]);
+
+
             $stmt = $pdo->prepare('INSERT INTO Genre (id_Genre, nom_Genre) values(:id_Genre, :nom_Genre)');
             $stmt->execute([':nom_Genre' => 'Jazz']);
-
             break;
  
     default:

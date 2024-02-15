@@ -212,8 +212,15 @@ header img{
     margin-left: -0.95vw;
   }
 
+  .slider-container {
+    overflow-y: scroll; /
+  }
+
   #main ul{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1vw;
+    transition: transform 0.5s ease;
     justify-content: space-around;
     margin-left: 3vw;
     margin-top: 3vh;

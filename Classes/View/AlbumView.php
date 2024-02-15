@@ -11,7 +11,7 @@ class AlbumView
         foreach ($albums as $album) {
             $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());
             echo '<div class="card">';
-            echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
+            echo '<a href="/album_detail_admin?id=' . $album->getIdAlbum() . '">';
             echo '<img src="images/' . rawurlencode($album->getImgAlbum()) . '" alt="' . $album->getTitreAlbum(). '">';
             echo '<p class="titre">' . $album->getTitreAlbum().'</p>';
             echo '<p class="">' . $artiste->getNomArtistes().'</p>';
