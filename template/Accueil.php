@@ -1,3 +1,29 @@
+<?php
+
+use View\Header;
+$header = new Header();
+
+use View\Playlist;
+$playlist = new Playlist();
+
+
+use modele_bd\Connexion;
+use modele_bd\GenreBD;   
+$connexion = new Connexion();
+$connexion->connexionBD();  
+$genreManager = new GenreBD($connexion->getPDO());
+$genres = $genreManager->getAllGenres();
+
+
+use View\Footer;
+$footer = new Footer();
+
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,14 +36,10 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
     echo $header->render();
     ?>
     <main>
     <?php
-    use View\Playlist;
-    $playlist = new Playlist();
     echo $playlist->render();
     ?>
     <div class="slider-container">
@@ -25,12 +47,6 @@
             <ul id='lesgenres'>
                 
                 <?php   
-                    use modele_bd\Connexion;
-                    use modele_bd\GenreBD;   
-                    $connexion = new Connexion();
-                    $connexion->connexionBD();  
-                    $genreManager = new GenreBD($connexion->getPDO());
-                    $genres = $genreManager->getAllGenres();
                     foreach($genres as $key => $genre){
                         echo "<li>";
                         echo '<a href="/genre?id=' . $genre->getIdGenre() . '">';
@@ -46,8 +62,6 @@
     </div>
     </main>
     <?php
-    use View\Footer;
-    $footer = new Footer();
     echo $footer->render();
     ?>
 </body>

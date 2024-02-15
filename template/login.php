@@ -1,4 +1,43 @@
-<!-- login.php -->
+<?php
+
+
+
+use modele_bd\Connexion;
+use modele_bd\UtilisateurBD;
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+$userManager = new UtilisateurBD($connexion->getPDO());
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $pseudo = $_POST["pseudo"];
+    $password = $_POST["password"];
+
+    if ($pseudo != "" && $password != "") {
+        $loginResult = $userManager->checkLogin($pseudo, $password);
+
+        if ($loginResult === 'admin') {
+            header("Location: /accueil_admin");
+            exit();
+        } elseif ($loginResult === 'user') {
+            header("Location: /accueil?id=");
+            exit();
+        } else {
+            $error_msg = "pseudo ou mot de passe incorrect";
+            echo "<script>alert('$error_msg');</script>";
+        }
+    }
+}
+
+
+
+
+
+?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -8,36 +47,6 @@
     <title>login</title>
 </head>
 <body>
-
-    <?php
-        use modele_bd\Connexion;
-        use modele_bd\UtilisateurBD;
-
-        $connexion = new Connexion();
-        $connexion->connexionBD();
-
-        $userManager = new UtilisateurBD($connexion->getPDO());
-
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $pseudo = $_POST["pseudo"];
-            $password = $_POST["password"];
-        
-            if ($pseudo != "" && $password != "") {
-                $loginResult = $userManager->checkLogin($pseudo, $password);
-        
-                if ($loginResult === 'admin') {
-                    header("Location: /accueil_admin");
-                    exit();
-                } elseif ($loginResult === 'user') {
-                    header("Location: /accueil?id=");
-                    exit();
-                } else {
-                    $error_msg = "pseudo ou mot de passe incorrect";
-                    echo "<script>alert('$error_msg');</script>";
-                }
-            }
-        }
-    ?>
     <main>
 
         <section id='logo'>

@@ -29,15 +29,35 @@ class ContenirBD {
         return $contenirs;
     }
 
-    public function insertContenir(Contenir $contenir) {
-        $query = "INSERT INTO Contenir (id_Album, id_Musique) 
-                  VALUES (:idAlbum, :idMusique)";
-        $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idAlbum', $contenir->getIdAlbum(), \PDO::PARAM_INT);
-        $stmt->bindParam(':idMusique', $contenir->getIdMusique(), \PDO::PARAM_INT);
-
-        return $stmt->execute();
+    public function insertContenir($idAlbum, $idMusique) {
+        // Vérifier si le duo id_Musique et id_Album existe déjà
+        $queryCheck = "SELECT COUNT(*) FROM Contenir WHERE id_Album = :idAlbum AND id_Musique = :idMusique";
+        $stmtCheck = $this->connexion->prepare($queryCheck);
+        $stmtCheck->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+        $stmtCheck->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+        $stmtCheck->execute();
+    
+        $existingCount = $stmtCheck->fetchColumn();
+    
+        if ($existingCount > 0) {
+            return "musique_existante";
+        }
+    
+        // Si le duo n'existe pas, procéder à l'insertion
+        $queryInsert = "INSERT INTO Contenir (id_Album, id_Musique) 
+                        VALUES (:idAlbum, :idMusique)";
+        $stmtInsert = $this->connexion->prepare($queryInsert);
+        $stmtInsert->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+        $stmtInsert->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+    
+        // Exécuter la requête d'insertion
+        if ($stmtInsert->execute()) {
+            return "L'insertion dans la table Contenir a été effectuée avec succès.";
+        } else {
+            return "Erreur lors de l'insertion dans la table Contenir.";
+        }
     }
+    
 
     public function deleteContenir($idAlbum, $idMusique) {
         $query = "DELETE FROM Contenir WHERE id_Album = :idAlbum AND id_Musique = :idMusique";

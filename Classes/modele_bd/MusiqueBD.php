@@ -65,6 +65,16 @@ class MusiqueBD {
     
 
     public function deleteMusique($idMusique) {
+        $queryContenir = "DELETE FROM Contenir WHERE id_Musique = :idMusique";
+        $stmtContenir = $this->connexion->prepare($queryContenir);
+        $stmtContenir->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+        $stmtContenir->execute();
+
+        $queryInterpreter = "DELETE FROM Interpreter WHERE id_Musique = :idMusique";
+        $stmtInterpreter = $this->connexion->prepare($queryInterpreter);
+        $stmtInterpreter->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+        $stmtInterpreter->execute();
+
         $query = "DELETE FROM Musique WHERE id_Musique = :idMusique";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
@@ -74,8 +84,9 @@ class MusiqueBD {
 
 
     public function getMusiquesByAlbumId($idAlbum) {
+        echo $idAlbum;
         $query = "SELECT m.* FROM Musique m
-                  INNER JOIN Contenir c ON m.id_Musique = c.id_Musique
+                  NATURAL JOIN Contenir c
                   WHERE c.id_Album = :idAlbum";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
@@ -95,6 +106,7 @@ class MusiqueBD {
     }
 
     public function getMusiquesByArtistId($idArtiste) {
+
         $query = "SELECT m.* FROM Musique m
                   NATURAL JOIN Interpreter i
                   WHERE i.id_Artistes = :idArtiste";
