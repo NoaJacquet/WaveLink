@@ -7,6 +7,7 @@ const progressTime = document.getElementById("progress-time");
 const playButton = document.getElementById("play-button");
 const pauseButton = document.getElementById("pause-button");
 const musicName = document.getElementById("music-name");
+const musique = document.getElementById("son");
 
 totalTime.textContent = buildDuration(audio.duration);
 lector.setAttribute("max", audio.duration)
@@ -19,6 +20,12 @@ function buildDuration(duration) {
 }
 
 playButton.addEventListener("click", function(){
+    audio.play();
+    playButton.style.display = "none";
+    pauseButton.style.display = "initial";
+});
+
+musique.addEventListener("click", function(){
     audio.play();
     playButton.style.display = "none";
     pauseButton.style.display = "initial";
@@ -47,15 +54,46 @@ soundBar.addEventListener("input", function(){
 });
 
 $(document).ready(function(){
-    var trigger = $('main div ul li a'),
+    var trigger = $('main #playlist ul li '),
     container = $('#main');
-
     trigger.on('click', function(){
-        var $this = $(this),
-        target = $this.data('target');
-        console.log(target);
-        container.load("../template/Playlist.php");
-        return false; 
+        // $.ajax({
+        //     url: 'template/Accueil.php',
+        //     type: 'POST',
+        //     data: 'template/Playlist.php',
+        //     dataType: 'php', // Spécifie le type de données attendu
+        //     success: function(response) {
+        //         $('#main').html(response);
+        //     },
+        //     error: function(xhr, status, error) {
+        //         // En cas d'erreur, afficher un message d'erreur
+        //         console.error('Erreur lors du chargement du contenu :', status, error);
+        //     }
+        // });
+        //container.load("template/PlaylistDetail.php");
     });
 });
 
+$(document).ready(function(){
+    var trigger = $('header img'),
+    container = $('#main');
+    trigger.on('click', function(){
+        container.load("template/Playlist.php");
+    });
+});
+
+// $(document).ready(function(){
+//     var trigger = $('#main #genre'),
+//     container = $('#main');
+//     trigger.on('click', function(){
+//         container.load("template/Genre.php");
+//     });
+// });
+
+$(document).ready(function(){
+    var trigger = $('#main #album'),
+    container = $('#main');
+    trigger.on('click', function(){
+        container.load("template/Album.php");
+    });
+});

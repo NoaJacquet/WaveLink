@@ -282,11 +282,6 @@ EOF;
             break;
 
         case 'insert';
-            $stmt = $pdo->prepare('INSERT INTO Musique (nom_Musique, url_Musique) VALUES (:nom_Musique, :url_Musique)');
-            $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':url_Musique' => 'chemin/vers/votre/musique.mp3']);
-        
-            $stmt = $pdo->prepare('INSERT INTO Renfermer (id_Playlist, id_Musique) values(:id_Playlist, :id_Musique)');
-            $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '1']);
             $stmt = $pdo->prepare('INSERT INTO Utilisateur (nom_Utilisateur, mdp_Utilisateur, img_Utilisateur, role) VALUES (:nom_Utilisateur, :mdp_Utilisateur, :img_Utilisateur, :role)');
             $stmt->execute([
                 ':nom_Utilisateur' => 'adm',
@@ -295,8 +290,12 @@ EOF;
                 ':role' => 'admin'
             ]);
 
-            break;
 
+            $stmt = $pdo->prepare('INSERT INTO Genre (id_Genre, nom_Genre) values(:id_Genre, :nom_Genre)');
+            $stmt->execute([':nom_Genre' => 'Jazz']);
+
+            break;
+ 
     default:
         echo 'No action defined 🙀'.PHP_EOL;
         break;

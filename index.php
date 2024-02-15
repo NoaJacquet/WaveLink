@@ -96,5 +96,7 @@ switch ($path) {
     default:
         echo "404";
         break;
+
 }
 ?>
+

@@ -73,6 +73,21 @@ class GenreBD {
     }
     
 
+    public function getAlbumByIdGenre($id) {
+        $les_albums = array();
+            try{
+                $req = $this->connexion->prepare('SELECT id_Album, titre_Album, genre_Album, annee_Sortie, img_Album FROM Album natural join Appartenir WHERE id_Genre = :id');
+                $req->execute(array('id'=>$id));
+                $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+                foreach ($result as $album){
+                    array_push($les_albums, new Album($album['id_Album'], $album['titre_Album'], $album['genre_Album'], $album['annee_Sortie'], $album['img_Album']));
+                }
+                return $les_albums;
+            }catch (\PDOException $e) {
+                var_dump($e->getMessage());
+                return false;
+            }
+        }
     // Ajoutez d'autres méthodes selon vos besoins
     public function getGenreById($idGenre) {
         $query = "SELECT * FROM Genre WHERE id_Genre = :idGenre";
@@ -96,3 +111,7 @@ class GenreBD {
     }
     
 }
+    
+    
+
+

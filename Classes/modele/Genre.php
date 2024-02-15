@@ -28,4 +28,6 @@ class Genre {
     public function getImgGenre() {
         return $this->img_Genre;
     }
+
 }
+
