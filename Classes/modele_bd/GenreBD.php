@@ -4,6 +4,7 @@
 
 namespace modele_bd;
 
+use modele\Artistes;
 use modele\Genre;
 use modele\Album;
 
@@ -89,6 +90,22 @@ class GenreBD {
                 return false;
             }
         }
+
+    public function getArtistesByIdGenre($id) {
+        $les_artistes = array();
+            try{
+                $req = $this->connexion->prepare('SELECT DISTINCT id_Artistes, nom_Artistes, img_Artistes FROM Artistes natural join Creer natural join Album natural join Appartenir WHERE id_Genre = :id');
+                $req->execute(array('id'=>$id));
+                $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+                foreach ($result as $artistes){
+                    array_push($les_artistes, new Artistes($artistes['id_Artistes'], $artistes['nom_Artistes'],  $artistes['img_Artistes']));
+                }
+                return $les_artistes;
+            }catch (\PDOException $e) {
+                var_dump($e->getMessage());
+                return false;
+            }
+        }   
     // Ajoutez d'autres méthodes selon vos besoins
     public function getGenreById($idGenre) {
         $query = "SELECT * FROM Genre WHERE id_Genre = :idGenre";

@@ -25,13 +25,15 @@
             use modele_bd\Connexion;
             use modele_bd\MusiqueBD;
             use modele_bd\AlbumBD;
+            use modele_bd\ArtistesBD;
     
             $connexion = new Connexion();
             $connexion->connexionBD();
     
             $musiqueManager = new MusiqueBD($connexion->getPDO());
+            $artisteManager = new ArtistesBD($connexion->getPDO());
             $albumManager = new AlbumBD($connexion->getPDO());
-            echo "<h1>".$albumManager->getAlbumById($musiqueId)->getTitreAlbum()."</h1>";
+            echo "<h1>".$albumManager->getAlbumById($musiqueId)->getTitreAlbum()." par ".$artisteManager->getArtistByAlbumId($musiqueId)->getNomArtistes()."</h1>";
 
             $musiques = $musiqueManager->getMusiquesByAlbumId($musiqueId);
             foreach($musiques as $key => $musique){

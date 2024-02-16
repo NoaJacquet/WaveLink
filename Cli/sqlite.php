@@ -285,7 +285,7 @@ EOF;
             $stmt = $pdo->prepare('INSERT INTO Utilisateur (nom_Utilisateur, mdp_Utilisateur, img_Utilisateur, role) VALUES (:nom_Utilisateur, :mdp_Utilisateur, :img_Utilisateur, :role)');
             $stmt->execute([
                 ':nom_Utilisateur' => 'adm',
-                ':mdp_Utilisateur' => 'adm', // Vous devriez toujours hacher les mots de passe
+                ':mdp_Utilisateur' => 'adm', 
                 ':img_Utilisateur' => 'default.jpg',
                 ':role' => 'admin'
             ]);

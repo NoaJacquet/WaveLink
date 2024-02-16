@@ -29,7 +29,7 @@
                     header("Location: /accueil_admin");
                     exit();
                 } elseif ($loginResult === 'user') {
-                    header("Location: /accueil?id=");
+                    header("Location: /accueil");
                     exit();
                 } else {
                     $error_msg = "pseudo ou mot de passe incorrect";
