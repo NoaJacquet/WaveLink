@@ -386,3 +386,11 @@ header img{
     font-size: 20px;
     font-weight: bold;
   }
+  .star {
+    font-size: 1vw;
+  }
+  
+  .selected {
+    color: rgb(238, 195, 3);
+  }
+  
