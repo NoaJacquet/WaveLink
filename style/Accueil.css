@@ -35,6 +35,8 @@ div{
     border-radius: 0.8vw;
     width: 73vw;
     margin-bottom: 0.4vw;
+    overflow: scroll;
+
 }
 
 #playlist{
@@ -87,7 +89,7 @@ input{
 }
 
 h2{
-    margin-left: 8vw;
+    margin-left: 2vw;
     color: white ;
     font-size: 1.5vw;
 }
@@ -242,7 +244,6 @@ header img{
   }
 
   .slider-container {
-    overflow-y: scroll;
     height: 74vh;
   }
 
@@ -358,3 +359,30 @@ header img{
   }
 
   
+  .detail{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .detail div{
+    display: flex;
+    justify-content: center;
+    flex-basis: 30%;
+  }
+  .detail img{
+    width: 50%;
+  }.detail p{
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+    padding: 50px;
+  }
+
+  .p{
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }

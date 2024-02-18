@@ -54,30 +54,35 @@ class PlaylistBD {
 
     public function insertPlaylist($nomP, $imgP, $userId) {
         try {
-            $this->connexion->beginTransaction();
-    
-            // Insérer la playlist dans la table Playlist
-            $queryPlaylist = "INSERT INTO Playlist (nom_Playlist, img_Playlist) 
-                              VALUES (:nom, :img)";
-            $stmtPlaylist = $this->connexion->prepare($queryPlaylist);
-            $stmtPlaylist->bindParam(':nom', $nomP);
-            $stmtPlaylist->bindParam(':img', $imgP);
-            $stmtPlaylist->execute();
-    
-            // Récupérer l'ID de la playlist nouvellement insérée
-            $idPlaylist = $this->connexion->lastInsertId();
-    
-            // Insérer l'association dans la table Avoir
-            $queryAvoir = "INSERT INTO Avoir (id_Playlist, id_Utilisateur) 
-                           VALUES (:idPlaylist, :idUtilisateur)";
-            $stmtAvoir = $this->connexion->prepare($queryAvoir);
-            $stmtAvoir->bindParam(':idPlaylist', $idPlaylist);
-            $stmtAvoir->bindParam(':idUtilisateur', $userId);
-            $stmtAvoir->execute();
-    
-            $this->connexion->commit();
-    
-            return true;
+            if ($nomP !== "Favoris" && $nomP !== "favoris"){
+                $this->connexion->beginTransaction();
+        
+                // Insérer la playlist dans la table Playlist
+                $queryPlaylist = "INSERT INTO Playlist (nom_Playlist, img_Playlist) 
+                                VALUES (:nom, :img)";
+                $stmtPlaylist = $this->connexion->prepare($queryPlaylist);
+                $stmtPlaylist->bindParam(':nom', $nomP);
+                $stmtPlaylist->bindParam(':img', $imgP);
+                $stmtPlaylist->execute();
+        
+                // Récupérer l'ID de la playlist nouvellement insérée
+                $idPlaylist = $this->connexion->lastInsertId();
+        
+                // Insérer l'association dans la table Avoir
+                $queryAvoir = "INSERT INTO Avoir (id_Playlist, id_Utilisateur) 
+                            VALUES (:idPlaylist, :idUtilisateur)";
+                $stmtAvoir = $this->connexion->prepare($queryAvoir);
+                $stmtAvoir->bindParam(':idPlaylist', $idPlaylist);
+                $stmtAvoir->bindParam(':idUtilisateur', $userId);
+                $stmtAvoir->execute();
+        
+                $this->connexion->commit();
+        
+                return true;
+            }else {
+                // Si le nom de la playlist est "Favoris", retourner false car elle existe déja
+                return "duplicate-favoris";
+            }
         } catch (\PDOException $e) {
             $this->connexion->rollBack();
             // Vous pouvez logguer l'erreur au lieu de l'afficher directement
@@ -101,6 +106,7 @@ class PlaylistBD {
     public function deletePlaylist($idPlaylist) {
         try {
             $this->connexion->beginTransaction();
+
     
             // Supprimer les entrées correspondantes dans la table Renfermer
             $queryRenfermer = "DELETE FROM Renfermer WHERE id_Playlist = :idPlaylist";

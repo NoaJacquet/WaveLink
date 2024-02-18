@@ -35,14 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
     // Insérer l'artiste dans la base de données
     $result = $playlistBD->insertPlaylist($nomPlaylist, $filename,$userId);
 
-    if ($result) {
-        echo '<script>alert("L\'artiste a été ajouté avec succès.");</script>';
+    if ($result===true) {
+        echo '<script>alert("La playlist a été ajouté avec succès.");</script>';
+        header('Location: /accueil_user?id='.$userId);
+        exit();
     } else {
-        echo '<script>alert("Erreur lors de l\'ajout de l\'artiste.");</script>';
+        echo '<script>alert('.$result.');</script>';
     }
 
-    header('Location: /accueil_user?id='.$userId);
-    exit();
+    
 }
 
 

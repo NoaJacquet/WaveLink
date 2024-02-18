@@ -19,7 +19,6 @@ switch ($path) {
     case strpos($path, "/accueil_user") !== false:
         // Récupérer l'ID de l'genre à partir de la requête
         $userId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    
         if ($userId > 0) {
             require __DIR__."/template/Accueil.php";
         } else {
@@ -51,9 +50,10 @@ switch ($path) {
     case strpos($path, "/genre") !== false:
         // Récupérer l'ID du genre à partir de la requête
         $genreId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $userId = isset($_GET['userId']) ? intval($_GET['userId']) : 0;
     
         // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
-        if ($genreId > 0) {
+        if ($genreId > 0 && $userId>0) {
             // Inclure le fichier du contrôleur pour la page Genre
             require __DIR__."/template/Genre.php";
         } else {
@@ -116,9 +116,10 @@ switch ($path) {
     case strpos($path, "/album_detail") !== false:
         // Récupérer l'ID de l'album à partir de la requête
         $musiqueId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $userId = isset($_GET['userId']) ? intval($_GET['userId']) : 0;
     
         // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
-        if ($musiqueId > 0) {
+        if ($musiqueId > 0 && $userId>0) {
             // Inclure le fichier du contrôleur pour la page album-detail
             require __DIR__."/template/album_detail.php";
         } else {

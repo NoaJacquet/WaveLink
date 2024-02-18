@@ -75,6 +75,11 @@ class MusiqueBD {
         $stmtInterpreter->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
         $stmtInterpreter->execute();
 
+        $queryRenfermer = "DELETE FROM Renfermer WHERE id_Musique = :idMusique";
+        $stmtRenfermer = $this->connexion->prepare($queryRenfermer);
+        $stmtRenfermer->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+        $stmtRenfermer->execute();
+
         $query = "DELETE FROM Musique WHERE id_Musique = :idMusique";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);

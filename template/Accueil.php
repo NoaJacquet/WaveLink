@@ -36,7 +36,9 @@ $footer = new Footer();
 </head>
 <body>
     <?php
-    echo $header->render();
+    
+    echo $header->renderH($userId);
+    echo $userId
     ?>
     <main>
     <?php
@@ -49,7 +51,7 @@ $footer = new Footer();
                 <?php   
                     foreach($genres as $key => $genre){
                         echo "<li>";
-                        echo '<a href="/genre?id=' . $genre->getIdGenre() . '">';
+                        echo '<a href="/genre?id=' . $genre->getIdGenre()  . '&userId=' . $userId .  '">';
                         echo "<div id='genre'>";
                         echo "<p>".$genre->getNomGenre()."</p>";
                         echo "</div>";
