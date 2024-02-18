@@ -27,6 +27,9 @@
 
     $nbrArtistes = $artisteBD->countArtistes();
 
+    use View\Footer;
+    $footer = new Footer();
+
 
 ?>
 
@@ -104,8 +107,7 @@
         </div>
     </main>
     <?php
-    use View\Footer;
-    $footer = new Footer();
+
     echo $footer->render();
     ?>
 </body>

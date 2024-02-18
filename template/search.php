@@ -25,7 +25,6 @@
 
     $albums = $albumBD->getAllAlbumsBis($m);
     $artistes = $artisteBD->getAllArtistsBis($m);
-    var_dump( $artistes);
 
     $genreBD = new GenreBD($connexion->getPDO());
     $genres = $genreBD->getAllGenresBis($m);
@@ -37,7 +36,8 @@
     $renfermerBD = new RenfermerBD($connexion->getPDO());
     use modele_bd\PlaylistBD;
     $playlistBD = new PlaylistBD($connexion->getPDO());
-
+    use View\Footer;
+    $footer = new Footer();
 
 
 
@@ -109,8 +109,7 @@
         </div>
     </main>
     <?php
-    use View\Footer;
-    $footer = new Footer();
+
     echo $footer->render();
     ?>
 </body>
