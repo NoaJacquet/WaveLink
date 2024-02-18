@@ -33,11 +33,11 @@ $footer = new Footer();
 </head>
     <body>
     <?php
-        echo $header->render();
+        echo $header->renderH($userId);
     ?>
     <main>
     <?php
-        echo $playlist->render();
+        echo $playlist->renderPlaylist($userId);
     ?>
         <div id='main'>
 
@@ -45,7 +45,7 @@ $footer = new Footer();
             <?php       
                     foreach($albums as $key => $album){
                         echo "<li>";
-                        echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '">';
+                        echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '&userId=' . $userId . '">';
                         echo "<div id='detail-playlist'>";
                         echo "<img src='../images/".$album->getImgAlbum()."' alt=''>";
                         echo "<p>".$album->getTitreAlbum()."</p>";

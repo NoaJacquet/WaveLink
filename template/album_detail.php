@@ -36,11 +36,11 @@ $footer = new Footer();
 </head>
 <body>
     <?php
-    echo $header->render();
+    echo $header->renderH($userId);
     ?>
     <main>
     <?php
-    echo $playlist->render();
+    echo $playlist->renderPlaylist($userId);
     ?>
     <div class="slider-container">
     <div id='main'>

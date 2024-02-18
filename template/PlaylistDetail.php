@@ -1,23 +1,45 @@
 <?php
 
+
 use View\Header;
 $header = new Header();
 
 use View\Playlist;
-$playlist = new Playlist();
+$playlistView = new Playlist();
+
+use View\MusiqueView;
+$musiqueView = new MusiqueView();
 
 use modele_bd\Connexion;
 use modele_bd\PlaylistBD;
+use modele_bd\AlbumBD;
+use modele_bd\ArtistesBD;
 
 $connexion = new Connexion();
 $connexion->connexionBD();
 
 $playlistManager = new PlaylistBD($connexion->getPDO());
+$artisteBD = new ArtistesBD($connexion->getPDO());
+$albumBD = new AlbumBD($connexion->getPDO());
 
-$musiques = $playlistManager->getSongByIdPlaylist(1);
+$playlist = $playlistManager->getPlaylistById($playlistId);
+
+$musiques = $playlistManager->getSongByIdPlaylist($playlistId);
 
 use View\Footer;
 $footer = new Footer();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
+
+    $resultMessage = $playlistManager->deletePlaylist($playlistId);
+    echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+    
+    header('Location: /accueil_user?id='.$userId); 
+    exit();
+}
+
 
 ?>
 
@@ -35,29 +57,48 @@ $footer = new Footer();
 <body>
     <?php
 
-    echo $header->render();
+    echo $header->renderH($userId);
     ?>
     <main>
     <?php
 
-    echo $playlist->render();
+    echo $playlistView->renderPlaylist($userId);
     ?>
-    <div id='main'>
-            <?php
+        <div id='main'>
+            <div class='top'>
+                <a href="/accueil_user?id=<?php echo $userId?>" ><</a>
 
-            foreach($musiques as $key => $musique){
-                echo "<li>";
-                echo "<div id='son'>";
-                echo "<img src='rap.jpg' alt=''>";
-                echo "<div>";
-                echo "<p>".$musique->getNomMusique()."</p>";
-                //echo "<p>".$musique->getInterpreteMusique()."</p>";
-                echo "</div>";
-                echo "</div>";
-                echo "</li>";
-            }
+                <?php 
+                if ($playlist->getNomPlaylist() !== "Favoris") {
+                
+                ?>
+                <form id="deleteForm" method="post" action="">
+                    <button type="submit" name="deleteButton">Supprimer</button>
+                </form>
+                <?php
+                }
+                ?>
+            </div>
+
+            <div class="detail">
+                <div class="img-album">
+                    <img src="../images/<?php echo $playlist->getImgPlaylist() ?>" alt="<?php echo $playlist->getNomPlaylist() ?>">
+                </div>
+                <p><?php echo $playlist->getNomPlaylist()?></p>
+            </div>
+
+            <div class="top">
+                <h2>Musiques</h2>
+            </div>
+            <?php
+                if (!empty($musiques)) {
+                    echo $musiqueView->renderAllMusiquesBis($musiques, $albumBD, $userId, $artisteBD);
+                }else{
+                    echo '<p class="p"> Aucune musique </p>';
+                }
             ?> 
-       </main>
+        </div>
+    </main>
     <?php
 
     echo $footer->render();

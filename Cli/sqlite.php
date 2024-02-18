@@ -290,12 +290,19 @@ EOF;
                 ':role' => 'admin'
             ]);
 
+            $stmt = $pdo->prepare('INSERT INTO Utilisateur (nom_Utilisateur, mdp_Utilisateur, img_Utilisateur, role) VALUES (:nom_Utilisateur, :mdp_Utilisateur, :img_Utilisateur, :role)');
+            $stmt->execute([
+                ':nom_Utilisateur' => 'ethan',
+                ':mdp_Utilisateur' => 'ethan', // Vous devriez toujours hacher les mots de passe
+                ':img_Utilisateur' => 'default.jpg',
+                ':role' => 'user'
+            ]);
 
-            $stmt = $pdo->prepare('INSERT INTO Playlist (id_Playlist, nom_Playlist, img_Playlist) values(:id_Playlist, :nom_Playlist, :img_Playlist)');
-            $stmt->execute([':nom_Playlist' => 'Favoris', ':img_Playlist' => 'test' ]);
+            $stmt = $pdo->prepare('INSERT INTO Playlist (id_Playlist, nom_Playlist, img_Playlist) values(NULL, :nom_Playlist, :img_Playlist)');
+            $stmt->execute([':nom_Playlist' => 'Favoris', ':img_Playlist' => 'favoris.png' ]);
 
             $stmt = $pdo->prepare('INSERT INTO Avoir (id_Playlist, id_Utilisateur) values(:id_Playlist, :id_Utilisateur)');
-            $stmt->execute([':id_Playlist' => '1', ':id_Utilisateur' => '1' ]);
+            $stmt->execute([':id_Playlist' => '1', ':id_Utilisateur' => '2' ]);
 
             $stmt = $pdo->prepare('INSERT INTO Musique (id_Musique, nom_Musique, url_Musique) values(:id_Musique, :nom_Musique, :url_Musique)');
             $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':url_Musique' => 'e' ]);

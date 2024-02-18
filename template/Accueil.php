@@ -36,11 +36,12 @@ $footer = new Footer();
 </head>
 <body>
     <?php
-    echo $header->render();
+    
+    echo $header->renderH($userId);
     ?>
     <main>
     <?php
-    echo $playlist->render();
+    echo $playlist->renderPlaylist($userId);
     ?>
     <div class="slider-container">
         <div id='main'>
@@ -49,7 +50,7 @@ $footer = new Footer();
                 <?php   
                     foreach($genres as $key => $genre){
                         echo "<li>";
-                        echo '<a href="/genre?id=' . $genre->getIdGenre() . '">';
+                        echo '<a href="/genre?id=' . $genre->getIdGenre()  . '&userId=' . $userId .  '">';
                         echo "<div id='genre'>";
                         echo "<p>".$genre->getNomGenre()."</p>";
                         echo "</div>";
