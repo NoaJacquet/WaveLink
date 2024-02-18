@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_musique'])) {
                 <?php
                 
 
-                AlbumView::renderAllAlbums($albums, $artisteBD);
+                AlbumView::renderAlbums($albums, $artisteBD,count($albums));
                 ?>
             </div>
 

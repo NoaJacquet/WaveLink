@@ -23,6 +23,11 @@
     $genreBD = new GenreBD($connexion->getPDO());
     $genres = $genreBD->getAllGenres();
 
+    $nbrAlbum = $albumBD->countAlbums();
+
+    $nbrArtistes = $artisteBD->countArtistes();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +53,7 @@
                 
                 <?php
 
-                AlbumView::renderAlbums($albums, $artisteBD, $albumBD);
+                AlbumView::renderAlbums($albums, $artisteBD,6);
 
                 ?>
 
@@ -57,7 +62,7 @@
                 
                 <?php
                 
-                AlbumView::renderAllAlbums($albums, $artisteBD);
+                AlbumView::renderAlbums($albums, $artisteBD,$nbrAlbum);
 
                 ?>
 
@@ -71,12 +76,12 @@
 
             <div class="artiste">
                 <?php
-                ArtisteView::renderArtistes($artistes);
+                ArtisteView::renderArtistes($artistes,6);
                 ?>
             </div>
             <div class="artiste2" style="display: none;">
                 <?php
-                ArtisteView::renderAllArtistes($artistes);
+                ArtisteView::renderArtistes($artistes,$nbrArtistes);
                 ?>
             </div>
 

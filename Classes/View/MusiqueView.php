@@ -94,14 +94,15 @@ class MusiqueView
 
 
     public static function renderAllMusiquesBis($musiques, AlbumBD $albumBD, $userId, ArtistesBD $artisteBD){
-        if (empty($musiques)) {
+        if (empty($musiques) || is_null($musiques)) {
             echo '<p>Aucune Musique</p>';
         } else {
             foreach ($musiques as $musique) {
+                
                 $albumMusique =  $albumBD->getAlbumByMusicId($musique->getIdMusique());
-                $artiste = $artisteBD->getArtistByAlbumId($albumMusique->getIdAlbum());
+                $artiste = $artisteBD->getArtistByMusiqueId($musique->getIdMusique());
                 echo '<div>';
-                echo '<p>Nom de la musique : ' . $musique->getNomMusique() . '</p>';
+                echo '<p>Nom : ' . $musique->getNomMusique() . '</p>';
                 echo '<p>Artiste : <a href="/artiste?id=' . $artiste->getIdArtistes() . '&userId=' . $userId . '">' . $artiste->getNomArtistes() . '</a> </p>';
                 if ($albumMusique !== null) {
                     echo '<p>Album : <a href="/album_detail?id=' . $albumMusique->getIdAlbum() . '&userId=' . $userId . '">' . $albumMusique->getTitreAlbum() . '</a> </p>';

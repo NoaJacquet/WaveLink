@@ -308,7 +308,7 @@ EOF;
             $stmt->execute([':nom_Musique' => 'Mignon tout plein', ':url_Musique' => 'e' ]);
 
             $stmt = $pdo->prepare('INSERT INTO Renfermer (id_Playlist, id_Musique) values(:id_Playlist, :id_Musique)');
-            $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '1' ]);
+            $stmt->execute([':id_Playlist' => '1', ':id_Musique' => '2' ]);
 
             $stmt = $pdo->prepare('INSERT INTO Genre (id_Genre, nom_Genre) values(:id_Genre, :nom_Genre)');
             $stmt->execute([':nom_Genre' => 'Jazz']);
@@ -402,6 +402,52 @@ EOF;
 
             $stmt = $pdo->prepare('INSERT INTO Contenir (id_Album, id_Musique) values(:id_Album, :id_Musique)');
             $stmt->execute([':id_Album' => '3', ':id_Musique' => '16' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '2', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '3', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '4', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '5', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '6', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '7', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '8', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '9', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '10', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '11', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '12', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '13', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '14', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '15', ':id_Artistes' => '3' ]);
+
+            $stmt = $pdo->prepare('INSERT INTO Interpreter (id_Musique, id_Artistes) values(:id_Musique, :id_Artistes)');
+            $stmt->execute([':id_Musique' => '16', ':id_Artistes' => '3' ]);
+
             break;
  
     default:

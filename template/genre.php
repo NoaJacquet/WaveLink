@@ -27,6 +27,12 @@ $artistes = $genreBD->getArtistesByIdGenre($genreId);
 use View\Footer;
 $footer = new Footer();
 
+
+$nbrAlbum = $albumBD->countAlbums();
+
+$nbrArtistes = $artisteBD->countArtistes();
+
+
 ?>
 
 
@@ -53,7 +59,7 @@ $footer = new Footer();
                 
                 <?php
 
-                AlbumView::renderAlbums($albums, $artisteBD, $albumBD);
+                AlbumView::renderAlbumsBis($albums, $artisteBD, 6,$userId);
 
                 ?>
 
@@ -62,7 +68,7 @@ $footer = new Footer();
                 
                 <?php
                 
-                AlbumView::renderAllAlbums($albums, $artisteBD);
+                AlbumView::renderAlbumsBis($albums, $artisteBD, $nbrAlbum,$userId);
 
                 ?>
 
@@ -76,12 +82,12 @@ $footer = new Footer();
 
             <div class="artiste">
                 <?php
-                ArtisteView::renderArtistes($artistes);
+                ArtisteView::renderArtistesBis($artistes,6, $userId);
                 ?>
             </div>
             <div class="artiste2" style="display: none;">
                 <?php
-                ArtisteView::renderAllArtistes($artistes);
+                ArtisteView::renderArtistesBis($artistes,$nbrArtistes,$userId);
                 ?>
             </div>
         </div>

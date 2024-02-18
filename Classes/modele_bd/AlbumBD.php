@@ -201,6 +201,25 @@ class  AlbumBD {
         }
     }
 
+    public function countAlbums() {
+        try {
+            $query = "SELECT COUNT(*) as total FROM Album";
+            $stmt = $this->connexion->query($query);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+            if ($result) {
+                return $result['total'];
+            } else {
+                return 0;
+            }
+        } catch (\PDOException $e) {
+            // Vous pouvez logguer l'erreur au lieu de l'afficher directement
+            error_log('Erreur lors du comptage des albums : ' . $e->getMessage());
+            return 0;
+        }
+    }
+    
+
     
     
 }

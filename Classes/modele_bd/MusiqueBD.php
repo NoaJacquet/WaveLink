@@ -87,9 +87,17 @@ class MusiqueBD {
         return $stmt->execute();
     }
 
+    public function deleteMusiquePlaylist($idMusique, $idPlaylist ) {
+        $query = "DELETE FROM Renfermer WHERE id_Playlist = :idPlaylist AND id_Musique = :idMusique";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':idPlaylist', $idPlaylist, \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
 
     public function getMusiquesByAlbumId($idAlbum) {
-        echo $idAlbum;
         $query = "SELECT m.* FROM Musique m
                   NATURAL JOIN Contenir c
                   WHERE c.id_Album = :idAlbum";

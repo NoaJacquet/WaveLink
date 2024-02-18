@@ -6,7 +6,7 @@ use modele_bd\AlbumBD;
 
 class AlbumView
 {
-    public static function renderAlbums($albums, ArtistesBD $artisteBD, AlbumBD $albumBD, $count = 6)
+    public static function renderAlbums($albums, ArtistesBD $artisteBD, $count)
     {
         foreach ($albums as $album) {
             $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());
@@ -27,18 +27,24 @@ class AlbumView
         }
     }
 
-    public static function renderAllAlbums($albums, ArtistesBD $artisteBD)
+    public static function renderAlbumsBis($albums, ArtistesBD $artisteBD, $count, $userId)
     {
-        
         foreach ($albums as $album) {
             $artiste = $artisteBD->getArtistByAlbumId($album->getIdAlbum());
             echo '<div class="card">';
-            echo '<a href="/album_detail_admin?id=' . $album->getIdAlbum() . '">';
+            echo '<a href="/album_detail?id=' . $album->getIdAlbum() . '&userId='. $userId. '">';
             echo '<img src="images/' . rawurlencode($album->getImgAlbum()) . '" alt="' . $album->getTitreAlbum(). '">';
             echo '<p class="titre">' . $album->getTitreAlbum().'</p>';
             echo '<p class="">' . $artiste->getNomArtistes().'</p>';
             echo '</a>';
             echo '</div>';
+
+            $count--;
+
+            // Arrêter après avoir affiché les albums spécifiés
+            if ($count <= 0) {
+                break;
+            }
         }
     }
 }

@@ -29,12 +29,23 @@ class RenfermerBD {
         return $renfermements;
     }
 
-    public function insertRenfermer(Renfermer $renfermer) {
+    public function insertRenfermer($idP, $idM) {
+        $checkQuery = "SELECT COUNT(*) FROM Renfermer WHERE id_Playlist = :idPlaylist AND id_Musique = :idMusique";
+        $checkStmt = $this->connexion->prepare($checkQuery);
+        $checkStmt->bindParam(':idPlaylist', $idP, \PDO::PARAM_INT);
+        $checkStmt->bindParam(':idMusique', $idM, \PDO::PARAM_INT);
+        $checkStmt->execute();
+
+        if ($checkStmt->fetchColumn() > 0) {
+            // Entry already exists, return duplicate indication
+            return 'Duplicate entry';
+        }
+
         $query = "INSERT INTO Renfermer (id_Playlist, id_Musique) 
                   VALUES (:idPlaylist, :idMusique)";
         $stmt = $this->connexion->prepare($query);
-        $stmt->bindParam(':idPlaylist', $renfermer->getIdPlaylist(), \PDO::PARAM_INT);
-        $stmt->bindParam(':idMusique', $renfermer->getIdMusique(), \PDO::PARAM_INT);
+        $stmt->bindParam(':idPlaylist', $idP, \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idM, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
