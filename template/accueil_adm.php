@@ -23,6 +23,14 @@
     $genreBD = new GenreBD($connexion->getPDO());
     $genres = $genreBD->getAllGenres();
 
+    $nbrAlbum = $albumBD->countAlbums();
+
+    $nbrArtistes = $artisteBD->countArtistes();
+
+    use View\Footer;
+    $footer = new Footer();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +56,7 @@
                 
                 <?php
 
-                AlbumView::renderAlbums($albums, $artisteBD, $albumBD);
+                AlbumView::renderAlbums($albums, $artisteBD,6);
 
                 ?>
 
@@ -57,7 +65,7 @@
                 
                 <?php
                 
-                AlbumView::renderAllAlbums($albums, $artisteBD);
+                AlbumView::renderAlbums($albums, $artisteBD,$nbrAlbum);
 
                 ?>
 
@@ -71,12 +79,12 @@
 
             <div class="artiste">
                 <?php
-                ArtisteView::renderArtistes($artistes);
+                ArtisteView::renderArtistes($artistes,6);
                 ?>
             </div>
             <div class="artiste2" style="display: none;">
                 <?php
-                ArtisteView::renderAllArtistes($artistes);
+                ArtisteView::renderArtistes($artistes,$nbrArtistes);
                 ?>
             </div>
 
@@ -88,19 +96,18 @@
             </div>  
             <div class="genre">
                 <?php
-                GenreView::renderGenres($genres, $genreBD);
+                GenreView::renderGenres($genres, 6);
                 ?>
             </div>
             <div class="genre2" style="display: none;">
                 <?php
-                GenreView::renderAllGenres($genres, $genreBD);
+                GenreView::renderGenres($genres, count($genres));
                 ?>
             </div>
         </div>
     </main>
     <?php
-    use View\Footer;
-    $footer = new Footer();
+
     echo $footer->render();
     ?>
 </body>

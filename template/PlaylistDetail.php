@@ -14,6 +14,7 @@ use modele_bd\Connexion;
 use modele_bd\PlaylistBD;
 use modele_bd\AlbumBD;
 use modele_bd\ArtistesBD;
+use modele_bd\MusiqueBD;
 
 $connexion = new Connexion();
 $connexion->connexionBD();
@@ -21,6 +22,7 @@ $connexion->connexionBD();
 $playlistManager = new PlaylistBD($connexion->getPDO());
 $artisteBD = new ArtistesBD($connexion->getPDO());
 $albumBD = new AlbumBD($connexion->getPDO());
+$musiqueBD = new MusiqueBD($connexion->getPDO());
 
 $playlist = $playlistManager->getPlaylistById($playlistId);
 
@@ -40,6 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
     exit();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_musique'])) {
+
+    // Récupérer les données du formulaire
+    $idMusiqueASupprimer = $_POST['id_musique_a_supprimer'];
+
+    // Supprimer la musique en fonction de l'ID sélectionné
+    $resultMessage = $musiqueBD->deleteMusiquePlaylist($idMusiqueASupprimer, $playlistId);
+
+    // Afficher une alerte en fonction du résultat
+    header('Location: /detail-playlist?id='.$playlistId.'&userId='.$userId);
+    exit();
+}
+
 
 ?>
 
@@ -48,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
 <html lang="fr">
 <head>
     <link rel='stylesheet' href='../style/Accueil.css'>
+    <link rel='stylesheet' href='../style/detail.css'>
+    <link rel='stylesheet' href='../style/bouton_supprimer.css'>
     <meta charset="UTF-8">
     <title>Accueil</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -90,13 +107,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
             <div class="top">
                 <h2>Musiques</h2>
             </div>
-            <?php
-                if (!empty($musiques)) {
-                    echo $musiqueView->renderAllMusiquesBis($musiques, $albumBD, $userId, $artisteBD);
-                }else{
-                    echo '<p class="p"> Aucune musique </p>';
-                }
-            ?> 
+            <div class="musique">
+                <?php
+                    if (!empty($musiques)) {
+                        echo $musiqueView->renderAllMusiquesBis($musiques, $albumBD, $userId, $artisteBD);
+                    }else{
+                        echo '<p class="p"> Aucune musique </p>';
+                    }
+                ?> 
+            </div>
         </div>
     </main>
     <?php

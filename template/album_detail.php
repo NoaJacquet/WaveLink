@@ -32,6 +32,34 @@ $artisteManager = new ArtistesBD($connexion->getPDO());
 use View\Footer;
 $footer = new Footer();
 
+use modele_bd\PlaylistBD;
+
+$playlistBD = new PlaylistBD($connexion->getPDO());
+
+$playlists = $playlistBD->getAllPlaylists($userId);
+
+use modele_bd\RenfermerBD;
+
+$renfermerBD = new RenfermerBD($connexion->getPDO());
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addToPlaylistButton'])) {
+    // Assuming you have a Playlist class with getId() method
+    $selectedPlaylistId = $_POST['playlist'];
+    $idM = $_POST['musicId'];
+
+    $result = $renfermerBD->insertRenfermer($selectedPlaylistId, $idM);
+    if($result === 'Duplicate entry'){
+        echo '<script>alert("Musique déjà présente dans la playlist")</script>';
+    }else{
+        header("Location: /detail-playlist?id=".$selectedPlaylistId."&userId=".$userId); // Redirect to a success page
+        exit();
+    }
+
+    
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +118,18 @@ $footer = new Footer();
                 echo "<div>";
                 echo "<p>".$musique->getNomMusique()."</p>";
                 echo "</div>";
+                echo "<form action='' method='post'>";
+                echo "<input type='hidden' name='musicId' value='".$musique->getIdMusique()."'>";
+                echo "<label for='playlist'>Select a playlist:</label>";
+
+                echo "<select name='playlist' >";
+                $playlists = $playlistBD->getAllPlaylists($userId);
+                foreach ($playlists as $playlist) {
+                    echo "<option value='".$playlist->getIdPlaylist()."'>".$playlist->getNomPlaylist()."</option>";
+                }
+                echo "</select>";
+                echo "<input type='submit' name='addToPlaylistButton' value='ajouter'>";
+                echo "</form>";
                 echo "</div>";
                 echo "</li>";
             }

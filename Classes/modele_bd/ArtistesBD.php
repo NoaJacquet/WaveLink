@@ -140,4 +140,68 @@ class ArtistesBD {
             return null;
         }
     }
+
+    public function getArtistByMusiqueId($idMusique) {
+        $query = "SELECT a.*
+                  FROM Artistes a
+                  NATURAL JOIN Interpreter i
+                  WHERE i.id_Musique = :idMusique";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($row) {
+            $artist = new Artistes(
+                $row['id_Artistes'],
+                $row['nom_Artistes'],
+                $row['img_Artistes']
+            );
+
+            return $artist;
+        } else {
+            return null;
+        }
+    }
+
+    public function countArtistes() {
+        try {
+            $query = "SELECT COUNT(*) as total FROM Artistes";
+            $stmt = $this->connexion->query($query);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+            if ($result) {
+                return $result['total'];
+            } else {
+                return 0;
+            }
+        } catch (\PDOException $e) {
+            // Vous pouvez logguer l'erreur au lieu de l'afficher directement
+            error_log('Erreur lors du comptage des artistes : ' . $e->getMessage());
+            return 0;
+        }
+    }
+
+    public function getAllArtistsBis($m) {
+        $query = "SELECT * FROM Artistes WHERE nom_Artistes LIKE :prefix ";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindValue(':prefix', $m . '%', \PDO::PARAM_STR);
+        $stmt->execute();
+    
+        $artists = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $artist = new Artistes(
+                $row['id_Artistes'],
+                $row['nom_Artistes'],
+                $row['img_Artistes']
+            );
+            $artists[] = $artist;
+        }
+    
+        return $artists;
+    }
+    
+
+
 }

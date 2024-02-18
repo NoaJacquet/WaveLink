@@ -14,12 +14,14 @@ class PlaylistBD {
         $this->connexion = $connexion;
     }
 
-    public function getAllPlaylists() {
-        $query = "SELECT * FROM Playlist";
-        $result = $this->connexion->query($query);
-
+    public function getAllPlaylists($userId) {
+        $query = "SELECT p.* FROM Playlist p NATURAL JOIN Avoir WHERE id_Utilisateur = :user";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':user', $userId, \PDO::PARAM_INT);
+        $stmt->execute();
+    
         $playlists = [];
-        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $playlist = new Playlist(
                 $row['id_Playlist'],
                 $row['nom_Playlist'],
@@ -27,9 +29,10 @@ class PlaylistBD {
             );
             $playlists[] = $playlist;
         }
-
+    
         return $playlists;
     }
+    
 
     public function getPlaylistById($id) {
         $query = "SELECT * FROM Playlist WHERE id_Playlist = :id";
@@ -137,21 +140,36 @@ class PlaylistBD {
         }
     }
 
-    public function getSongByIdPlaylist($id) {
-        $les_sons = array();
-            try{
-                $req = $this->connexion->prepare('SELECT id_Musique, nom_Musique, url_Musique FROM Musique natural join Renfermer WHERE id_Playlist = :id');
-                $req->execute(array('id'=>$id));
-                $result = $req->fetchAll(\PDO::FETCH_ASSOC);
-                foreach ($result as $musique){
-                    array_push($les_sons, new Musique($musique['id_Musique'], $musique['nom_Musique'], $musique['url_Musique'],));
-                }
-                return $les_sons;
-            }catch (\PDOException $e) {
-                var_dump($e->getMessage());
-                return false;
+    public function getSongByIdPlaylist($idPlaylist) {
+
+    
+        try {
+            $query = "SELECT m.* FROM Musique m
+                      NATURAL JOIN Renfermer r
+                      WHERE r.id_Playlist = :idPlaylist";
+            $stmt = $this->connexion->prepare($query);
+            $stmt->bindParam(':idPlaylist', $idPlaylist, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            $les_sons = [];
+            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $musique = new Musique(
+                    $row['id_Musique'],
+                    $row['nom_Musique'],
+                    $row['url_Musique']
+                );
+                $les_sons[] = $musique;
             }
+    
+            return $les_sons;
+        } catch (\PDOException $e) {
+            // Vous pouvez logguer l'erreur au lieu de l'afficher directement
+            error_log('Erreur lors de la récupération des musiques par playlist : ' . $e->getMessage());
+            return [];
+        }
     }
+    
+    
 
     public function getFavorisById($id) {
         $query = "SELECT p.* FROM Playlist p Natural join Avoir WHERE id_Utilisateur = :id and nom_Playlist = 'Favoris'";

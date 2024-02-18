@@ -201,6 +201,46 @@ class  AlbumBD {
         }
     }
 
+    public function countAlbums() {
+        try {
+            $query = "SELECT COUNT(*) as total FROM Album";
+            $stmt = $this->connexion->query($query);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+            if ($result) {
+                return $result['total'];
+            } else {
+                return 0;
+            }
+        } catch (\PDOException $e) {
+            // Vous pouvez logguer l'erreur au lieu de l'afficher directement
+            error_log('Erreur lors du comptage des albums : ' . $e->getMessage());
+            return 0;
+        }
+    }
+
+    public function getAllAlbumsBis($m) {
+        $query = "SELECT * FROM Album WHERE titre_Album LIKE :prefix";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindValue(':prefix', $m . '%', \PDO::PARAM_STR);
+        $stmt->execute();
+    
+        $albums = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $album = new Album(
+                $row['id_Album'],
+                $row['titre_Album'],
+                $row['annee_Sortie'],
+                $row['img_Album']
+            );
+            $albums[] = $album;
+        }
+    
+        return $albums;
+    }
+    
+    
+
     
     
 }

@@ -39,6 +39,7 @@ div{
 
 }
 
+
 #playlist{
     width: 25vw;
     height: 74vh;
@@ -77,6 +78,12 @@ input{
     color :#1a1919;
     width: 25vw;
     height: 5vh;
+}
+
+
+#main input{
+  width: 10vw;
+
 }
 
 #lector{
@@ -171,10 +178,16 @@ header img{
   
   #son div {
     transition: 0.3s;
+    flex-grow: 1;
   }
   
   #son:hover div {
     background-color: #292727;
+  }
+
+  #son form{
+    display: flex;
+    flex-wrap: nowrap;
   }
   
   #son img {
@@ -394,3 +407,14 @@ header img{
     color: rgb(238, 195, 3);
   }
   
+
+
+header form{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+
+header .submit{
+  width: 20%;
+}

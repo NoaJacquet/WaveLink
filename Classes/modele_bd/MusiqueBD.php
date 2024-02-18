@@ -87,9 +87,17 @@ class MusiqueBD {
         return $stmt->execute();
     }
 
+    public function deleteMusiquePlaylist($idMusique, $idPlaylist ) {
+        $query = "DELETE FROM Renfermer WHERE id_Playlist = :idPlaylist AND id_Musique = :idMusique";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':idPlaylist', $idPlaylist, \PDO::PARAM_INT);
+        $stmt->bindParam(':idMusique', $idMusique, \PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
 
     public function getMusiquesByAlbumId($idAlbum) {
-        echo $idAlbum;
         $query = "SELECT m.* FROM Musique m
                   NATURAL JOIN Contenir c
                   WHERE c.id_Album = :idAlbum";
@@ -132,10 +140,23 @@ class MusiqueBD {
         return $musiques;
     }
 
+    public function getAllMusiquesBis($m) {
+        $query = "SELECT * FROM Musique WHERE nom_Musique LIKE :prefix";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindValue(':prefix', $m . '%', \PDO::PARAM_STR);
+        $stmt->execute();
     
-
-
-
+        $musiques = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $musique = new Musique(
+                $row['id_Musique'],
+                $row['nom_Musique'],
+                $row['url_Musique']
+            );
+            $musiques[] = $musique;
+        }
     
-    // Ajoutez d'autres méthodes selon vos besoins
+        return $musiques;
+    }
+    
 }
