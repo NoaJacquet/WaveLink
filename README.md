@@ -2,6 +2,9 @@
 
 ## Notre équipe
 
+# Lien du git
+https://github.com/NoaJacquet/WaveLink
+
 ### Développeur 01
 - Nom : MARIDAT
 - Prénom : ETHAN
@@ -16,8 +19,6 @@
 - Nom : BLIN
 - Prénom : PIERRE
 - Identifiant Github : [PierreBlin](https://github.com/pblin28)
-
-# 
 
 # Introduction
 

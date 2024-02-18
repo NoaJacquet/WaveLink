@@ -21,9 +21,6 @@ $footer = new Footer();
 
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
