@@ -55,7 +55,7 @@ switch ($path) {
         // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
         if ($genreId > 0 && $userId>0) {
             // Inclure le fichier du contrôleur pour la page Genre
-            require __DIR__."/template/Genre.php";
+            require __DIR__."/template/genre.php";
         } else {
             // Gérer le cas où l'ID n'est pas valide
             echo "ID de genre non valide";
