@@ -280,3 +280,12 @@ header img{
     height: 11vw;
     background-color: green;
   }
+
+  .star {
+    font-size: 1vw;
+  }
+  
+  .selected {
+    color: rgb(238, 195, 3);
+  }
+  
