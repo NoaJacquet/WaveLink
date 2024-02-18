@@ -1,0 +1,275 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(180, 146, 120);
+  }
+
+  a:hover {
+    color: rgb(65, 68, 178);
+  }
+
+body {
+    background-color: black;
+    overflow: hidden;
+}
+
+main{
+    display: flex;   
+    align-items: center;
+    justify-content: center;
+    margin: 0.3vw;
+}
+
+#main{
+    background-color: #1a1919;
+    height: 74vh;
+    margin-inline: 0;
+    border-radius: 0.8vw;
+    width: 73vw;
+    margin-bottom: 0.4vw;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+header{
+    background-color: #1a1919;
+    height: 10vh;
+    margin: 0.3vw;
+    margin-bottom: 0.5vw;
+    border-radius: 0.8vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1{
+    color: white ;
+    font-size: 2vw;
+    margin-left: 1vw;
+}
+
+header ul{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    width: 100em;
+}
+
+li{
+    list-style-type: none ;
+}
+
+input{
+    border-radius: 1vw;
+    color :#1a1919;
+    width: 25vw;
+}
+
+#lector{
+    margin-right: 1vw;
+}
+
+#sound-bar{
+    width: 10vw;
+    margin-left: 1vw;
+}
+
+h2{
+    margin-left: 2vw;
+    color: white ;
+    font-size: 1.5vw;
+}
+
+footer{
+    background-color: #1a1919;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.8vw;
+    width: 99vw;
+    margin-left: .5vw;
+    flex-grow: 1;
+    color: white;
+}
+
+footer p{
+    font-size: 1vw;
+}
+
+#lector-div, #play-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 98vw;
+    height: 5vh;
+}
+
+#pause-button{
+    display: none;
+}
+
+header img{
+    width: 3vw;
+}
+
+#playlist-choisi {
+    background-color: #1a1919;
+    height: 74vh;
+    margin-right: 0.25vw;
+    border-radius: 0.8vw;
+    width: 73vw;
+    margin-bottom: 0.4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #playlist {
+    width: 20vw;
+    height: 74vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #playlist li {
+    margin-top: 3vh;
+    margin-left: 6.5vw;
+    color: white;
+  }
+
+  #son {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-top: 1vh;
+    width: 70vw;
+    transition: 0.3s;
+  }
+  
+  #son:hover {
+    background-color: #292727;
+    width: 70.2vw;
+  }
+  
+  #son div {
+    transition: 0.3s;
+  }
+  
+  #son:hover div {
+    background-color: #292727;
+  }
+  
+  #son img {
+    width: 4vw;
+    height: 4vw;
+    margin-right: 1vw;
+  }
+  
+  #son p {
+    font-size: 1vw;
+  }
+
+  #barre {
+    background-color: white;
+    width: 10vw;
+    height: 0.2vh;
+  }
+  
+  #detail-playlist {
+    display: flex;
+    align-items: center;
+    margin-top: 2vh;
+    width: 12vw;
+    height: 8vh;
+    background-color: #292727;
+    transition: 0.3s;
+    margin-left: -0.8vw;
+  }
+  
+  #detail-playlist img {
+    width: 3vw;
+    height: 6vh;
+    margin-right: 2vw;
+    margin-left: 1vw;
+    border-radius: 0.8vw;
+  }
+  
+  #detail-playlist:hover {
+    width: 12.5vw;
+    height: 8.5vh;
+    margin-left: -0.95vw;
+  }
+
+  .album, .artiste, .genre{
+    width: 100%;
+    display: flex;
+    margin-bottom: 15px;
+  }
+  .album2, .artiste2, .genre2{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #main img{
+    width: 12vw;
+    height: 12vw;
+   
+  }
+  #main .card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    width: 15%;
+    margin-inline: auto;
+    font-size: 10px;
+
+    margin-top: 20px;
+   
+  }
+
+  .top{
+    width: auto;
+    margin-top: 20px;
+    margin-inline: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid white;
+    border-radius: 0px;
+  }
+
+  .top>p{
+    margin-left: 10px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    
+    color: #00a2f3;
+    cursor: pointer;
+  }
+  .top>p:hover{
+    font-size: 15.5px;
+  }
+
+  #main .card:hover{
+    border-bottom: #00a2f3 2px solid;
+    border-radius: 0px;
+    box-sizing: border-box;
+  }
+
+  label{
+    color: antiquewhite;
+  }
