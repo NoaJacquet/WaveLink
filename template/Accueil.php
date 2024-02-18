@@ -38,7 +38,6 @@ $footer = new Footer();
     <?php
     
     echo $header->renderH($userId);
-    echo $userId
     ?>
     <main>
     <?php
