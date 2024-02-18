@@ -21,11 +21,7 @@ Class Playlist implements RenderInterface{
         $res .="<h2>Playlist</h2>";
         $res .="<ul>";
         $res .= "<li>";
-        $res .= "<div id='creer-playlistorrespondant à chacun de ces outils.
-        2.2.1 Module d'administration applicative
-        Ce module est conçu afin de gérer et adorrespondant à chacun de ces outils.
-        2.2.1 Module d'administration applicative
-        Ce module est conçu afin de gérer et ad'>+</div>";
+        $res .= "<div id='creer-playlist'>+</div>";
         $res .= "</li>";
         foreach($playlists as $key => $playlist){
             $res .= "<li>";
