@@ -197,14 +197,15 @@ header img{
     background-color: #292727;
     transition: 0.3s;
     margin: 0;
+    padding: 13px;
   }
 
   #detail-playlist img {
-    width: 3vw;
-    height: 6vh;
+    width: 3em;
+    height: auto;
     margin-right: 3vw;
 
-    border-radius: 0.8vw;
+    border-radius: 5px;
   }
   
   #detail-playlist:hover {
@@ -333,3 +334,27 @@ header img{
   #creer-playlist a:hover{
     background-color: #565454;
   }
+
+
+  .top{
+    width: auto;
+    margin-top: 20px;
+    margin-inline: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid white;
+    border-radius: 0px;
+  }
+
+  .top a{
+      font-size: 25px;
+      margin: 0;
+      margin-right: 20px;
+    }
+
+  .top>a:hover{
+    color: blue;
+  }
+
+  

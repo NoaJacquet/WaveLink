@@ -90,9 +90,9 @@ switch ($path) {
     case strpos($path, "/detail-playlist") !== false:
         // Récupérer l'ID de l'album à partir de la requête
         $playlistId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    
+        $userId = isset($_GET['userId']) ? intval($_GET['userId']) : 0;
         // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
-        if ($playlistId > 0) {
+        if ($playlistId > 0 && $userId > 0) {
             // Inclure le fichier du contrôleur pour la page album-detail
             require __DIR__."/template/PlaylistDetail.php";
         } else {

@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
     if ($image_file['error'] == UPLOAD_ERR_OK) {
         // Sécurisez le nom du fichier
         $filename = basename($image_file['name']);
-        $filename = $filename . '_' . uniqid(); // Ajoutez un identifiant unique pour éviter les doublons
+        $filename = uniqid().'_' .$filename; // Ajoutez un identifiant unique pour éviter les doublons
 
         // Enregistrez le fichier dans le répertoire "images"
         $imagePath = "images/" . $filename;
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
     }
 
     // Insérer l'artiste dans la base de données
-    $result = $playlistBD->insertPlaylist($nomPlaylist, $filename);
+    $result = $playlistBD->insertPlaylist($nomPlaylist, $filename,$userId);
 
     if ($result) {
         echo '<script>alert("L\'artiste a été ajouté avec succès.");</script>';
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
         echo '<script>alert("Erreur lors de l\'ajout de l\'artiste.");</script>';
     }
 
-    header('Location: /accueil_admin');
+    header('Location: /accueil_user?id='.$userId);
     exit();
 }
 

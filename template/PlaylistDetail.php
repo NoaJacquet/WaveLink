@@ -14,10 +14,22 @@ $connexion->connexionBD();
 
 $playlistManager = new PlaylistBD($connexion->getPDO());
 
-$musiques = $playlistManager->getSongByIdPlaylist(1);
+$musiques = $playlistManager->getSongByIdPlaylist($playlistId);
 
 use View\Footer;
 $footer = new Footer();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteButton'])) {
+
+    $resultMessage = $playlistManager->deletePlaylist($playlistId);
+    echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+    
+    header('Location: /accueil_user?id='.$userId); 
+    exit();
+}
+
 
 ?>
 
@@ -40,12 +52,25 @@ $footer = new Footer();
     <main>
     <?php
 
-    echo $playlist->render();
+    echo $playlist->renderPlaylist($userId);
     ?>
     <div id='main'>
+            <div class='top'>
+                <a href="/accueil_user?id=<?php echo $userId?>" ><</a>
+                <form id="deleteForm" method="post" action="">
+                    <button type="submit" name="deleteButton">Supprimer</button>
+                </form>
+            </div>
+
+            <div class="detail">
+                <div class="img-album">
+                    <img src="../images/$albums->getImgAlbum()" alt="">
+                </div>'
+            </div>
+
             <?php
 
-            foreach($musiques as $key => $musique){
+            foreach($musiques as $musique){
                 echo "<li>";
                 echo "<div id='son'>";
                 echo "<img src='rap.jpg' alt=''>";
