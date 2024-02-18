@@ -10,12 +10,14 @@ $playlist = new Playlist();
 use modele_bd\Connexion;
 use modele_bd\MusiqueBD;
 use modele_bd\AlbumBD;
+use modele_bd\GenreBD;
 
 $connexion = new Connexion();
 $connexion->connexionBD();
 
 $musiqueManager = new MusiqueBD($connexion->getPDO());
 $albumManager = new AlbumBD($connexion->getPDO());
+$genreManager = new GenreBD($connexion->getPDO());
 
 
 $musiques = $musiqueManager->getMusiquesByAlbumId($musiqueId);
@@ -53,7 +55,7 @@ $footer = new Footer();
     <div class="slider-container">
     <div id='main'>
             <?php
-            echo "<h1>".$albumManager->getAlbumById($musiqueId)->getTitreAlbum()." par ".$artisteManager->getArtistByAlbumId($musiqueId)->getNomArtistes()."</h1>";
+            echo "<h1>".$albumManager->getAlbumById($musiqueId)->getTitreAlbum()." par ".$artisteManager->getArtistByAlbumId($musiqueId)->getNomArtistes()." de genre : ".$genreManager->getGenreByAlbumId($albumManager->getAlbumById($musiqueId)->getIdAlbum())."</h1>";
             ?> 
             <div>
                 <?php

@@ -128,6 +128,35 @@ class GenreBD {
         }
     }
     
+    public function getGenreByAlbumId($idAlbum) {
+        try {
+            $query = "SELECT g.id_Genre, g.nom_Genre, g.img_Genre 
+                      FROM Genre g 
+                      INNER JOIN Appartenir a ON g.id_Genre = a.id_Genre 
+                      INNER JOIN Album al ON a.id_Album = al.id_Album 
+                      WHERE al.id_Album = :idAlbum";
+            $stmt = $this->connexion->prepare($query);
+            $stmt->bindParam(':idAlbum', $idAlbum, \PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+            
+            if ($row) {
+                $genre = new Genre(
+                    $row['id_Genre'],
+                    $row['nom_Genre'],
+                    $row['img_Genre']
+                );
+                return $genre;
+            } else {
+                return null; // Aucun genre trouvé pour cet album
+            }
+        } catch (\PDOException $e) {
+            var_dump($e->getMessage());
+            return false;
+        }
+    }
+    
 }
     
     
