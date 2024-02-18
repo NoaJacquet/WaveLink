@@ -40,7 +40,7 @@ $footer = new Footer();
     ?>
     <main>
     <?php
-    echo $playlist->render();
+    echo $playlist->renderPlaylist($userId);
     ?>
     <div class="slider-container">
         <div id='main'>

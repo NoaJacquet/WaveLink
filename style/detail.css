@@ -23,7 +23,7 @@
     flex-direction: column;
 }
 
-.detail-album, .album-info, .artiste-info, .detail-artiste, .genre-info, .detail-genre{
+.detail-album, .album-info, .artiste-info, .detail-artiste, .genre-info, .detail-genre, .playlist-info, .detail-playlist{
     display: flex;
     flex-basis: 55%;
     flex-direction: column;

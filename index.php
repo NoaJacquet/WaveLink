@@ -16,8 +16,15 @@ switch ($path) {
     case "/inscription":
         require __DIR__."/template/inscription.php";
         break;
-    case "/accueil": 
-        require __DIR__."/template/Accueil.php";
+    case strpos($path, "/accueil_user") !== false:
+        // Récupérer l'ID de l'genre à partir de la requête
+        $userId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    
+        if ($userId > 0) {
+            require __DIR__."/template/Accueil.php";
+        } else {
+            echo "ID du user non valide";
+        }
         break;
     case "/accueil_admin":
         require __DIR__."/template/accueil_adm.php";
@@ -130,6 +137,16 @@ switch ($path) {
         } else {
             // Gérer le cas où l'ID n'est pas valide
             echo "ID d'artiste non valide";
+        }
+        break;
+    case strpos($path, "/add-playlist") !== false:
+        // Récupérer l'ID de l'genre à partir de la requête
+        $userId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    
+        if ($userId > 0) {
+            require __DIR__."/template/add_playlist.php";
+        } else {
+            echo "ID du user non valide";
         }
         break;
     default:

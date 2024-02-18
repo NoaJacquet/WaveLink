@@ -81,19 +81,40 @@ class PlaylistBD {
         return $stmt->execute();
     }
 
-public function getSongByIdPlaylist($id) {
-    $les_sons = array();
-        try{
-            $req = $this->connexion->prepare('SELECT id_Musique, nom_Musique, url_Musique FROM Musique natural join Renfermer WHERE id_Playlist = :id');
-            $req->execute(array('id'=>$id));
-            $result = $req->fetchAll(\PDO::FETCH_ASSOC);
-            foreach ($result as $musique){
-                array_push($les_sons, new Musique($musique['id_Musique'], $musique['nom_Musique'], $musique['url_Musique'],));
+    public function getSongByIdPlaylist($id) {
+        $les_sons = array();
+            try{
+                $req = $this->connexion->prepare('SELECT id_Musique, nom_Musique, url_Musique FROM Musique natural join Renfermer WHERE id_Playlist = :id');
+                $req->execute(array('id'=>$id));
+                $result = $req->fetchAll(\PDO::FETCH_ASSOC);
+                foreach ($result as $musique){
+                    array_push($les_sons, new Musique($musique['id_Musique'], $musique['nom_Musique'], $musique['url_Musique'],));
+                }
+                return $les_sons;
+            }catch (\PDOException $e) {
+                var_dump($e->getMessage());
+                return false;
             }
-            return $les_sons;
-        }catch (\PDOException $e) {
-            var_dump($e->getMessage());
-            return false;
+    }
+
+    public function getFavorisById($id) {
+        $query = "SELECT p.* FROM Playlist p Natural join Avoir WHERE id_Utilisateur = :id and nom_Playlist = 'Favoris'";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($row) {
+            $playlist = new Playlist(
+                $row['id_Playlist'],
+                $row['nom_Playlist'],
+                $row['img_Playlist']
+            );
+
+            return $playlist;
+        } else {
+            return null;
         }
     }
 }

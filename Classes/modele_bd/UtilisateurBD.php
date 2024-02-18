@@ -21,11 +21,12 @@ class UtilisateurBD
             $pseudoCheck->execute(array('pseudo' => $pseudo));
             $pseudoExists = $pseudoCheck->fetchColumn() > 0;
     
-            // Si le pseudo ou l'email est déjà utilisé, retourne le type d'erreur approprié
+            // Si le pseudo est déjà utilisé, retourne le type d'erreur approprié
             if ($pseudoExists) {
                 return "duplicate_pseudo";
             }
     
+            // Utilisation de prepared statements pour éviter les problèmes de sécurité
             $req = $this->pdo->prepare('INSERT INTO Utilisateur VALUES (NULL, :pseudo, :mdp, "default.png", "user")');
     
             // Exécution de la requête avec les valeurs associées
@@ -35,12 +36,38 @@ class UtilisateurBD
             ));
     
             // Vérification du succès de l'insertion
-            return $result;
+            if ($result) {
+                $id_utilisateur = $this->pdo->lastInsertId();
+
+                // Créer une playlist "favoris" pour le nouvel utilisateur
+                $reqPlaylist = $this->pdo->prepare('INSERT INTO Playlist (nom_Playlist, img_Playlist) VALUES (:nom, :img)');
+                $resultPlaylist = $reqPlaylist->execute(array(
+                    'nom' => 'Favoris',
+                    'img' => 'favoris.png'
+                ));
+
+                if ($resultPlaylist) {
+                    // Récupérer l'ID de la playlist "favoris" créée
+                    $id_playlist = $this->pdo->lastInsertId();
+
+                    // Associer la playlist "favoris" à l'utilisateur dans la table Avoir
+                    $reqAvoir = $this->pdo->prepare('INSERT INTO Avoir (id_Playlist, id_Utilisateur) VALUES (:id_playlist, :id_utilisateur)');
+                    $reqAvoir->execute(array(
+                        'id_playlist' => $id_playlist,
+                        'id_utilisateur' => $id_utilisateur
+                    ));
+                    return $id_utilisateur;
+                }
+            } else {
+                return false;
+            }
         } catch (\PDOException $e) {
-            echo 'Erreur inscription : ' . $e->getMessage();
+            // Vous pouvez logguer l'erreur au lieu de l'afficher directement
+            error_log('Erreur inscription : ' . $e->getMessage());
             return false;
         }
     }
+    
 
     public function checkLogin($pseudo, $password)
     {
@@ -54,13 +81,9 @@ class UtilisateurBD
             $user = $req->fetch();
 
             if ($user) {
-                // Vérifier si l'utilisateur appartient à la catégorie "admin"
-                if ($user['role'] == 'admin') {
-                    return 'admin';
-                } else {
-                    return 'user';
-                }
+                return array('role' => $user['role'], 'id' => $user['id_Utilisateur']);
             } else {
+                // Retourner false en cas d'échec de la connexion
                 return false;
             }
         } catch (\PDOException $e) {

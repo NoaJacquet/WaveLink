@@ -13,15 +13,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $mdp = $_POST["mdp"];
 
     if ($pseudo != "" && $mdp != "") {
-        $success = $userManager->insertUser($pseudo, $mdp);
+        $dernier_id = $userManager->insertUser($pseudo, $mdp);
 
-        if ($success === true) {
-            header("Location: /accueil");
+        if (is_numeric($dernier_id)) {
+            // Utilisez directement l'ID du nouvel utilisateur
+            header("Location: /accueil_user?id=".$dernier_id);
             exit();
         } else {
             $error_msg = "Erreur lors de l'inscription. Veuillez réessayer.";
 
-            if ($success === "duplicate_pseudo") {
+            if ($dernier_id === "duplicate_pseudo") {
                 $error_msg = "Le pseudo est déjà pris. Veuillez en choisir un autre.";
             }
 
@@ -29,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 }
+
 
 
 if ($registrationFailed) {

@@ -17,18 +17,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if ($pseudo != "" && $password != "") {
         $loginResult = $userManager->checkLogin($pseudo, $password);
 
-        if ($loginResult === 'admin') {
-            header("Location: /accueil_admin");
-            exit();
-        } elseif ($loginResult === 'user') {
-            header("Location: /accueil?id=");
-            exit();
+        if ($loginResult !== false) {
+            $role = $loginResult['role'];
+            $id = $loginResult['id'];
+
+            if ($role === 'admin') {
+                header("Location: /accueil_admin");
+                exit();
+            } elseif ($role === 'user') {
+                header("Location: /accueil_user?id=".$id);
+                exit();
+            }
         } else {
             $error_msg = "pseudo ou mot de passe incorrect";
             echo "<script>alert('$error_msg');</script>";
         }
     }
 }
+
 
 
 
