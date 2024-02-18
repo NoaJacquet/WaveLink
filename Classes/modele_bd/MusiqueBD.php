@@ -140,10 +140,23 @@ class MusiqueBD {
         return $musiques;
     }
 
+    public function getAllMusiquesBis($m) {
+        $query = "SELECT * FROM Musique WHERE nom_Musique LIKE :prefix";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindValue(':prefix', $m . '%', \PDO::PARAM_STR);
+        $stmt->execute();
     
-
-
-
+        $musiques = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $musique = new Musique(
+                $row['id_Musique'],
+                $row['nom_Musique'],
+                $row['url_Musique']
+            );
+            $musiques[] = $musique;
+        }
     
-    // Ajoutez d'autres méthodes selon vos besoins
+        return $musiques;
+    }
+    
 }

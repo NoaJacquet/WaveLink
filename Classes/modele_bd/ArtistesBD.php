@@ -182,4 +182,26 @@ class ArtistesBD {
             return 0;
         }
     }
+
+    public function getAllArtistsBis($m) {
+        $query = "SELECT * FROM Artistes WHERE nom_Artistes LIKE :prefix ";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindValue(':prefix', $m . '%', \PDO::PARAM_STR);
+        $stmt->execute();
+    
+        $artists = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $artist = new Artistes(
+                $row['id_Artistes'],
+                $row['nom_Artistes'],
+                $row['img_Artistes']
+            );
+            $artists[] = $artist;
+        }
+    
+        return $artists;
+    }
+    
+
+
 }

@@ -28,6 +28,11 @@ class ArtisteView
 
     public static function renderArtistesBis($artistes, $count, $userId)
     {
+
+        if (empty($artistes)) {
+            echo '<p>Aucun artiste trouvé.</p>';
+            return;
+        }
         
         foreach ($artistes as $artiste) {
 
@@ -47,5 +52,7 @@ class ArtisteView
         }
 
     }
+
+    
 }
 ?>

@@ -218,6 +218,27 @@ class  AlbumBD {
             return 0;
         }
     }
+
+    public function getAllAlbumsBis($m) {
+        $query = "SELECT * FROM Album WHERE titre_Album LIKE :prefix";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindValue(':prefix', $m . '%', \PDO::PARAM_STR);
+        $stmt->execute();
+    
+        $albums = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $album = new Album(
+                $row['id_Album'],
+                $row['titre_Album'],
+                $row['annee_Sortie'],
+                $row['img_Album']
+            );
+            $albums[] = $album;
+        }
+    
+        return $albums;
+    }
+    
     
 
     

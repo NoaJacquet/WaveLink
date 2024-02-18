@@ -2,29 +2,55 @@
 namespace View;
 use modele_bd\AlbumBD;
 use modele_bd\ArtistesBD;
-
+use modele_bd\PlaylistBD;
+use modele_bd\RenfermerBD;
 
 class MusiqueView
 {
-    public static function renderMusiques($musiques, $count = 6)
+    public static function renderMusiques($musiques, AlbumBD $albumBD, $userId, ArtistesBD $artisteBD, RenfermerBD $renfermerBD, PlaylistBD $playlistBD)
     {
-        if(empty($musiques)) {
-            echo '<div class="musique">';
-            echo '<p>Aucune musique</p>';
-            echo '</div>';
-
-        }else{    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addToPlaylistButton'])) {
+            // Assuming you have a Playlist class with getId() method
+            $selectedPlaylistId = $_POST['playlist'];
+            $idM = $_POST['musicId'];
+        
+            $result = $renfermerBD->insertRenfermer($selectedPlaylistId, $idM);
+            if($result === 'Duplicate entry'){
+                echo '<script>alert("Musique déjà présente dans la playlist")</script>';
+                header("Location: /detail-playlist?id=".$selectedPlaylistId."&userId=".$userId); // Redirect to a success page
+                exit();
+            }else{
+                header("Location: /detail-playlist?id=".$selectedPlaylistId."&userId=".$userId); // Redirect to a success page
+                exit();
+            }
+        
+            
+        }
+        if (empty($musiques) || is_null($musiques)) {
+            echo '<p>Aucune Musique</p>';
+        } else {
             foreach ($musiques as $musique) {
-                echo '<div class="musique">';
-                echo '<p class="titre">' . $musique->getNomMusique().'</p>';
-                echo '</div>';
-
-                $count--;
-
-                // Stop after displaying the specified number of musiques
-                if ($count <= 0) {
-                    break;
+                
+                $albumMusique =  $albumBD->getAlbumByMusicId($musique->getIdMusique());
+                $artiste = $artisteBD->getArtistByMusiqueId($musique->getIdMusique());
+                echo '<div>';
+                echo '<p>Nom : ' . $musique->getNomMusique() . '</p>';
+                echo '<p>Artiste : <a href="/artiste?id=' . $artiste->getIdArtistes() . '&userId=' . $userId . '">' . $artiste->getNomArtistes() . '</a> </p>';
+                if ($albumMusique !== null) {
+                    echo '<p>Album : <a href="/album_detail?id=' . $albumMusique->getIdAlbum() . '&userId=' . $userId . '">' . $albumMusique->getTitreAlbum() . '</a> </p>';
+                } else {
+                    echo '<p>Album : aucun</p>';
                 }
+                echo "<form action='' method='post'>";
+                echo "<input type='hidden' name='musicId' value='".$musique->getIdMusique()."'>";
+                echo "<select name='playlist' >";
+                $playlists = $playlistBD->getAllPlaylists($userId);
+                foreach ($playlists as $playlist) {
+                    echo "<option value='".$playlist->getIdPlaylist()."'>".$playlist->getNomPlaylist()."</option>";
+                }
+                echo "<input type='submit' name='addToPlaylistButton' value='ajouter'>";
+                echo "</form>";
+                echo '</div>';
             }
         }
     }

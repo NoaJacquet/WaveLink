@@ -127,6 +127,26 @@ class GenreBD {
             return null;
         }
     }
+
+    public function getAllGenresBis($m) {
+        $query = "SELECT * FROM Genre WHERE nom_Genre LIKE :prefix";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindValue(':prefix', $m . '%', \PDO::PARAM_STR);
+        $stmt->execute();
+    
+        $genres = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $genre = new Genre(
+                $row['id_Genre'],
+                $row['nom_Genre'],
+                $row['img_Genre']
+            );
+            $genres[] = $genre;
+        }
+    
+        return $genres;
+    }
+    
     
 }
     

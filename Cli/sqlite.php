@@ -32,7 +32,7 @@ function recupInformations($cheminFichierYAML) {
               $ligne = ltrim($ligne, '- ');
               list($cle, $valeur) = explode(':', $ligne, 2) + [null, null];
           
-              $album[$cle] = $valeur;
+              $album[$cle] = trim($valeur);
           }
           elseif ($album !== null && $ligne[0] === ' ') {
               // À l'intérieur d'un album, traiter les paires clé-valeur

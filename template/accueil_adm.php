@@ -93,12 +93,12 @@
             </div>  
             <div class="genre">
                 <?php
-                GenreView::renderGenres($genres, $genreBD);
+                GenreView::renderGenres($genres, 6);
                 ?>
             </div>
             <div class="genre2" style="display: none;">
                 <?php
-                GenreView::renderAllGenres($genres, $genreBD);
+                GenreView::renderGenres($genres, count($genres));
                 ?>
             </div>
         </div>

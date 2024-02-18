@@ -150,10 +150,36 @@ switch ($path) {
             echo "ID du user non valide";
         }
         break;
+    case strpos($path, "/search") !== false:
+        // Récupérer l'ID de l'album à partir de la requête
+        $m = isset($_GET['m']) ? $_GET['m'] : '';
+
+        $userId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        if ($userId>0) {
+            require __DIR__."/template/search.php";
+        } else {
+            echo "Petit problème";
+        }
+        break;
+    case strpos($path, "/artiste") !== false:
+        // Récupérer l'ID de l'album à partir de la requête
+        $artisteId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $userId = isset($_GET['userId']) ? intval($_GET['userId']) : 0;
+    
+        // Vérifier si l'ID est valide (vous pouvez ajouter d'autres vérifications selon vos besoins)
+        if ($artisteId > 0 && $userId>0) {
+            // Inclure le fichier du contrôleur pour la page album-detail
+            require __DIR__."/template/artiste.php";
+        } else {
+            // Gérer le cas où l'ID n'est pas valide
+            echo "ID d'album non valide";
+        }
+        break;
     default:
         echo "404";
         break;
 
 }
+
 ?>
 

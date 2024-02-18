@@ -407,3 +407,14 @@ header img{
     color: rgb(238, 195, 3);
   }
   
+
+
+header form{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+
+header .submit{
+  width: 20%;
+}

@@ -81,7 +81,7 @@
     margin-top: 4%;
 }
 
-.album{
+.album, .artiste, .genre, .musique{
     width: 100%;
     display: flex;
     margin-bottom: 15px;
@@ -130,3 +130,4 @@
 .musique a:hover{
     color: rgb(81, 108, 230);
 }
+
