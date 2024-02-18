@@ -58,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addToPlaylistButton']
 
     
 }
-
+$album = $albumManager->getAlbumById($musiqueId);
+$artiste = $artisteManager->getArtistByAlbumId($musiqueId);
+$genre = $genreManager->getGenreByAlbumId($album->getIdAlbum());
 
 ?>
 
@@ -83,7 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addToPlaylistButton']
     <div class="slider-container">
     <div id='main'>
             <?php
-            echo "<h1>".$albumManager->getAlbumById($musiqueId)->getTitreAlbum()." par ".$artisteManager->getArtistByAlbumId($musiqueId)->getNomArtistes()." de genre : ".$genreManager->getGenreByAlbumId($albumManager->getAlbumById($musiqueId)->getIdAlbum())."</h1>";
+            
+            
+            echo "<h1>".$album->getTitreAlbum()." par ".$artiste->getNomArtistes()." de genre : ".$genre->getNomGenre()."</h1>";
+            
             ?> 
             <div>
                 <?php

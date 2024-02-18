@@ -7,7 +7,6 @@ const progressTime = document.getElementById("progress-time");
 const playButton = document.getElementById("play-button");
 const pauseButton = document.getElementById("pause-button");
 const musicName = document.getElementById("music-name");
-const creerPlaylist = document.getElementById("creer-playlist");
 const musique = document.getElementById("son");
 
 totalTime.textContent = buildDuration(audio.duration);
@@ -53,7 +52,3 @@ soundBar.addEventListener("input", function () {
   soundVolume.textContent = this.value + "%";
 });
 
-creerPlaylist.addEventListener("click", function () {
-  const playlistName = prompt("Entrez le nom de la playlist :");
-  console.log(playlistName);
-});

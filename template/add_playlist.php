@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
 </head>
 <body>
     <?php
-    echo $header->renderBis();
+    echo $header->renderH($userId);
     ?>
     <main>
         <div id='main'>
