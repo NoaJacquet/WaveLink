@@ -1,26 +1,27 @@
 <?php
 use View\Header;
 $header = new Header();
+
 use View\Footer;
 $footer = new Footer();
 
 use modele_bd\Connexion;
-use modele_bd\ArtistesBD;
+use modele_bd\PlaylistBD;
 
 $connexion = new Connexion();
 $connexion->connexionBD();
 
-$artisteBD = new ArtistesBD($connexion->getPDO());
+$playlistBD = new PlaylistBD($connexion->getPDO());
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
-    $nomArtiste = $_POST['nomArtiste'];
+    $nomPlaylist = $_POST['nomPlaylist'];
     $image_file = $_FILES['image'];
 
     // Vérifiez si un fichier a été téléchargé
     if ($image_file['error'] == UPLOAD_ERR_OK) {
         // Sécurisez le nom du fichier
         $filename = basename($image_file['name']);
-        $filename = $filename . '_' . uniqid(); // Ajoutez un identifiant unique pour éviter les doublons
+        $filename = uniqid().'_' .$filename; // Ajoutez un identifiant unique pour éviter les doublons
 
         // Enregistrez le fichier dans le répertoire "images"
         $imagePath = "images/" . $filename;
@@ -32,16 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
     }
 
     // Insérer l'artiste dans la base de données
-    $result = $artisteBD->insertArtist($nomArtiste, $filename);
+    $result = $playlistBD->insertPlaylist($nomPlaylist, $filename,$userId);
 
-    if ($result) {
-        echo '<script>alert("L\'artiste a été ajouté avec succès.");</script>';
+    if ($result===true) {
+        echo '<script>alert("La playlist a été ajouté avec succès.");</script>';
+        header('Location: /accueil_user?id='.$userId);
+        exit();
     } else {
-        echo '<script>alert("Erreur lors de l\'ajout de l\'artiste.");</script>';
+        echo '<script>alert('.$result.');</script>';
     }
 
-    header('Location: /accueil_admin');
-    exit();
+    
 }
 
 
@@ -49,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
 
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -90,10 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
                         <input type="submit" value="Ajouter" name="Ajouter">
                     </div>
 
-                    <div class="detail-artiste">
-                        <label for="nomArtiste">Nom de l'artiste:</label>
-                        <input type="text" id="nomArtiste" name="nomArtiste" value="" required>
-
+                    <div class="detail-playlist">
+                        <label for="nomPlaylist">Nom de la playlist:</label>
+                        <input type="text" id="nomPlaylist" name="nomPlaylist" value="" required>
                     </div>
                 </form>
             </div>

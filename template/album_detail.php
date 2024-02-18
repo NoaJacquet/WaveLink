@@ -1,3 +1,37 @@
+<?php 
+
+use View\Header;
+$header = new Header();
+
+use View\Playlist;
+$playlist = new Playlist();
+
+
+use modele_bd\Connexion;
+use modele_bd\MusiqueBD;
+use modele_bd\AlbumBD;
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+$musiqueManager = new MusiqueBD($connexion->getPDO());
+$albumManager = new AlbumBD($connexion->getPDO());
+
+
+$musiques = $musiqueManager->getMusiquesByAlbumId($musiqueId);
+
+use modele_bd\ArtistesBD;
+use modele_bd\NoterBD;
+use modele\Noter;
+
+$noteManager = new NoterBD($connexion->getPDO());
+$artisteManager = new ArtistesBD($connexion->getPDO());
+
+use View\Footer;
+$footer = new Footer();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,33 +44,15 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
-    echo $header->render();
+    echo $header->renderH($userId);
     ?>
     <main>
     <?php
-    use View\Playlist;
-    $playlist = new Playlist();
-    echo $playlist->render();
+    echo $playlist->renderPlaylist($userId);
     ?>
     <div class="slider-container">
     <div id='main'>
             <?php
-            use modele_bd\Connexion;
-            use modele_bd\MusiqueBD;
-            use modele_bd\AlbumBD;
-            use modele_bd\ArtistesBD;
-            use modele_bd\NoterBD;
-            use modele\Noter;
-            
-            $connexion = new Connexion();
-            $connexion->connexionBD();
-
-            $noteManager = new NoterBD($connexion->getPDO());
-            $musiqueManager = new MusiqueBD($connexion->getPDO());
-            $artisteManager = new ArtistesBD($connexion->getPDO());
-            $albumManager = new AlbumBD($connexion->getPDO());
             echo "<h1>".$albumManager->getAlbumById($musiqueId)->getTitreAlbum()." par ".$artisteManager->getArtistByAlbumId($musiqueId)->getNomArtistes()."</h1>";
             ?> 
             <div>
@@ -65,7 +81,6 @@
                 ?>
             </div>
             <?php
-            $musiques = $musiqueManager->getMusiquesByAlbumId($musiqueId);
             foreach($musiques as $key => $musique){
                 echo "<li>";
                 echo "<div id='son'>";
@@ -81,8 +96,6 @@
     </div>
        </main>
     <?php
-    use View\Footer;
-    $footer = new Footer();
     echo $footer->render();
     ?>
 </div>

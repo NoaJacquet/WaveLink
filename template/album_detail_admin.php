@@ -1,9 +1,103 @@
+<?php
+
+use modele\Album;
+use View\Header;
+use modele_bd\Connexion;
+use modele_bd\AlbumBD;
+use modele_bd\ArtistesBD;
+use modele_bd\AppartenirBD;
+use modele_bd\GenreBD;  
+use modele_bd\ContenirBD;
+use modele_bd\MusiqueBD;
+use View\MusiqueView;
+use View\Footer;
+
+$footer = new Footer();
+                
+                
+
+    
+$header = new Header();
+
+$connexion = new Connexion();
+$connexion->connexionBD();
+
+
+$albumBD = new AlbumBD($connexion->getPDO());
+$artisteBD = new ArtistesBD($connexion->getPDO());
+
+$albums = $albumBD->getAlbumById($albumId);
+$artiste = $artisteBD->getArtistByAlbumId($albums->getIdAlbum());
+
+$artistes = $artisteBD->getAllArtists();
+
+$appartenirBD = new AppartenirBD($connexion->getPDO());
+$genreBD = new GenreBD($connexion->getPDO());
+
+$genre = $appartenirBD->getGenresByAlbumId($albums->getIdAlbum());
+$allGenres = $genreBD->getAllGenres();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
+
+    $resultMessage = $albumBD->deleteAlbum($albums->getIdAlbum(), $albums->getImgAlbum());
+    echo '<script>alert("' . $resultMessage . '");</script>';
+
+
+    
+    header('Location: /accueil_admin'); 
+    exit();
+}
+
+$contenirBD = new ContenirBD($connexion->getPDO());
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter'])) {
+    // Récupérer les données du formulaire
+    $selectedMusiqueId = $_POST['musique_selectionnee'];
+
+    // Supprimer l'album en fonction de la musique sélectionnée
+    $resultMessage = $contenirBD->insertContenir($albums->getIdAlbum(),$selectedMusiqueId);
+    if ($resultMessage === "musique_existante") {
+        echo '<script>alert("La musique existe déjà dans l\'Album.");</script>';
+    } else {
+        echo '<script>alert("' . $resultMessage . '");</script>';
+        // Rediriger vers la page d'accueil admin
+        header('Location: /album_detail_admin?id='.$albums->getIdAlbum());
+        exit();
+    }
+}
+
+
+$musiqueBD = new MusiqueBD($connexion->getPDO());
+        
+$allMusiqueArtiste = $musiqueBD->getMusiquesByArtistId($artiste->getIdArtistes());
+
+
+
+$musiques=$musiqueBD->getMusiquesByAlbumId($albumId);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_musique'])) {
+
+    // Récupérer les données du formulaire
+    $idMusiqueASupprimer = $_POST['id_musique_a_supprimer'];
+
+    // Supprimer la musique en fonction de l'ID sélectionné
+    $resultMessage = $contenirBD->deleteContenir($albums->getIdAlbum(), $idMusiqueASupprimer);
+
+    // Afficher une alerte en fonction du résultat
+    header('Location: /album_detail_admin?id='.$albums->getIdAlbum());
+    exit();
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <link rel='stylesheet' href='../style/Accueil_bd.css'>
     <link rel='stylesheet' href='../style/add_images.css'>
     <link rel='stylesheet' href='../style/detail.css'>
+    <link rel='stylesheet' href='../style/bouton_supprimer.css'>
 
 
     <meta charset="UTF-8">
@@ -12,50 +106,9 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
-    echo $header->render();
+    echo $header->renderBis();
     ?>
-    <main>
-    <?php
-    use modele_bd\Connexion;
-    use modele_bd\AlbumBD;
-    use modele_bd\ArtistesBD;
-    use modele_bd\AppartenirBD;
-    use modele_bd\GenreBD;
-
-    $connexion = new Connexion();
-    $connexion->connexionBD();
-
-    $albumBD = new AlbumBD($connexion->getPDO());
-    $artisteBD = new ArtistesBD($connexion->getPDO());
-
-    $albums = $albumBD->getAlbumById($albumId);
-    $artiste = $artisteBD->getArtistByAlbumId($albums->getIdAlbum());
-
-    $artistes = $artisteBD->getAllArtists();
-
-    $appartenirBD = new AppartenirBD($connexion->getPDO());
-    $genreBD = new GenreBD($connexion->getPDO());
-
-    $genre = $appartenirBD->getGenresByAlbumId($albums->getIdAlbum());
-    $allGenres = $genreBD->getAllGenres();
-    // Inclure vos classes et fonctions nécessaires ici
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteGenreButton'])) {
-        // Récupérer les données du formulaire si nécessaire
-
-        $resultMessage = $albumBD->deleteAlbum($albums->getIdAlbum(), $albums->getImgAlbum());
-        echo '<script>alert("' . $resultMessage . '");</script>';
-
-
-        
-        header('Location: /accueil_admin'); 
-        exit();
-    }
-    ?>
-
-        
+    <main>      
 
         <div id='main'>
             <div class='top'>
@@ -68,11 +121,6 @@
             </div>
 
             <?php
-
-
-            
-
-
             echo '<div class="detail">';
             echo '<div class="img-album">';
             echo '<img src="../images/'.$albums->getImgAlbum().'" alt="'.$albums->getTitreAlbum().'">';
@@ -80,8 +128,6 @@
             echo '<div class="album-info">';
             echo '<h2>'.$albums->getTitreAlbum().'</h2>';
             echo '<p>Année de sortie: '.$albums->getAnneeSortie().'</p>';
-
-            // Afficher les genres
             if (!empty($genre)) {
                 echo '<p>Genres: ';
                 foreach ($genre as $g) {
@@ -89,14 +135,9 @@
                 }
                 echo '</p>';
             }
-
-            // Afficher l'artiste
-            echo '<p>Artiste: '.$artiste->getNomArtistes().'</p>';
-
-            // Ajoutez d'autres détails de l'album selon vos besoins
+            echo '<p>Artiste: <a href="artiste_detail?id='.$artiste->getIdArtistes().'">'.$artiste->getNomArtistes().'</a></p>';
             echo '</div>';
             echo '</div>';
-
             ?>
 
             <div class="modif-detail" style ='display:none'>
@@ -152,29 +193,25 @@
                             <?php endforeach; ?>
                         </div>
 
-
-
-
-
                     </div>
-
-
-
-
-
                 </form>
 
             </div>
             <div class="top">
                 <h2>Musique</h2>
+
+                    <form id="" method="post" action="">
+                        <select name="musique_selectionnee">
+                            <?php foreach ($allMusiqueArtiste as $musique) : ?>
+                                <option value="<?= $musique->getIdMusique(); ?>"><?= $musique->getNomMusique(); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="submit" name="ajouter">Ajouter musique</button>
+                    </form>
             </div>
             <div class="musique">
                 <?php
-                use View\MusiqueView;
-                use modele_bd\MusiqueBD;
-                $musiqeBD = new MusiqueBD($connexion->getPDO());
-                $musiques=$musiqeBD->getMusiquesByAlbumId($albumId);
-                MusiqueView::renderAllMusiques($musiques);
+                MusiqueView::renderAllMusiques($musiques, $albumBD);
                 ?>
             </div>
 
@@ -184,26 +221,11 @@
     
  
     </main>
-    <footer>
-            <div><p id='music-name'>a</p></div>
-            <div id='lector-div'>
-                <input type="range" id="lector" min ="0" value="0" step="1" width="10">
-                <span id="progress-time">0:00</span> / <span id="total-time">1:00</span>
-                <input type="range" id="sound-bar" min="0" max="100" step="1">
-                <span id="sound-volume">50%</span>
-            </div>
-            <div id='play-div'>
-                <audio src="../musique/plk-mignon-tout-plein.mp3"></audio>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" id="play-button" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" id="pause-button" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0z"/>
-                </svg>
-            </div>
-    </footer>
+
+    <?php
+        echo $footer->render();
+    ?>
+
 </body>
 <script src="../style/musicLector.js"></script>
 

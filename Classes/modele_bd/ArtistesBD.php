@@ -5,7 +5,6 @@
 namespace modele_bd;
 
 use modele\Artistes;
-use modele_bd\AlbumBD;
 
 class ArtistesBD {
     private $connexion; // Vous devrez fournir une instance de connexion à la base de données ici

@@ -1,4 +1,36 @@
-<!DOCTYPE html>
+<?php
+
+use View\Header;
+$header = new Header();
+
+use View\Playlist;
+$playlist = new Playlist();
+
+use modele_bd\Connexion;
+use modele_bd\GenreBD;   
+use modele_bd\AlbumBD;
+use modele_bd\ArtistesBD;
+use View\AlbumView;
+$connexion = new Connexion();
+$connexion->connexionBD();  
+$albumBD = new AlbumBD($connexion->getPDO());
+$artisteBD = new ArtistesBD($connexion->getPDO());
+$genreBD = new GenreBD($connexion->getPDO());
+
+$albums = $genreBD->getAlbumByIdGenre($genreId);
+
+use View\ArtisteView;
+
+$artistes = $genreBD->getArtistesByIdGenre($genreId);
+
+
+use View\Footer;
+$footer = new Footer();
+
+?>
+
+
+</htm<!DOCTYPE html>
 <html lang="fr">
 <head>
     <link rel='stylesheet' href='../style/Accueil_bd.css'>
@@ -8,9 +40,7 @@
 </head>
 <body>
     <?php
-    use View\Header;
-    $header = new Header();
-    echo $header->render();
+    echo $header->renderH($userId);
     ?>
     <main>
         <div id='main'>
@@ -22,20 +52,6 @@
             <div class="album"  >
                 
                 <?php
-                use modele_bd\Connexion;
-                use modele_bd\AlbumBD;
-                use modele_bd\ArtistesBD;
-                use modele_bd\GenreBD;
-                use View\AlbumView;
-        
-                $connexion = new Connexion();
-                $connexion->connexionBD();
-        
-                $albumBD = new AlbumBD($connexion->getPDO());
-                $artisteBD = new ArtistesBD($connexion->getPDO());
-                $genreBD = new GenreBD($connexion->getPDO());
-
-                $albums = $genreBD->getAlbumByIdGenre($genreId);
 
                 AlbumView::renderAlbums($albums, $artisteBD, $albumBD);
 
@@ -60,11 +76,6 @@
 
             <div class="artiste">
                 <?php
-                use View\ArtisteView;
-
-                $artistes = $genreBD->getArtistesByIdGenre($genreId);
-                
-
                 ArtisteView::renderArtistes($artistes);
                 ?>
             </div>
@@ -76,8 +87,6 @@
         </div>
     </main>
     <?php
-    use View\Footer;
-    $footer = new Footer();
     echo $footer->render();
     ?>
 </body>
